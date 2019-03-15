@@ -11,28 +11,28 @@ def populate():
     tops_M = [{"itemName": "Blue shirt", "price": 10, "description" : "Niko is the best "
                , "datePosted": , "sold" : False, "dailyVisits": 100, "size": s}]
 
-    tops_F = [{"itemName": "Red shirt",
-               "price": 5}]
+    tops_F = [{"itemName": "Blue shirt", "price": 10, "description" : "Niko is the best "
+               , "datePosted": , "sold" : False, "dailyVisits": 100, "size": s}]
 
-    tops_K = [{"itemName": "Green shirt",
-               "price": 7}]
+    tops_K = [{"itemName": "Blue shirt", "price": 10, "description" : "Niko is the best "
+               , "datePosted": , "sold" : False, "dailyVisits": 100, "size": s}]
 
-    bottoms_M = [{"itemName": "Jeans",
-               "price": 15}]
+    bottoms_M = [{"itemName": "Blue shirt", "price": 10, "description" : "Niko is the best "
+               , "datePosted": , "sold" : False, "dailyVisits": 100, "size": s}]
 
-    bottoms_F = [{"itemName": "Ripped Jeans",
-               "price": 20}]
+    bottoms_F = [{"itemName": "Blue shirt", "price": 10, "description" : "Niko is the best "
+               , "datePosted": , "sold" : False, "dailyVisits": 100, "size": s}]
 
-    bottoms_K = [{"itemName": "Jeans",
-               "price": 8}]
-    jackets_M =[{"itemName": "Jeans",
-               "price": 8}]
+    bottoms_K = [{"itemName": "Blue shirt", "price": 10, "description" : "Niko is the best "
+               , "datePosted": , "sold" : False, "dailyVisits": 100, "size": s}]
+    jackets_M =[{"itemName": "Blue shirt", "price": 10, "description" : "Niko is the best "
+               , "datePosted": , "sold" : False, "dailyVisits": 100, "size": s}]
     
-    jackets_F =[{"itemName": "Jeans",
-               "price": 8}]
+    jackets_F =[{"itemName": "Blue shirt", "price": 10, "description" : "Niko is the best "
+               , "datePosted": , "sold" : False, "dailyVisits": 100, "size": s}]
     
-    jackets_K =[{"itemName": "Jeans",
-               "price": 8}]
+    jackets_K =[{"itemName": "Blue shirt", "price": 10, "description" : "Niko is the best "
+               , "datePosted": , "sold" : False, "dailyVisits": 100, "size": s}]
     
     section_M = {"Tops": tops_M, "Bottoms": bottoms_M, "Jackets":jackets_M}
     section_F = {"Tops": tops_F, "Bottoms": bottoms_F, "Jackets":jackets_F}
