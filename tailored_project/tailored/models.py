@@ -29,24 +29,24 @@ class Brand(models.Model):
 		return self.brandName
 
 class Item(models.Model):
-category = models.ForeignKey(Category)
-brand = models.ForeignKey(Brand)
+	itemName = models.CharField(max_length = 128)
+	itemID = models.IntegerField(default = 0)
+	price = models.IntegerField(default = 0)
 
-itemName = models.CharField(max_length = 128)
-itemID = models.IntegerField(default = 0)
-price = models.IntegerField(default = 0)
+	category = models.ForeignKey(Category)
+	brand = models.ForeignKey(Brand)
 
-itemPic = models.ImageField(upload_to = "item_images", blank = True)
-description = models.TextField(blank = True)
-datePosted = models.DateField(auto_now = True)
+	itemPic = models.ImageField(upload_to = "item_images", blank = True)
+	description = models.TextField(blank = True)
+	datePosted = models.DateField(auto_now = True)
 	
-sold = models.BooleanField(default = False)
-condition = models.CharField(max_length = 128, default = "")
-dailyVisits = models.IntegerField(default = 0)
+	sold = models.BooleanField(default = False)
+	condition = models.CharField(max_length = 128, default = "")
+	dailyVisits = models.IntegerField(default = 0)
 	
-gender = models.CharField(max_length = 128)
-size = models.CharField(max_length = 128)
-ageGroup = models.CharField(max_length = 128, default = "")
+	gender = models.CharField(max_length = 128)
+	size = models.CharField(max_length = 128)
+	ageGroup = models.CharField(max_length = 128, default = "")
 
-def __str__(self):
-	return self.itemName
+	def __str__(self):
+		return self.itemName
