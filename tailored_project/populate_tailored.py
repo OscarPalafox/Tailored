@@ -1,74 +1,85 @@
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE",
-                      "tailored_project.settings")
+											"tailored_project.settings")
 
 import django
 django.setup()
-from rango.models import Category, Item, Section
+from tailored.models import Category, Item, Section
 
 def populate():
-    
-    tops_M = [{"itemName": "Blue shirt", "price": 10, "description" : "Niko is the best "
-               , "datePosted": , "sold" : False, "dailyVisits": 100, "size": s}]
 
-    tops_F = [{"itemName": "Blue shirt", "price": 10, "description" : "Niko is the best "
-               , "datePosted": , "sold" : False, "dailyVisits": 100, "size": s}]
+	T_Shirt_M = {"name": "Blue shirt", "price": 10, "description" : "Niko is the best ", 
+					"sold" : False, "dailyVisits": 100, "size": "S", "category": "T-Shirt",
+								"section": "Men"}
 
-    tops_K = [{"itemName": "Blue shirt", "price": 10, "description" : "Niko is the best "
-               , "datePosted": , "sold" : False, "dailyVisits": 100, "size": s}]
+	T_Shirt_W = {"name": "Blue shirt", "price": 10, "description" : "Niko is the best ",
+								"sold" : False, "dailyVisits": 100, "size": "S", "category": "T-Shirt",
+								"section": "Women"}
 
-    bottoms_M = [{"itemName": "Blue shirt", "price": 10, "description" : "Niko is the best "
-               , "datePosted": , "sold" : False, "dailyVisits": 100, "size": s}]
+	T_Shirt_K = {"name": "Blue shirt", "price": 10, "description" : "Niko is the best ",
+								"sold" : False, "dailyVisits": 100, "size": "S", "category": "T-Shirt",
+								"section": "Kids"}
 
-    bottoms_F = [{"itemName": "Blue shirt", "price": 10, "description" : "Niko is the best "
-               , "datePosted": , "sold" : False, "dailyVisits": 100, "size": s}]
+	Trousers_M = {"name": "Jeans", "price": 10, "description" : "Niko is the best ",
+									"sold" : False, "dailyVisits": 100, "size": "S", "category": "Trousers",
+								"section": "Men"}
 
-    bottoms_K = [{"itemName": "Blue shirt", "price": 10, "description" : "Niko is the best "
-               , "datePosted": , "sold" : False, "dailyVisits": 100, "size": s}]
-    jackets_M =[{"itemName": "Blue shirt", "price": 10, "description" : "Niko is the best "
-               , "datePosted": , "sold" : False, "dailyVisits": 100, "size": s}]
-    
-    jackets_F =[{"itemName": "Blue shirt", "price": 10, "description" : "Niko is the best "
-               , "datePosted": , "sold" : False, "dailyVisits": 100, "size": s}]
-    
-    jackets_K =[{"itemName": "Blue shirt", "price": 10, "description" : "Niko is the best "
-               , "datePosted": , "sold" : False, "dailyVisits": 100, "size": s}]
-    
-    section_M = {"Tops": tops_M, "Bottoms": bottoms_M, "Jackets":jackets_M}
-    section_F = {"Tops": tops_F, "Bottoms": bottoms_F, "Jackets":jackets_F}
-    section_K = {"Tops": tops_K, "Bottoms": bottoms_K, "Jackets":jackets_K}
+	Trousers_W = {"name": "Jeans", "price": 10, "description" : "Niko is the best ",
+									"sold" : False, "dailyVisits": 100, "size": "S", "category": "Trousers",
+								"section": "Women"}
 
-    gender_cats = {"Men": section_M, "Women": section_F, "Kids": section_K }
-    for section in gender_cats:
-        s = add_section(section)
-        for cat in gender_cats[section]:
-            c = add_cat(s, cat)
-            for item in sections[section][cat]:
-                add_item(c, item["itemName"], item["price"])
-            
-def add_item(cat,itemName, price, description, datePosted, sold, dailyVisits, size ):
-    i = Item.objects.get_or_create(category = cat, itemName=itemName)[0]
-    i.price = price
-    i.description = description
-    i.datePosted = datePosted
-    i.sold = sold
-    i.dailyVisits = dailyVisits
-    i.size = size
-    i.save()
-    return i
+	Trousers_K = {"name": "Jeans", "price": 10, "description" : "Niko is the best ",
+									"sold" : False, "dailyVisits": 100, "size": "S", "category": "Trousers",
+								"section": "Kids"}
 
-def add_cat(sec, title):
-    c = Category.objects.get_or_create(section = sec, title = title)[0]
-    c.save()
-    return c
+	Jacket_M = {"name": "Blue Coat", "price": 10, "description" : "Niko is the best ",
+							"sold" : False, "dailyVisits": 100, "size": "S", "category": "Jackets",
+								"section": "Men"}
+		
+	Jacket_W = {"name": "Blue Coat", "price": 10, "description" : "Niko is the best ",
+							"sold" : False, "dailyVisits": 100, "size": "S", "category": "Jackets",
+								"section": "Women"}
+		
+	Jacket_K = {"name": "Blue Coat", "price": 10, "description" : "Niko is the best ",
+							"sold" : False, "dailyVisits": 100, "size": "S", "category": "Jackets",
+								"section": "Kids"}
 
-def add_section(name):
-    s = Section.objects.get_or_create(name = name)[0]
-    s.save()
-    return s
+	items = [T_Shirt_M, T_Shirt_W, T_Shirt_K, Trousers_M, Trousers_W, Trousers_K, Jacket_M, Jacket_W, Jacket_K]
+		
+	sections = [{"title": "Men"}, {"title": "Women"}, {"title": "Kids"}]
+
+	categories = [{"title": "T-Shirt"}, {"title": "Trousers"}, {"title": "Jackets"}]
+
+	sections_instances = []
+	for section in sections:
+		sections_instances.append(add_section(section["title"]))
+
+	categories_instances = []
+	for category in categories:
+		categories_instances.append(add_category(category["title"]))
+
+	for item_data in items:
+		add_item(item_data["name"], item_data["price"], item_data["description"],
+				item_data["sold"], item_data["dailyVisits"], item_data["size"],
+				categories_instances[items.index(item_data) % len(categories_instances)],
+				sections_instances[items.index(item_data) % len(sections_instances)])
+
+						
+def add_item(name, price, description, sold, dailyVisits, size, category, section):
+	item = Item.objects.get_or_create(name = name, price = price, description = description,
+									sold = sold, dailyVisits = dailyVisits, size = size, category = category, section = section)[0]
+	return item
+
+def add_category(title):
+	category = Category.objects.get_or_create(title = title)[0]
+	category.save()
+	return category
+
+def add_section(title):
+	section = Section.objects.get_or_create(title = title)[0]
+	section.save()
+	return section
 
 if __name__ == "__main__":
-    print("Starting population script...")
-    populate()
-    
-        
+	print("Starting population script...")
+	populate()
