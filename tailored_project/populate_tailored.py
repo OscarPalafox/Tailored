@@ -4,44 +4,56 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE",
 
 import django
 django.setup()
-from rango.models import Category, Item
+from rango.models import Category, Item, Section
 
 def populate():
+    
+    tops_M = [{"itemName": "Blue shirt", "price": 10, "description" : "Niko is the best "
+               , "datePosted": , "sold" : False, "dailyVisits": 100, "size": s}]
 
-    shirt_M = [{"itemName": "Blue shirt",
-               "price": 10}]
-
-    shirt_F = [{"itemName": "Red shirt",
+    tops_F = [{"itemName": "Red shirt",
                "price": 5}]
 
-    shirt_K = [{"itemName": "Green shirt",
+    tops_K = [{"itemName": "Green shirt",
                "price": 7}]
 
-    pants_M = [{"itemName": "Jeans",
+    bottoms_M = [{"itemName": "Jeans",
                "price": 15}]
 
-    pants_F = [{"itemName": "Ripped Jeans",
+    bottoms_F = [{"itemName": "Ripped Jeans",
                "price": 20}]
 
-    pants_K = [{"itemName": "Jeans",
+    bottoms_K = [{"itemName": "Jeans",
                "price": 8}]
+    jackets_M =[{"itemName": "Jeans",
+               "price": 8}]
+    
+    jackets_F =[{"itemName": "Jeans",
+               "price": 8}]
+    
+    jackets_K =[{"itemName": "Jeans",
+               "price": 8}]
+    
+    section_M = {"Tops": tops_M, "Bottoms": bottoms_M, "Jackets":jackets_M}
+    section_F = {"Tops": tops_F, "Bottoms": bottoms_F, "Jackets":jackets_F}
+    section_K = {"Tops": tops_K, "Bottoms": bottoms_K, "Jackets":jackets_K}
 
-    cat_M = {"Shirts": shirt_M, "Pants": pants_M}
-    cat_F = {"Shirts": shirt_F, "Pants": pants_F}
-    cat_K = {"Shirts": shirt_K, "Pants": pants_K}
-
-    sections = {"Men": cat_M, "Women": cat_F, "Kids": cat_K}
-
-    for section in sections:
+    gender_cats = {"Men": section_M, "Women": section_F, "Kids": section_K }
+    for section in gender_cats:
         s = add_section(section)
-        for cat in sections[section]:
-            c = add_cat(s, section+" "+cat)
+        for cat in gender_cats[section]:
+            c = add_cat(s, cat)
             for item in sections[section][cat]:
                 add_item(c, item["itemName"], item["price"])
             
-def add_item(cat,itemName, price):
+def add_item(cat,itemName, price, description, datePosted, sold, dailyVisits, size ):
     i = Item.objects.get_or_create(category = cat, itemName=itemName)[0]
     i.price = price
+    i.description = description
+    i.datePosted = datePosted
+    i.sold = sold
+    i.dailyVisits = dailyVisits
+    i.size = size
     i.save()
     return i
 

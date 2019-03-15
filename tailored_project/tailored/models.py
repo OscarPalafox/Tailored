@@ -15,38 +15,33 @@ class UserProfile(models.Model):
 
 class Category(models.Model):
     title = models.CharField(max_length = 128, unique = True)
-
+    section = models.ForeignKey(Section)
     class Meta:
         verbose_name_plural = "categories"
     
     def __str__(self):
         return self.title
 
-class Brand(models.Model):
-    brandName = models.CharField(max_length = 128, unique = True)
+class Section (models.Model):
+    name = models.CharField(max_length = 128, unique = True)
 
     def __str__(self):
-        return self.brandName
+        return self.section
 
 class Item(models.Model):
     category = models.ForeignKey(Category)
-    brand = models.ForeignKey(Brand)
+    section = models.ForeignKey(Section)
 
     itemName = models.CharField(max_length = 128)
-    itemID = models.IntegerField(default = 0)
     price = models.IntegerField(default = 0)
 
-    itemPic = models.ImageField(upload_to = "item_images", blank = True)
+    #itemPic = models.ImageField(upload_to = "item_images", blank = True)
     description = models.TextField(blank = True)
-    datePosted = models.DateField(auto_now = True)
+    datePosted = models.DateField(_("Date"),auto_now_add = True)
     
     sold = models.BooleanField(default = False)
-    condition = models.CharField(max_length = 128, default = "")
     dailyVisits = models.IntegerField(default = 0)
-    
-    gender = models.CharField(max_length = 128)
     size = models.CharField(max_length = 128)
-    ageGroup = models.CharField(max_length = 128, default = "")
 
     def __str__(self):
         return self.itemName
