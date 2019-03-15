@@ -61,7 +61,7 @@ def populate():
 	for item_data in items:
 		add_item(item_data["name"], item_data["price"], item_data["description"],
 				item_data["sold"], item_data["dailyVisits"], item_data["size"],
-				categories_instances[items.index(item_data) % len(categories_instances)],
+				categories_instances[int(items.index(item_data)/len(categories_instances) % len(categories_instances))],
 				sections_instances[items.index(item_data) % len(sections_instances)])
 
 						
