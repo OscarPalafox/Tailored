@@ -5,6 +5,7 @@ from django.core.validators import RegexValidator
 from datetime import date
 
 class UserProfile(models.Model):
+	"""Class representing a user profile."""
 	user = models.OneToOneField(User)
 
 	picture = models.ImageField(upload_to = "profile_images", blank = True)
@@ -17,6 +18,7 @@ class UserProfile(models.Model):
 
 
 class Category(models.Model):
+	"""Class representing a category."""
 	title = models.CharField(max_length = 128, unique = True, primary_key = True)
 
 	class Meta:
@@ -27,6 +29,7 @@ class Category(models.Model):
 
 
 class Section (models.Model):
+	"""Class representing a section"""
 	title = models.CharField(max_length = 128, unique = True, primary_key = True)
 
 	def __str__(self):
@@ -34,8 +37,9 @@ class Section (models.Model):
 
 
 class Item(models.Model):
+	"""Class representing an item."""
 	itemID = models.IntegerField(primary_key = True)
-	name = models.CharField(max_length = 128)
+	title = models.CharField(max_length = 128, unique = False)
 	price = models.IntegerField(default = 0)
 
 	category = models.ForeignKey(Category)
@@ -51,9 +55,10 @@ class Item(models.Model):
 	size = models.CharField(max_length = 128)
 
 	def __str__(self):
-		return self.name
+		return self.title
 
 class Review(models.Model):
+	"""Class representing a review."""
 	reviewID = models.IntegerField(primary_key = True)
 	buyerID = models.ForeignKey(UserProfile)
 	itemID = models.ForeignKey(Item)
