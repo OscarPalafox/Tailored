@@ -41,6 +41,7 @@ class Item(models.Model):
 	itemID = models.IntegerField(primary_key = True)
 	title = models.CharField(max_length = 128, unique = False)
 	price = models.IntegerField(default = 0)
+	
 
 	category = models.ForeignKey(Category)
 	section = models.ForeignKey(Section)
