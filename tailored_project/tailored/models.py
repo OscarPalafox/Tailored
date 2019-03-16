@@ -13,7 +13,7 @@ class UserProfile(models.Model):
 	picture = models.ImageField(upload_to = "profile_images", blank = True)
 	postcode = models.CharField(max_length = 8)
 	rating = models.IntegerField(default = 0)
-	phone = models.CharField(max_length = 8, validators = [RegexValidator(r'^\d{0,10}$')], default = 0)
+	phone = models.CharField(max_length = 8, validators = [RegexValidator(r'^\d{0,10}$')], blank = True)
 
 	def __str__(self):
 		return self.user.username
