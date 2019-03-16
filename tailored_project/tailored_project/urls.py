@@ -6,5 +6,6 @@ from tailored import views
 
 urlpatterns = [
 	url(r'^', include('tailored.urls')),
+	url(r'^', include('registration.backends.simple.urls')),
 	url(r'^admin/', admin.site.urls)
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

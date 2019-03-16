@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+	<head>
+		<title>Login page</title>
+	</head>
+
+	<body>
+		<h1>Login to Tailored</h1>
+		<form id = "login_form" method = "post" action = "{% url 'tailored:login' %}" 
+			enctype = "multipart/form-data">
+			{% csrf_token %}
+			Username: <input type = "text" name = "username" value = "" size = "50" />
+			Password: <input type = "password" name = "password" value = "" size = "50" />
+			{{ next }}
+			<br />
+			<input type = "submit" value = "submit" />
+			<input type = "hidden" name = "next" value = {{ next }} />
+		</form>
+
+		{% if wronguser %}
+			Invalid login details supplied.
+		{% endif %}
+
+		<div>
+			<a href="{% url 'tailored:index' %}">Home</a>
+		</div>
+
+	</body>
+</html>

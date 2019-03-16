@@ -2,18 +2,15 @@
 {% load staticfiles %}
 <html>
 	<div>
-		<p>Hey!</p>
-	</div>
-
-	<div>
-		<a href="{% url 'tailored:add_category' %}">Add a category</a></br>
-	</div>
-
-	<div>
-		<a href="{% url 'tailored:items' %}">Popular items</a>
-	</div>
-
-	<div>
-		<a href="{% url 'tailored:register' %}">Register!</a>
+		<ul>
+			{% if user.is_authenticated %}
+				<li><a href="{% url 'tailored:add_category' %}">Add a category</a></li>
+				<li><a href="{% url 'tailored:logout' %}">Logout!</a></li>
+			{% else %}
+				<li><a href="{% url 'tailored:register' %}">Register!</a></li>
+				<li><a href="{% url 'tailored:login' %}">Log in!</a></li>
+			{% endif %}
+			<li><a href="{% url 'tailored:items' %}">Popular items</a></li>
+		</ul>
 	</div>
 </html>

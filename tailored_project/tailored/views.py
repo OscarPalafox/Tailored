@@ -1,6 +1,8 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from tailored.models import UserProfile, Category, Section, Item, Review
 from tailored.forms import CategoryForm, SectionForm, UserForm, UserProfileForm
 
@@ -14,7 +16,7 @@ def items(request):
 
 	return render(request, 'tailored/itemsList.html', context_dict)
 
-
+@login_required
 def add_category(request):
 	form = CategoryForm()
 
@@ -59,3 +61,28 @@ def register(request):
 
 	return render(request, 'tailored/register.html', {'user_form': user_form, 'user_profile_form': user_profile_form,
 													'registered': registered})
+
+
+def user_login(request):
+	context_dict = {}
+	if request.method == 'POST':
+		username = request.POST.get('username')
+		password = request.POST.get('password')
+
+		user = authenticate(username = username, password = password)
+
+		if user:
+			if user.is_active:
+				login(request, user)
+				return HttpResponseRedirect(reverse('tailored:index'))
+		context_dict['wronguser'] = True
+		return render(request, 'tailored/login.html', context_dict)
+
+	else:
+		return render(request, 'tailored/login.html', context_dict)
+
+@login_required
+def user_logout(request):
+	logout(request)
+
+	return HttpResponseRedirect(reverse('tailored:index'))

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
+	'registration',
 	'tailored'
 ]
 
@@ -129,3 +130,17 @@ STATICFILES_DIRS = [STATIC_DIR]
 # Media files
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
+
+# Location of the log in page
+
+# Variables useful for the registration app
+
+REGISTRATION_OPEN = True
+
+ACCOUNT_ACTIVATION_DAYS = 7
+
+REGISTRATION_AUTO_LOGIN = True
+
+LOGIN_REDIRECT_URL = ''
+
+LOGIN_URL = '/login/'
