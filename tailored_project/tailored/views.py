@@ -19,6 +19,6 @@ def search_bar(request):
 
 def home_page(request):
 	
-	
+	#placeholder for homepage, feel free to change it.
 	
 	return render(request, 'tailored/index.html')
