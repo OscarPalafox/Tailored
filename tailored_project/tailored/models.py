@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from datetime import date
 
+# Make email field unique along all users
+User._meta.get_field('email')._unique = True
+
 class UserProfile(models.Model):
 	"""Class representing a user profile."""
 	# This line links UserProfile to a User model instance
