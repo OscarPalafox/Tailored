@@ -1,7 +1,19 @@
+h1{
+	margin-left: 40%;
+}
 .preview{
-	height: 10%px;
+	height: 10%;
 	width: 70%;
 	border-width: 1px;
 	background-color: #E8E8E8;
 	margin-bottom: 10px%
+}
+.categories{
+	margin-top: 100px;
+	background-color: #EDC46A;
+	width: 110px;
+	padding: 5px;
+}
+.search{
+	margin-left: 38%;
 }

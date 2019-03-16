@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+
+
+</head>
+
+<body>
+	<form action="/tailored/categories/" method="POST" class="categories">
+		{% csrf_token %}
+		Categories:
+		<br>
+
+		<input type="checkbox" name="Trousers" value="Trousers">Trousers<br>
+		<input type="checkbox" name="Jackets" value="Jackets">Jackets<br>
+		<input type="checkbox" name="T-Shirt" value="T-Shirt">T-Shirt<br>
+		<input type="submit" name="submit" value="categories">
+	</form>
+
+</body>
+</html>

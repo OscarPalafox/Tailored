@@ -2,16 +2,14 @@
 <html>
 <head lang="en">
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="/static/style.css">
 <h1>Tailored</h1>
 </head>
-{% extends 'tailored/searchbar.html' %}
 <body>
-	<div class="preview">
-		<img src="{{item.itemPic}}" alt="{{item.itemName}}">
-		<h1>{{item.itemName}}</h1>
-		<p>{{item.description}}</p>
-</div>
+{% include 'tailored/searchbar.html' %}
+{% include 'tailored/categories.html'%}
+
+
 
 </body>
 </html>
