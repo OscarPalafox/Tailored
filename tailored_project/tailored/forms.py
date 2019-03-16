@@ -2,7 +2,7 @@ from django import forms
 from tailored.models import Section, Category, Item, UserProfile, Review
 
 class CategoryForm(forms.ModelForm):
-	title = forms.CharField(max_length = 128, help_text = "Please enter the category title.")
+	title = forms.CharField(max_length = 128, help_text = "Please enter the category title:")
 
 	# Inline class to provide additional information on the form
 	class Meta:
@@ -11,7 +11,7 @@ class CategoryForm(forms.ModelForm):
 		fields = ('title',)
 
 class SectionForm(forms.ModelForm):
-	title = forms.CharField(max_length = 128, help_text = "Please enter the section title.")
+	title = forms.CharField(max_length = 128, help_text = "Please enter the section title:")
 
 	# Inline class to provide additional information on the form
 	class Meta:

@@ -43,7 +43,7 @@ def populate():
 	sections = [{"title": "Men"}, {"title": "Women"}, {"title": "Kids"}]
 
 	# List of categories
-	categories = [{"title": "T-Shirt"}, {"title": "Trousers"}, {"title": "Jackets"}]
+	categories = [{"title": "T-Shirts"}, {"title": "Trousers"}, {"title": "Jackets"}]
 
 	# List of instances of sections
 	sections_instances = []

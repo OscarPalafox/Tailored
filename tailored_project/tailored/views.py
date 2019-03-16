@@ -1,6 +1,11 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.core.urlresolvers import reverse
 from tailored.models import UserProfile, Category, Section, Item, Review
 from tailored.forms import CategoryForm, SectionForm
+
+def index(request):
+	return render(request, 'tailored/index.html')
 
 def items(request):
 	item_list = Item.objects.order_by('-dailyVisits')[:5]
@@ -11,14 +16,15 @@ def items(request):
 def add_category(request):
 	form = CategoryForm()
 
+	print(request.method)
 	if request.method == 'POST':
 		form = CategoryForm(request.POST)
 
 		if form.is_valid():
 			form.save(commit = True)
-			return index(request)
+			return HttpResponseRedirect(reverse('tailored:items'))
 
 		else:
 			print(form.errors)
 
-	return render(request, 'rango:add_category', {'form': form})
+	return render(request, 'tailored/add_category.html', {'form': form})
