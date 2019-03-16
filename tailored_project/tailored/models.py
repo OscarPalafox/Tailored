@@ -11,7 +11,7 @@ class UserProfile(models.Model):
 	picture = models.ImageField(upload_to = "profile_images", blank = True)
 	postcode = models.CharField(max_length = 8)
 	rating = models.IntegerField(default = 0)
-	phone = models.IntegerField(default = 0)
+	phone = models.CharField(max_length = 8, validators = [RegexValidator(r'^\d{0,10}$')], default = 0)
 
 	def __str__(self):
 		return self.user.username
@@ -62,7 +62,7 @@ class Review(models.Model):
 	reviewID = models.IntegerField(primary_key = True)
 	buyerID = models.ForeignKey(UserProfile)
 	itemID = models.ForeignKey(Item)
-	rating = models.CharField(max_length=1, validators=[RegexValidator(r'^\d{0,6}$')])
+	rating = models.CharField(max_length = 1, validators = [RegexValidator(r'^\d{0,6}$')])
 	review = models.TextField(blank = True)
 	datePosted = models.DateField(default = date.today)
 
