@@ -9,32 +9,32 @@ from tailored.models import Category, Item, Section
 def populate():
 
 	# Instances of items
-	T_Shirt_M = {"title": "Blue shirt", "price": 10, "description" : "Niko is the best ", 
-					"sold" : False, "dailyVisits": 10, "size": "S"}
+	T_Shirt_M = {"title": "Maison Margiela T-Shirt", "price": 60, "description" : "Slightly but still in good condition. Amazing quality", 
+					"sold" : False, "dailyVisits": 30, "size": "S"}
 
-	T_Shirt_W = {"title": "Red shirt", "price": 20, "description" : "Niko is the best ",
-								"sold" : False, "dailyVisits": 20, "size": "M"}
+	T_Shirt_W = {"title": "Red shirt", "price": 20, "description" : "Brand new red shirt, only selling because it´s the wrong size. Good quality",
+								"sold" : False, "dailyVisits": 17, "size": "M"}
 
-	T_Shirt_K = {"title": "Black shirt", "price": 30, "description" : "Niko is the best ",
+	T_Shirt_K = {"title": "Blue shirt", "price": 8, "description" : "Second hand shirt. Has been used often. Still in good condition",
 								"sold" : False, "dailyVisits": 30, "size": "L"}
 
-	Trousers_M = {"title": "Jeans Blue", "price": 10, "description" : "Niko is the best ",
-									"sold" : False, "dailyVisits": 10, "size": "S"}
+	Trousers_M = {"title": "Blue jeans", "price": 15, "description" : "Never used before. Good quality jeans.",
+									"sold" : False, "dailyVisits": 16, "size": "S"}
 
-	Trousers_W = {"title": "Jeans Red", "price": 20, "description" : "Niko is the best ",
-									"sold" : False, "dailyVisits": 20, "size": "M"}
+	Trousers_W = {"title": "Ripped jeans", "price": 5, "description" : "Heavily used jeans. Not great quality but selling it for cheap.",
+									"sold" : False, "dailyVisits": 0, "size": "M"}
 
-	Trousers_K = {"title": "Jeans White", "price": 30, "description" : "Niko is the best ",
-									"sold" : False, "dailyVisits": 30, "size": "XL"}
+	Trousers_K = {"title": "Black Levi jeans", "price": 30, "description" : "Second hand jeans. Have been used slighly. Selling because closet is full.",
+									"sold" : False, "dailyVisits": 20, "size": "XL"}
 
-	Jacket_M = {"title": "Blue Coat", "price": 10, "description" : "Niko is the best ",
+	Jacket_M = {"title": "Nike Jacket", "price": 9, "description" : "Has been slightly used. Selling because closet is full",
 							"sold" : False, "dailyVisits": 10, "size": "S"}
 		
-	Jacket_W = {"title": "White Coat", "price": 20, "description" : "Niko is the best ",
-							"sold" : False, "dailyVisits": 20, "size": "M"}
+	Jacket_W = {"title": "American vintage jacket", "price": 20, "description" : "Never used before, amazing quality",
+							"sold" : False, "dailyVisits": 4, "size": "M"}
 		
-	Jacket_K = {"title": "Red Coat", "price": 30, "description" : "Niko is the best ",
-							"sold" : False, "dailyVisits": 30, "size": "XXL"}
+	Jacket_K = {"title": "Red Coat", "price": 10, "description" : "Basic red coat for kids. Very warm and cozy. Has been used slighly.",
+							"sold" : False, "dailyVisits": 6, "size": "XXL"}
 
 	# List of items
 	items = [T_Shirt_M, T_Shirt_W, T_Shirt_K, Trousers_M, Trousers_W, Trousers_K, Jacket_M, Jacket_W, Jacket_K]
