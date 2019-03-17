@@ -4,25 +4,43 @@ from tailored.forms import Search_bar
 from django.db.models import Q
 # Create your views here.
 
-def search_bar(request, categories=None):
-	
+def search_bar(request,search=None,category=None):
+	context_dict={}
 	if(request.method=='POST'):
+		check=request.POST.get('search')
+		if check!=None:
+			search=check
+		check=request.POST.get('choose')
+		if check!=None: 
+			category=check
+		if search != None:
+			search=search.split(" ")
 
-		query=request.POST.get('search').split(" ")
 		items= []
-		if categories is None:
-			for word in query:
+		if category != None and search!=None:
+			for word in search:
+				
+				items+=Item.objects.filter((Q(description__contains=word )|Q (title__contains=word)&(Q(category=category )|Q (category=category))))
+			context_dict['category']=category
+			context_dict['search']="_".join(search)
+		elif search != None:	
+			for word in search:
 				items+=Item.objects.filter(Q(description__contains=word )|Q (title__contains=word))
-
+			context_dict['search']= "_".join(search)
+		elif category!=None:
+				print(category)
+				items=Item.objects.filter(Q(category=category)|Q(category=category))
+				context_dict['category']=category
 		else:
-			for word in query:
-					
-				items+=Item.objects.filter((Q(description__contains=word )|Q (title__contains=word)& Q(categories__contains=category)))
+			return home_page(request)
 
 
-		context_dict={}
+	
 		context_dict['items']=items
+	
 		return render(request, 'tailored/search.html',context_dict)
+	else :
+		render(request, 'tailored/index.html')
 
 def home_page(request):
 	
@@ -30,10 +48,3 @@ def home_page(request):
 
 
 	return render(request, 'tailored/index.html')
-def categories(request):
-	if(request.method=='POST'):
-		categories=request.POST.get('categories')
-		context_dict={}
-		context_dict['categories':categories]
-		return render(request,'tailored/index.html', categories)
-

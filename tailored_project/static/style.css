@@ -1,7 +1,9 @@
-h1{
+.header{
 	margin-left: 40%;
 }
+
 .preview{
+	float: left;
 	height: 10%;
 	width: 70%;
 	border-width: 1px;
