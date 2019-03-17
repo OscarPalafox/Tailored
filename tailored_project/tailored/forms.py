@@ -24,15 +24,9 @@ class SectionForm(forms.ModelForm):
 		fields = ('title',)
 
 
-class UserForm(forms.ModelForm):
-	password = forms.CharField(widget = forms.PasswordInput())
-
-	class Meta:
-		model = User
-		fields = ('username', 'email', 'password')
-
-
 class UserProfileForm(RegistrationForm):
-	#picture = forms.ImageField()
+	first_name = forms.CharField(max_length = 128, validators = [RegexValidator(r'^([^0-9]*)$')])
+	last_name = forms.CharField(max_length = 128, validators = [RegexValidator(r'^([^0-9]*)$')])
+	picture = forms.ImageField(required = False)
 	postcode = forms.CharField(max_length = 8)
-	phone = forms.CharField(max_length = 8, validators = [RegexValidator(r'^\d{0,10}$')])
+	phone = forms.CharField(max_length = 8, validators = [RegexValidator(r'^\d{0,10}$')], required = False)
