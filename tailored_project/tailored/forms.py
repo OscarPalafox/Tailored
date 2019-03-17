@@ -1,5 +1,7 @@
 from django import forms
+from registration.forms import RegistrationForm
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 from tailored.models import Section, Category, Item, UserProfile, Review
 
 class CategoryForm(forms.ModelForm):
@@ -30,7 +32,7 @@ class UserForm(forms.ModelForm):
 		fields = ('username', 'email', 'password')
 
 
-class UserProfileForm(forms.ModelForm):
-	class Meta:
-		model = UserProfile
-		fields = ('picture', 'postcode', 'phone')
+class UserProfileForm(RegistrationForm):
+	#picture = forms.ImageField()
+	postcode = forms.CharField(max_length = 8)
+	phone = forms.CharField(max_length = 8, validators = [RegexValidator(r'^\d{0,10}$')])

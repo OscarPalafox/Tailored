@@ -34,13 +34,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+	'registration',
 	'django.contrib.admin',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
-	'registration',
 	'tailored'
 ]
 
@@ -141,6 +141,6 @@ ACCOUNT_ACTIVATION_DAYS = 7
 
 REGISTRATION_AUTO_LOGIN = True
 
-LOGIN_REDIRECT_URL = ''
+LOGIN_REDIRECT_URL = 'tailored:index'
 
-LOGIN_URL = '/login/'
+LOGIN_URL = 'auth_login'

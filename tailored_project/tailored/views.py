@@ -33,7 +33,7 @@ def add_category(request):
 	return render(request, 'tailored/add_category.html', {'form': form})
 
 
-def register(request):
+"""def register(request):
 	registered = False
 	if request.method == 'POST':
 		user_form = UserForm(data = request.POST)
@@ -85,4 +85,4 @@ def user_login(request):
 def user_logout(request):
 	logout(request)
 
-	return HttpResponseRedirect(reverse('tailored:index'))
+	return HttpResponseRedirect(reverse('tailored:index'))"""

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+	<head>
+		<title>Login page</title>
+	</head>
+
+	<body>
+		<h1>Login to Tailored</h1>
+		<form method = "post" action = ".">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<input type = "submit" value = "Log in" />
+			<input type = "hidden" name = "next" value = {{ next }} />
+		</form>
+		
+		<div>
+			<p>
+				Not a member ?
+				<a href = "{% url 'registration_register' %}">Register </a>
+			</p>
+		</div>
+
+		<div>
+			<a href="{% url 'tailored:index' %}">Home</a>
+		</div>
+
+	</body>
+</html>

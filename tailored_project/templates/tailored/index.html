@@ -5,10 +5,10 @@
 		<ul>
 			{% if user.is_authenticated %}
 				<li><a href="{% url 'tailored:add_category' %}">Add a category</a></li>
-				<li><a href="{% url 'tailored:logout' %}">Logout!</a></li>
+				<li><a href="{% url 'auth_logout' %}?next={% url 'tailored:index' %}">Logout!</a></li>
 			{% else %}
-				<li><a href="{% url 'tailored:register' %}">Register!</a></li>
-				<li><a href="{% url 'tailored:login' %}">Log in!</a></li>
+				<li><a href="{% url 'registration_register' %}">Register!</a></li>
+				<li><a href="{% url 'auth_login' %}">Log in!</a></li>
 			{% endif %}
 			<li><a href="{% url 'tailored:items' %}">Popular items</a></li>
 		</ul>
