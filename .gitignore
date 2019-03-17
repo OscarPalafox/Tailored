@@ -10,5 +10,6 @@ db.sqlite3
 # Ignore .key files
 *.key
 
-# Ignore migrations folder
+# Ignore all files in migrations folder but the __init__.py
 migrations/
+!migrations/__init__.py
