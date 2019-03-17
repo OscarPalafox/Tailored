@@ -11,5 +11,5 @@ db.sqlite3
 *.key
 
 # Ignore all files in migrations folder but the __init__.py
-migrations/
-!migrations/__init__.py
+tailored_project/tailored/migrations/**
+!tailored_project/tailored/migrations/__init__.py
