@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+	'registration',
 	'django.contrib.admin',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
@@ -95,6 +96,7 @@ AUTH_PASSWORD_VALIDATORS = [
 	},
 	{
 		'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+		'OPTIONS': { 'min_length': 8}
 	},
 	{
 		'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -128,3 +130,17 @@ STATICFILES_DIRS = [STATIC_DIR]
 # Media files
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
+
+# Location of the log in page
+
+# Variables useful for the registration app
+
+REGISTRATION_OPEN = True
+
+ACCOUNT_ACTIVATION_DAYS = 7
+
+REGISTRATION_AUTO_LOGIN = True
+
+LOGIN_REDIRECT_URL = 'tailored:index'
+
+LOGIN_URL = 'auth_login'

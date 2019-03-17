@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+{% load staticfiles %}
+<head>
+	<title>Tailored</title> </head>
+	<body> 
+		<div>
+		{% if section %}
+			<h1>{{ section.title }}</h1> 
+			{% if items %}
+				<ul>
+				{% for item in items %}
+					<li>{{ item.title }}</li>
+					
+					<img src = "{{ MEDIA_URL }}{{ item.itemPic }}" />
+
+				{% endfor %}
+				</ul> 
+			{% else %}
+				<strong>No items currently in section.</strong> 
+			{% endif %}
+    	{% else %}
+        	The specified section does not exist!
+		{% endif %}
+	</div> 
+</body>
+</html>
