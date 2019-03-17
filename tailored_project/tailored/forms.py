@@ -1,5 +1,5 @@
 from django import forms
-from registration.forms import RegistrationForm
+from registration.forms import RegistrationFormTermsOfService, RegistrationFormUniqueEmail
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from tailored.models import Section, Category, Item, UserProfile, Review
@@ -24,7 +24,7 @@ class SectionForm(forms.ModelForm):
 		fields = ('title',)
 
 
-class UserProfileForm(RegistrationForm):
+class UserProfileForm(RegistrationFormTermsOfService, RegistrationFormUniqueEmail):
 	first_name = forms.CharField(max_length = 128, validators = [RegexValidator(r'^([^0-9]*)$')])
 	last_name = forms.CharField(max_length = 128, validators = [RegexValidator(r'^([^0-9]*)$')])
 	picture = forms.ImageField(required = False)
