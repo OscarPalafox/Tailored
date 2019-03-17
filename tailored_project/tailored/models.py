@@ -3,6 +3,7 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from datetime import date
+from django.template.defaultfilters import slugify
 
 class UserProfile(models.Model):
 	"""Class representing a user profile."""
@@ -21,6 +22,13 @@ class Category(models.Model):
 	"""Class representing a category."""
 	title = models.CharField(max_length = 128, unique = True, primary_key = True)
 
+	
+	slug = models.SlugField()
+	def save(self, *args, **kwargs):
+		self.slug = slugify(self.title)
+		super(Category, self).save(*args, **kwargs)
+	
+	
 	class Meta:
 		verbose_name_plural = "categories"
 	
