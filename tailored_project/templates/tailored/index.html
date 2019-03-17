@@ -1,17 +1,16 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html>
-<head lang="en">
-
-<link rel="stylesheet" href="style.css">
-<h1>Tailored</h1>
-</head>
-{% extends 'tailored/searchbar.html' %}
-<body>
-	<div class="preview">
-		<img src="{{item.itemPic}}" alt="{{item.itemName}}">
-		<h1>{{item.itemName}}</h1>
-		<p>{{item.description}}</p>
-</div>
-
-</body>
+	<div>
+		<ul>
+			{% if user.is_authenticated %}
+				<li><a href="{% url 'tailored:add_category' %}">Add a category</a></li>
+				<li><a href="{% url 'auth_logout' %}?next={% url 'tailored:index' %}">Logout!</a></li>
+			{% else %}
+				<li><a href="{% url 'registration_register' %}">Register!</a></li>
+				<li><a href="{% url 'auth_login' %}">Log in!</a></li>
+			{% endif %}
+			<li><a href="{% url 'tailored:items' %}">Popular items</a></li>
+		</ul>
+	</div>
 </html>

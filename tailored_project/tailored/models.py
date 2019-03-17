@@ -5,14 +5,19 @@ from django.core.validators import RegexValidator
 from datetime import date
 from django.template.defaultfilters import slugify
 
+# Make email field unique along all users
+User._meta.get_field('email')._unique = True
+
 class UserProfile(models.Model):
 	"""Class representing a user profile."""
+	# This line links UserProfile to a User model instance
 	user = models.OneToOneField(User)
 
+	# Additional attributes we wish to include
 	picture = models.ImageField(upload_to = "profile_images", blank = True)
 	postcode = models.CharField(max_length = 8)
 	rating = models.IntegerField(default = 0)
-	phone = models.CharField(max_length = 8, validators = [RegexValidator(r'^\d{0,10}$')], default = 0)
+	phone = models.CharField(max_length = 8, validators = [RegexValidator(r'^\d{0,10}$')], blank = True)
 
 	def __str__(self):
 		return self.user.username
@@ -20,6 +25,7 @@ class UserProfile(models.Model):
 
 class Category(models.Model):
 	"""Class representing a category."""
+
 	title = models.CharField(max_length = 128, unique = True, primary_key = True)
 
 	
@@ -38,6 +44,7 @@ class Category(models.Model):
 
 class Section (models.Model):
 	"""Class representing a section"""
+
 	title = models.CharField(max_length = 128, unique = True, primary_key = True)
 
 	def __str__(self):
@@ -46,6 +53,7 @@ class Section (models.Model):
 
 class Item(models.Model):
 	"""Class representing an item."""
+
 	itemID = models.IntegerField(primary_key = True)
 	title = models.CharField(max_length = 128, unique = False)
 	price = models.IntegerField(default = 0)
