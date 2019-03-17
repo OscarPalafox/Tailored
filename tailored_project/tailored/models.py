@@ -3,6 +3,7 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from datetime import date
+from django.template.defaultfilters import slugify
 
 # Make email field unique along all users
 User._meta.get_field('email')._unique = True
@@ -27,6 +28,13 @@ class Category(models.Model):
 
 	title = models.CharField(max_length = 128, unique = True, primary_key = True)
 
+	
+	slug = models.SlugField()
+	def save(self, *args, **kwargs):
+		self.slug = slugify(self.title)
+		super(Category, self).save(*args, **kwargs)
+	
+	
 	class Meta:
 		verbose_name_plural = "categories"
 	
@@ -49,6 +57,7 @@ class Item(models.Model):
 	itemID = models.IntegerField(primary_key = True)
 	title = models.CharField(max_length = 128, unique = False)
 	price = models.IntegerField(default = 0)
+	
 
 	category = models.ForeignKey(Category)
 	section = models.ForeignKey(Section)

@@ -30,3 +30,9 @@ class UserProfileForm(RegistrationForm):
 	picture = forms.ImageField(required = False)
 	postcode = forms.CharField(max_length = 8)
 	phone = forms.CharField(max_length = 8, validators = [RegexValidator(r'^\d{0,10}$')], required = False)
+
+class Search_bar(forms.ModelForm):
+	search = forms.CharField()
+	class Meta:
+		model = Item
+		fields = ('search',)
