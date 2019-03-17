@@ -5,8 +5,8 @@
 .preview{
 	float: right;
 	margin-right: 200px;
-	height: 10%;
-	width: 70%;
+	height: 350px;
+	width: 1000px;
 	border-width: 1px;
 	background-color: #E8E8E8;
 	margin-bottom: 10px
@@ -23,6 +23,7 @@
 	margin-bottom: 100px;
 }
 .right{
+	margin-top: 10px;
 	float: right;
-	margin-right: 100px;
+	margin-right: 300px;
 }

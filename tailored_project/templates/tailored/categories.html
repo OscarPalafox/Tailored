@@ -6,7 +6,7 @@
 </head>
 
 <body>
-	<form action="/tailored/{{search}}{% if search != None %}/{%endif%}{{category}}{% if category != None %}/{%endif%}" method="POST" class="categories">
+	<form action="/tailored/{{search}}{% if search != None and search != '' %}/{%endif%}{{category}}{% if category != None %}/{%endif%}" method="POST" class="categories">
 
 		{% csrf_token %}
 		Filters:
