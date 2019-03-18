@@ -1,10 +1,9 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
-from django.core.validators import RegexValidator
 from datetime import date
-from django.template.defaultfilters import slugify
-import uuid
+from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
+from uuid import uuid4
 
 class UserProfile(models.Model):
 	"""Class representing a user profile."""
@@ -13,9 +12,9 @@ class UserProfile(models.Model):
 
 	# Additional attributes we wish to include
 	picture = models.ImageField(upload_to = "profile_images", blank = True)
-	postcode = models.CharField(max_length = 8)
+	postcode = models.CharField(max_length = 8, validators = [RegexValidator(r'^(([gG][iI][rR] {0,}0[aA]{2})|((([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y]?[0-9][0-9]?)|(([a-pr-uwyzA-PR-UWYZ][0-9][a-hjkstuwA-HJKSTUW])|([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y][0-9][abehmnprv-yABEHMNPRV-Y]))) {0,}[0-9][abd-hjlnp-uw-zABD-HJLNP-UW-Z]{2}))$')])
 	rating = models.IntegerField(default = 0)
-	phone = models.CharField(max_length = 8, validators = [RegexValidator(r'^\d{0,10}$')], blank = True)
+	phone = models.CharField(max_length = 8, blank = True, validators = [RegexValidator(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.0-9]*$')])
 
 	def __str__(self):
 		return self.user.username
@@ -57,17 +56,18 @@ class Size(models.Model):
 
 class Item(models.Model):
 	"""Class representing an item."""
-	itemID = models.UUIDField(max_length = 128, primary_key=True, default=uuid.uuid4, editable = False)
+	itemID = models.UUIDField(max_length = 128, primary_key = True, default = uuid4, editable = False)
 
 	title = models.CharField(max_length = 128)
-	price = models.IntegerField(default = 0)
+	price = models.DecimalField(help_text = "Enter the price: ",
+		validators = [MinValueValidator(0)], decimal_places = 2, default = 0, max_digits = 100)
 
 	sellerID = models.ForeignKey(UserProfile, related_name = 'seller')
 
 	category = models.ForeignKey(Category)
 	section = models.ForeignKey(Section)
 
-	itemPic = models.ImageField(upload_to = "item_images", blank = True)
+	picture = models.ImageField(upload_to = "item_images", blank = True)
 	
 	description = models.TextField(blank = True)
 	datePosted = models.DateField(default = date.today)
@@ -84,7 +84,7 @@ class Review(models.Model):
 	reviewID = models.IntegerField(primary_key = True)
 	buyerID = models.ForeignKey(UserProfile)
 	itemID = models.ForeignKey(Item)
-	rating = models.CharField(max_length = 1, validators = [RegexValidator(r'^\d{0,6}$')])
+	rating = models.CharField(max_length = 1)
 	review = models.TextField(blank = True)
 	datePosted = models.DateField(default = date.today)
 

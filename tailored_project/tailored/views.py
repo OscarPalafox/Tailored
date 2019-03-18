@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import auth
 
 
 def index(request):
@@ -77,19 +78,28 @@ def show_category(request, title):
 
 	return render(request, "tailored/category.html", context_dict)
 
+@login_required
 def add_item(request):
 	form = ItemForm()
 
 	if (request.method == "POST"):
 		form = ItemForm(request.POST)
 		if (form.is_valid()):
-			form.save(commit = True)
+			item = form.save(commit = False)
+			item.sellerID = UserProfile.objects.get(user = request.user)
 
-			return show_section(request, str(form.cleaned_data.get("section")))
+			if 'picture' in request.FILES:
+				item.picture = request.FILES['picture']
+			
+			item.save()
+
+			return HttpResponseRedirect(reverse('tailored:show_section',
+				kwargs = {'title': str(form.cleaned_data.get("section"))}))
 
 		else:
 			print(form.errors)
 	return render(request, "tailored/add_item.html", {"form": form})
+
 
 def search_bar(request,search=None,category=None):
 
