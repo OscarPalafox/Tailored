@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tailored</title>
+</head>
+<body>
+	<h1>Add an Item</h1>
+	<div>
+		<form id = "item_form" method="post" action="/tailored/add_item/" enctype = "multipart/form-data">
+			{% csrf_token %}
+			{% for hidden in form.hidden_fields %}
+				{{ hidden }}
+			{% endfor %}
+			{% for field in form.visible_fields %}
+			<li>
+				{{ field.errors }}
+				{{ field.help_text }}
+				{{ field }}
+			</li>
+			{% endfor %}
+			<input type="submit" name="submit" value="Add an Item" />
+		</form>
+	</div>
+</body>
+</html>

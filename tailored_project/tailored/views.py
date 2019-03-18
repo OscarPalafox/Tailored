@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from tailored.models import Section, Item, Category
-from tailored.forms import Search_bar
+from tailored.forms import Search_bar, ItemForm
 from django.db.models import Q
 
 def show_section(request, title):
@@ -39,6 +39,20 @@ def show_category(request, title):
 
 	return render(request, "tailored/category.html", context_dict)
 
+def add_item(request):
+	form = ItemForm()
+
+	if (request.method == "POST"):
+		
+		if (form.is_valid()):
+			form.save(commit = True)
+			
+			return show_section(request, str(form.cleaned_data.get("section")))
+
+		else:
+			print(form.errors)
+
+	return render(request, "tailored/add_item.html", {"form": form})
 
 def search_bar(request):
 	
