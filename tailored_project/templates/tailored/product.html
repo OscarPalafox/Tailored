@@ -4,7 +4,7 @@
 	
 
 	{% block body_block %}
-
+{% for item in items%}
             <div class="breadcumb_area">
 			   <div class="container">
 				  <div class="row">
@@ -24,13 +24,13 @@
 					 <div class="col-12 col-md-6">
 						<div class="single_product_thumb">
 						   <div id="product_details_slider" class="carousel slide" data-ride="carousel">
-							  <ol class="carousel-indicators">
-								 <li class="active" data-target="#product_details_slider" data-slide-to="0" style="background-image: url(img/product-img/product-9.jpg);"></li>
-							  </ol>
+							  <!-- <ol class="carousel-indicators">
+								 <li class="active" data-target="#product_details_slider" data-slide-to="0" style="background-image: url({{ MEDIA_URL }}{{ item.itemPic }});"></li>
+							  </ol> -->
 							  <div class="carousel-inner">
 								 <div class="carousel-item active">
-									<a class="gallery_img" href="img/product-img/product-9.jpg">
-									<img class="d-block w-100" src="img/product-img/product-9.jpg" alt="">
+									<a class="gallery_img" href="{{ MEDIA_URL }}{{ item.itemPic }}">
+									<img class="d-block w-100" src="{{ MEDIA_URL }}{{ item.itemPic }}" alt="">
 									</a>
 								 </div>
 							  </div>
@@ -39,7 +39,7 @@
 					 </div>
 					 <div class="col-12 col-md-6">
 						<div class="single_product_desc">
-						   <h4 class="title"><a href="#">{{item.title}} tite</a></h4>
+						   <h4 class="title"><a href="#">{{item.title}}</a></h4>
 
 						   <h4 class="price">{{item.price}} £</h4>
 						   <a href="#" class="seller">Sold by <span class="text-muted">Seller Name</span></a>
@@ -54,7 +54,7 @@
 							  <h6 class="widget-title">Size</h6>
 							  <div class="widget-desc">
 								 <ul>
-									<li>{{item.size}} size</li>
+									<li>{{item.size}}</li>
 								 </ul>
 							  </div>
 						   </div>
@@ -68,7 +68,7 @@
 								 </div>
 								 <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
 									<div class="card-body">
-									   <p>{{item.description}} s;d,mvms;km</p>
+									   <p>{{item.description}}</p>
 
 									</div>
 								 </div>
@@ -141,6 +141,6 @@
 				  </div>
 			   </div>
 			</section>
-
+{%endfor%}
     {%endblock%}
 

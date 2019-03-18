@@ -6,7 +6,7 @@
 
 <body>
 	<div>
-<form action="/tailored/{{search}}{% if search != None and search != '' %}/{%endif%}{{category}}{% if category != None %}/{%endif%}" class="search" method="POST">
+<form action="/tailored/{{search}}{% if search != None and search != '' %}/{%endif%}{% if category != None %}{{category}}/{%endif%}" class="search" method="POST">
 	{% csrf_token %}
 	{% if search == None %}
 <input type="text" name="search">

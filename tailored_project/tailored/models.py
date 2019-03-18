@@ -62,7 +62,7 @@ class Item(models.Model):
 	title = models.CharField(max_length = 128)
 	price = models.IntegerField(default = 0)
 
-	sellerID = models.ForeignKey(UserProfile, related_name = 'seller')
+
 
 	category = models.ForeignKey(Category)
 	section = models.ForeignKey(Section)
@@ -72,7 +72,7 @@ class Item(models.Model):
 	description = models.TextField(blank = True)
 	datePosted = models.DateField(default = date.today)
 	
-	sold_to = models.ForeignKey(UserProfile, related_name = 'buyer', blank = True, null = True)
+	sold = models.BooleanField(default=False)
 	dailyVisits = models.IntegerField(default = 0)
 	size = models.CharField(max_length = 128)#models.ForeignKey(Size)
 
