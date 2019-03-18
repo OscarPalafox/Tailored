@@ -28,7 +28,7 @@ class UserProfileForm(RegistrationFormTermsOfService, RegistrationFormUniqueEmai
 	first_name = forms.CharField(max_length = 128, validators = [RegexValidator(r'^([^0-9]*)$')])
 	last_name = forms.CharField(max_length = 128, validators = [RegexValidator(r'^([^0-9]*)$')])
 	picture = forms.ImageField(required = False)
-	postcode = forms.CharField(max_length = 8)
+	postcode = forms.CharField(max_length = 8, validators = [RegexValidator(r'^(([gG][iI][rR] {0,}0[aA]{2})|((([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y]?[0-9][0-9]?)|(([a-pr-uwyzA-PR-UWYZ][0-9][a-hjkstuwA-HJKSTUW])|([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y][0-9][abehmnprv-yABEHMNPRV-Y]))) {0,}[0-9][abd-hjlnp-uw-zABD-HJLNP-UW-Z]{2}))$')])
 	phone = forms.CharField(max_length = 8, validators = [RegexValidator(r'^\d{0,10}$')], required = False)
 
 class Search_bar(forms.ModelForm):
@@ -37,3 +37,5 @@ class Search_bar(forms.ModelForm):
 		model = Item
 		fields = ('search',)
 
+"""class ReviewForm(forms.ModelForm):
+	"""
