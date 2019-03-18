@@ -114,7 +114,7 @@
                                  </tr>
                                  <tr>
                                     <td>
-                                       <strong>Skell</strong> deleted his post Look at Why this is.. in <strong>`Discussions`</strong>
+                                       <strong>Skell</strong> deleted his post Look ´at Why this is.. in <strong>`Discussions`</strong>
                                     </td>
                                  </tr>
                               </tbody>
@@ -124,55 +124,35 @@
                   </div>
                   <div class="tab-pane" id="sell">
                      <h4 class="m-y-2">Upload an item</h4>
-                     <form role="form">
-                        <div class="form-group row">
-                           <label class="col-lg-3 col-form-label form-control-label">Description:</label>
-                           <div class="col-lg-9">
-                              <input class="form-control desc-form" type="text" placeholder="Description">
+                     <form method="post" action = "{% url 'tailored:add_item' %}" enctype = "multipart/form-data">
+                        {% csrf_token %}
+                        <fieldset>
+                           <legend>{{ title }}</legend>
+                           <div class="form-group row">
+                           {% for field in form %}
+                              {% if field.widget == "select" %}
+                                  <label class="col-lg-3 col-form-label form-control-label">{{field.label}}</label>
+                                 <div class="col-lg-3">
+                                    {{field}}
+                                 </div>
+                              {%elseif field.widget == "ClearableFileInput"%}
+                                 <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label form-control-label">{{field.label}}</label>
+                                    <div class="col-lg-3">
+                                       <label class="custom-file">
+                                          {{field}}
+                                       </label>
+                                    </div>
+                                 </div>   
+                              {%else%}
+                                 <label class="col-lg-3 col-form-label form-control-label">{{field.label}}</label>
+                                    <div class="col-lg-5">
+                                       {{field}}
+                                    </div>
+                              {%endif%}
+                           {%endfor%}
                            </div>
-                        </div>
-                        <div class="form-group row">
-                           <label class="col-lg-3 col-form-label form-control-label">Size</label>
-                           <div class="col-lg-3">
-                              <select id="user_time_zone" class="form-control" size="0">
-                                 <option value="Small">Small</option>
-                                 <option value="Medium">Medium</option>
-                                 <option value="Large">Large</option>
-                                 <option value="x-Large">x-Large</option>
-                              </select>
-                           </div>
-                           <label class="col-lg-3 col-form-label form-control-label">Section:</label>
-                           <div class="col-lg-3">
-                              <select id="user_time_zone" class="form-control" size="0">
-                                 <option value="Men">Men</option>
-                                 <option value="Women">Women</option>
-                                 <option value="Kids">Kids</option>
-                              </select>
-                           </div>
-                        </div>
-                        <div class="form-group row">
-                           <label class="col-lg-3 col-form-label form-control-label">Category:</label>
-                           <div class="col-lg-3">
-                              <select id="user_time_zone" class="form-control" size="0">
-                                 <option value="Tops">Tops</option>
-                                 <option value="Bottoms">Bottoms</option>
-                                 <option value="Jackets">Jackets</option>
-                              </select>
-                           </div>
-                           <label class="col-lg-3 col-form-label form-control-label">Price:</label>
-                           <div class="col-lg-3">
-                              <input class="form-control" type="number" placeholder="Price">
-                           </div>
-                        </div>
-						<div class="form-group row">
-							<label class="col-lg-3 col-form-label form-control-label">Upload item's photo:</label>
-							<div class="col-lg-3">
-								<label class="custom-file">
-									<input type="file" id="file" class="custom-file-input">
-									<span class="custom-file-control">Choose file</span>
-								</label>
-							</div>
-						</div>	
+
                         <div class="form-group row">
                            <label class="col-lg-3 col-form-label form-control-label"></label>
                            <div class="col-lg-9">

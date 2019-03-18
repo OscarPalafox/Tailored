@@ -73,7 +73,7 @@ class Item(models.Model):
 	
 	sold = models.BooleanField(default = False)
 	dailyVisits = models.IntegerField(default = 0)
-	size = models.CharField(max_length = 128)#models.ForeignKey(Size)
+	size = models.ForeignKey(Size)
 
 	def __str__(self):
 		return self.title
