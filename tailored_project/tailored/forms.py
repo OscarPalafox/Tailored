@@ -36,3 +36,4 @@ class Search_bar(forms.ModelForm):
 	class Meta:
 		model = Item
 		fields = ('search',)
+
