@@ -29,7 +29,7 @@ def add_category(request):
 
 		if form.is_valid():
 			form.save(commit = True)
-			return HttpResponseRedirect(reverse('tailored:items'))
+			return HttpResponseRedirect(reverse('tailored:index'))
 
 		else:
 			print(form.errors)
