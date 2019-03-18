@@ -14,7 +14,10 @@ def show_item(request, itemID):
 	item= Item.objects.filter(itemID=itemID)
 	context_dict={}
 	context_dict['items']=item
+	if first_visit(request):
+		print("increase daily views ")
 	return render(request, 'tailored/product.html', context_dict)
+
 def index(request):
 	return render(request, 'tailored/index.html')
 
@@ -149,8 +152,7 @@ def home_page(request):
 	context_dict['categories']=categories
 
 	#placeholder for homepage, feel free to change it.
-	if first_visit(request):
-		print("adding one")
+
 
 
 	return render(request, 'tailored/index.html', context_dict)
