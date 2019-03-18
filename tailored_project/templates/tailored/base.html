@@ -8,46 +8,48 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<title>
 			Tailored | 
-			{%block title_block%}
-			{%endblock%}
+			{% block title_block %}
+			{% endblock %}
 		</title>
 		<link rel="icon" href="{% static 'images/Tailored.jpg' %}">
 		<link rel="stylesheet" href="{% static 'css/core-style.css' %}">
 		<link rel="stylesheet" href="{% static 'css/responsive.css' %}">
 	</head>
-   <body>
-         <div id="wrapper">
-            <header class="header_area">
-               <div class="top_header_area">
-                  <div class="container h-100">
-                     <div class="row h-100 align-items-center justify-content-center">
-                        <div class="col-4" >
-                           <div class="top_single_area">
-                              <div class="top_logo"> <a href="#"><img src="Tailored.jpg" alt=""></a> </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="main_header_area">
-                  <div class="container h-100">
-                     <div class="row h-100">
-                        <div class="col-12 d-md-flex justify-content-between">
-                           <div class="header-social-area"> <a href="#"><span class="tailored-level">Share</span> <i class="fa fa-pinterest" aria-hidden="true"></i></a> <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a> <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a> <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a> </div>
-                           <div class="main-menu-area">
-                              <nav class="navbar navbar-expand-lg align-items-start">
-                                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#tailored-navbar" aria-controls="tailored-navbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><i class="ti-menu"></i></span></button> 
-                                 <div class="collapse navbar-collapse align-items-start collapse" id="tailored-navbar">
-                                    <ul class="navbar-nav animated" id="nav">
-                                       <li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
-                                       <li class="nav-item"><a class="nav-link" href="#">Men</a></li>
-                                       <li class="nav-item"><a class="nav-link" href="#"> Women</a></li>
-                                       <li class="nav-item"><a class="nav-link" href="#">Kids</a></li>
-                                    </ul>
-                                 </div>
-                              </nav>
-                           </div>
-						   {% if user.is_authenticated %}
+	<body>
+			<div id="wrapper">
+				<header class="header_area">
+					<div class="top_header_area">
+						<div class="container h-100">
+							<div class="row h-100 align-items-center justify-content-center">
+								<div class="col-4" >
+									<div class="top_single_area">
+										<div class="top_logo">
+											<a href="#"><img src="Tailored.jpg" alt=""></a> 
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="main_header_area">
+						<div class="container h-100">
+							<div class="row h-100">
+								<div class="col-12 d-md-flex justify-content-between">
+									<div class="header-social-area"> <a href="#"><span class="tailored-level">Share</span> <i class="fa fa-pinterest" aria-hidden="true"></i></a> <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a> <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a> <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a> </div>
+									<div class="main-menu-area">
+										<nav class="navbar navbar-expand-lg align-items-start">
+											<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#tailored-navbar" aria-controls="tailored-navbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><i class="ti-menu"></i></span></button> 
+											<div class="collapse navbar-collapse align-items-start collapse" id="tailored-navbar">
+												<ul class="navbar-nav animated" id="nav">
+													<li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
+													<li class="nav-item"><a class="nav-link" href="#">Men</a></li>
+													<li class="nav-item"><a class="nav-link" href="#"> Women</a></li>
+													<li class="nav-item"><a class="nav-link" href="#">Kids</a></li>
+												</ul>
+											</div>
+										</nav>
+									</div>
+							{% if user.is_authenticated %}
 								<div class="login">
 									<a href="#"><i class="ti-user"></i> Login or Sign up</a>
 								</div>
@@ -59,25 +61,25 @@
 									<a href="#"><i class="ti-user"></i> Logout</a>
 								</div>
 							{% endif %}
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </header>
+								</div>
+							</div>
+						</div>
+					</div>
+				</header>
 			<section class="top-newin-area d-md-flex align-items-center">
-               <div class="single-newin-area">
-                  <h5>New In Men</h5>
-                  <h6><a href="#">SHOP NOW</a></h6>
-               </div>
-               <div class="single-newin-area">
-                  <h5>New In Women</h5>
-                  <h6><a href="#">SHOP NOW</a></h6>
-               </div>
-               <div class="single-newin-area">
-                  <h5>New In Kids</h5>
-                  <h6><a href="#">SHOP NOW</a></h6>
-               </div>
-            </section>
+					<div class="single-newin-area">
+						<h5>New In Men</h5>
+						<h6><a href="#">SHOP NOW</a></h6>
+					</div>
+					<div class="single-newin-area">
+						<h5>New In Women</h5>
+						<h6><a href="#">SHOP NOW</a></h6>
+					</div>
+					<div class="single-newin-area">
+						<h5>New In Kids</h5>
+						<h6><a href="#">SHOP NOW</a></h6>
+					</div>
+				</section>
 			<div>
 			<!-- Page specific content goes here -->
 			{% block body_block %}
