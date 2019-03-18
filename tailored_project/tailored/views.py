@@ -28,12 +28,16 @@ def add_category(request):
 
 		if form.is_valid():
 			form.save(commit = True)
-			return HttpResponseRedirect(reverse('tailored:items'))
+			return HttpResponseRedirect(reverse('tailored:index'))
 
 		else:
 			print(form.errors)
 
 	return render(request, 'tailored/add_category.html', {'form': form})
+
+
+"""def leave_review(request):
+	"""
 
 
 def show_section(request, title):
@@ -141,4 +145,3 @@ def home_page(request):
 	#placeholder for homepage, feel free to change it.
 
 	return render(request, 'tailored/index.html', context_dict)
-
