@@ -30,6 +30,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Variables needed to send emails
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'tailoredwad2@gmail.com'
+EMAIL_HOST_PASSWORD = 'LJ#X^5|Mk(uAMHYK'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
 
 # Application definition
 
@@ -41,7 +49,8 @@ INSTALLED_APPS = [
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
-	'tailored'
+	'tailored',
+	'django_cleanup'
 ]
 
 MIDDLEWARE = [
@@ -131,16 +140,18 @@ STATICFILES_DIRS = [STATIC_DIR]
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 
-# Location of the log in page
 
-# Variables useful for the registration app
+# Variables useful for the registration redux app
+# https://django-registration-redux.readthedocs.io/en/latest/index.html
 
 REGISTRATION_OPEN = True
 
 ACCOUNT_ACTIVATION_DAYS = 7
-
+# Login after registration is complete
 REGISTRATION_AUTO_LOGIN = True
+# Do not use activation email html template
+ACTIVATION_EMAIL_HTML = False
 
-LOGIN_REDIRECT_URL = 'tailored:index'
-
+#LOGIN_REDIRECT_URL = 'tailored:index'
+# Location of the log in page
 LOGIN_URL = 'auth_login'
