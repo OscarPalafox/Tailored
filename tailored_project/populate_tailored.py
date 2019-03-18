@@ -9,8 +9,8 @@ from tailored.models import Category, Item, Section, Size
 def populate():
 
 	# Instances of items
-	T_Shirt_M = {"title": "Maison Margiela T-Shirt", "price": 60, "description" : "Slightly but still in good condition. Amazing quality", 
-					"sold" : False, "dailyVisits": 30, "size": "S", "itemPic": "item_images/MaisonShirt.jpg"}
+	T_Shirt_M = {"title": "Maison Margiela T-Shirt", "price": 60, "description" : "Slightly but still in good condition. Amazing quality",
+				"sold" : False, "dailyVisits": 30, "size": "S", "itemPic": "item_images/MaisonShirt.jpg"}
 
 	T_Shirt_W = {"title": "Red shirt", "price": 20, "description" : "Brand new red shirt, only selling because it´s the wrong size. Good quality",
 								"sold" : False, "dailyVisits": 17, "size": "M", "itemPic":  "item_images/RedShirt.jpg"}
