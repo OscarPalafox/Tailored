@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from datetime import date
 from django.template.defaultfilters import slugify
+import uuid
 
 class UserProfile(models.Model):
 	"""Class representing a user profile."""
@@ -48,10 +49,16 @@ class Section (models.Model):
 		return self.title
 
 
+class Size(models.Model):
+	title = models.CharField(max_length = 128, primary_key = True)
+
+	def __str__(self):
+		return self.title
+
 class Item(models.Model):
 	"""Class representing an item."""
+	itemID = models.UUIDField(max_length = 128, primary_key=True, default=uuid.uuid4, editable = False)
 
-	itemID = models.IntegerField(primary_key = True)
 	title = models.CharField(max_length = 128)
 	price = models.IntegerField(default = 0)
 
@@ -67,7 +74,7 @@ class Item(models.Model):
 	
 	sold_to = models.ForeignKey(UserProfile, related_name = 'buyer', blank = True, null = True)
 	dailyVisits = models.IntegerField(default = 0)
-	size = models.CharField(max_length = 128)
+	size = models.CharField(max_length = 128)#models.ForeignKey(Size)
 
 	def __str__(self):
 		return self.title

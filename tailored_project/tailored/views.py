@@ -1,13 +1,12 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from tailored.models import Item, Category
-from tailored.forms import Search_bar
+from tailored.models import UserProfile, Category, Section, Item, Review
+from tailored.forms import Search_bar, ItemForm, CategoryForm, SectionForm, UserProfileForm
 from django.db.models import Q
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from tailored.models import UserProfile, Category, Section, Item, Review
-from tailored.forms import CategoryForm, SectionForm, UserProfileForm, Search_bar
+
 
 def index(request):
 	return render(request, 'tailored/index.html')
@@ -78,6 +77,19 @@ def show_category(request, title):
 
 	return render(request, "tailored/category.html", context_dict)
 
+def add_item(request):
+	form = ItemForm()
+
+	if (request.method == "POST"):
+		form = ItemForm(request.POST)
+		if (form.is_valid()):
+			form.save(commit = True)
+
+			return show_section(request, str(form.cleaned_data.get("section")))
+
+		else:
+			print(form.errors)
+	return render(request, "tailored/add_item.html", {"form": form})
 
 def search_bar(request,search=None,category=None):
 
