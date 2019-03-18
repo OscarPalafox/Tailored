@@ -14,4 +14,3 @@ urlpatterns = [
 	url(r'^home/$', views.home_page, name = 'home_page'),
 	url(r'^search/$', views.search_bar, name = 'search')
 ]
-
