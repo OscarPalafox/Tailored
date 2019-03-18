@@ -19,7 +19,7 @@ urlpatterns = [
 	url(r'^tailored/(?P<search>[\w\-]+)/(?P<category>[\w\-]+)/$', views.search_bar, name='search'),
 	url(r'^tailored/(?P<search>[\w\-]+)//$', views.search_bar, name='search'),
 	url(r'^tailored/(?P<search>[\w\-]+)/$', views.search_bar, name='search'),
-
+	url(r'^item/(?P<itemID>[\w\-]+)/$', views.show_item, name='Item'),
 	url(r'^tailored/$', views.search_bar, name='search'),
 
 

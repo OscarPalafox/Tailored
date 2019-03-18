@@ -9,8 +9,9 @@
 	<div class="preview">
 		<img src="{{ MEDIA_URL }}{{ item.itemPic }}" >
 
-		<h1 class="right">{{item.title}}</h1>
+		<h1 class="right"><a href="/item/{{item.itemID}}/">{{item.title}}</a></h1>
 		<p class="right">{{item.description}}</p>
+
 </div>
 
 </body>

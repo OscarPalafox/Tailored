@@ -10,7 +10,11 @@ from django.contrib.auth.decorators import login_required
 from tailored.models import UserProfile, Category, Section, Item, Review
 from tailored.forms import CategoryForm, SectionForm, UserProfileForm, Search_bar
 from datetime import datetime
-
+def show_item(request, itemID):
+	item= Item.objects.filter(itemID=itemID)
+	context_dict={}
+	context_dict['items']=item
+	return render(request, 'tailored/product.html', context_dict)
 def index(request):
 	return render(request, 'tailored/index.html')
 
@@ -131,7 +135,7 @@ def search_bar(request,search=None,category=None):
 	
 		return render(request, 'tailored/search.html',context_dict)
 	else :
-		render(request, 'tailored/index.html')
+		render(request, 'tailored/index.html', context_dict)
 
 
 def home_page(request):

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  {% for item in items%}
    <head>
       <meta charset="UTF-8">
       <meta name="description" content="">
@@ -100,8 +101,9 @@
 					 </div>
 					 <div class="col-12 col-md-6">
 						<div class="single_product_desc">
-						   <h4 class="title"><a href="#">Long Yellow Dress</a></h4>
-						   <h4 class="price">$ 39.99</h4>
+						   <h4 class="title"><a href="#">{{item.title}} tite</a></h4>
+
+						   <h4 class="price">{{item.price}} £</h4>
 						   <a href="#" class="seller">Sold by <span class="text-muted">Seller Name</span></a>
 						   <div class="single_product_ratings mb-15">
 							  <i class="fa fa-star" aria-hidden="true"></i>
@@ -114,7 +116,7 @@
 							  <h6 class="widget-title">Size</h6>
 							  <div class="widget-desc">
 								 <ul>
-									<li>32</li>
+									<li>{{item.size}} size</li>
 								 </ul>
 							  </div>
 						   </div>
@@ -128,8 +130,8 @@
 								 </div>
 								 <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
 									<div class="card-body">
-									   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integ er bibendum sodales arcu id te mpus. Ut consectetur lacus.</p>
-									   <p>Approx length 66cm/26" (Based on a UK size 8 sample) Mixed fibres</p>
+									   <p>{{item.description}} s;d,mvms;km</p>
+
 									</div>
 								 </div>
 							  </div>
@@ -279,4 +281,5 @@
          </script>
          <script src="https://ajax.cloudflare.com/cdn-cgi/scripts/a2bd7673/cloudflare-static/rocket-loader.min.js" data-cf-settings="d7f0ee6292a92c016cdd2cb1-|49" defer=""></script>
    </body>
+   {% endfor %}
 </html>
