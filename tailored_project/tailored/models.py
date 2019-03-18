@@ -48,6 +48,7 @@ class Section (models.Model):
 	def __str__(self):
 		return self.title
 
+
 class Size(models.Model):
 	title = models.CharField(max_length = 128, primary_key = True)
 
@@ -72,7 +73,7 @@ class Item(models.Model):
 	
 	sold = models.BooleanField(default = False)
 	dailyVisits = models.IntegerField(default = 0)
-	size = models.ForeignKey(Size)
+	size = models.CharField(max_length = 128)#models.ForeignKey(Size)
 
 	def __str__(self):
 		return self.title

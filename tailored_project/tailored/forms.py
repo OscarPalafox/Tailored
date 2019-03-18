@@ -1,5 +1,5 @@
 from django import forms
-from tailored.models import Item, Category, Section, Size, UserProfile, Review
+from tailored.models import Item, Category, Section, UserProfile, Review, Size
 from datetime import date
 from registration.forms import RegistrationFormTermsOfService, RegistrationFormUniqueEmail
 from django.contrib.auth.models import User
