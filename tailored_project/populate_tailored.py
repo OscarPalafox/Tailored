@@ -4,7 +4,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE",
 
 import django
 django.setup()
-from tailored.models import Category, Item, Section
+from tailored.models import Category, Item, Section, Size
 
 def populate():
 
@@ -39,6 +39,8 @@ def populate():
 	# List of items
 	items = [T_Shirt_M, T_Shirt_W, T_Shirt_K, Trousers_M, Trousers_W, Trousers_K, Jacket_M, Jacket_W, Jacket_K]
 	
+
+
 	# List of sections
 	sections = [{"title": "Men"}, {"title": "Women"}, {"title": "Kids"}]
 
@@ -56,9 +58,10 @@ def populate():
 		categories_instances.append(add_category(category["title"]))
 
 	for item_data in items:
-
+		itemSize = add_size(item_data["size"])
+	
 		add_item(item_data["title"], item_data["price"], item_data["description"],
-				item_data["sold"], item_data["dailyVisits"], item_data["size"],
+				item_data["sold"], item_data["dailyVisits"], itemSize,
 				categories_instances[int(items.index(item_data)/len(categories_instances) % len(categories_instances))],
 				sections_instances[items.index(item_data) % len(sections_instances)],
 				item_data["itemPic"])
@@ -82,6 +85,11 @@ def add_section(title):
 	section = Section.objects.get_or_create(title = title)[0]
 	section.save()
 	return section
+
+def add_size(title):
+	size = Size.objects.get_or_create(title = title)[0]
+	size.save()
+	return size
 
 if __name__ == "__main__":
 	print("Starting population script...")
