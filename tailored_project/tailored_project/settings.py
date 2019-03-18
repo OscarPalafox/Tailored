@@ -152,6 +152,6 @@ REGISTRATION_AUTO_LOGIN = True
 # Do not use activation email html template
 ACTIVATION_EMAIL_HTML = False
 
-#LOGIN_REDIRECT_URL = 'tailored:index'
+LOGIN_REDIRECT_URL = 'tailored:index'
 # Location of the log in page
 LOGIN_URL = 'auth_login'
