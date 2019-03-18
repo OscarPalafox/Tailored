@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-{% load rango_template_tags %}
+
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
@@ -11,10 +11,9 @@
 			{%block title_block%}
 			{%endblock%}
 		</title>
-		<link rel="icon" href="Tailored.jpg">
-		<link rel="stylesheet" href="css/core-style.css">
-		<link rel="stylesheet" href="style.css">
-		<link href="css/responsive.css" rel="stylesheet"
+		<link rel="icon" href="{% static "images/Tailored.jpg" %}">
+		<link rel="stylesheet" href="{% static "css/core-style.css" %}">
+		<link rel="stylesheet" href="{% static "css/responsive.css" %}">
 	</head>
    <body>
          <div id="wrapper">
@@ -145,5 +144,19 @@
                   </div>
                </div>
             </footer>
+			<script src="{% static "js/jquery/jquery-2.2.4.min.js"%}" ></script>
+			 <script src="{%static "js/popper.min.js" %}" ></script>
+			 <script src="{%static "js/bootstrap.min.js" %}" ></script>
+			 <script src="{%static "js/plugins.js" %}"></script>
+			 <script src="{%static "js/active.js" %}" ></script>
+			 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+			 <script>
+				window.dataLayer = window.dataLayer || [];
+				function gtag(){dataLayer.push(arguments);}
+				gtag('js', new Date());
+				
+				gtag('config', 'UA-23581568-13');
+			 </script>
+			 <script src="https://ajax.cloudflare.com/cdn-cgi/scripts/a2bd7673/cloudflare-static/rocket-loader.min.js"  defer=""></script>
 	</body>
 </html>
