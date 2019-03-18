@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from tailored.models import UserProfile, Category, Section, Item, Review
 from tailored.forms import CategoryForm, SectionForm, UserProfileForm, Search_bar
-
+from datetime import datetime
 def index(request):
 	return render(request, 'tailored/index.html')
 
@@ -126,6 +126,32 @@ def home_page(request):
 	context_dict['categories']=categories
 
 	#placeholder for homepage, feel free to change it.
+	if first_visit(request):
+		print("adding one")
+
 
 	return render(request, 'tailored/index.html', context_dict)
 
+
+def first_visit(request):
+	first= get_server_side_cookie(request,'last_visit')==None
+	last_visit_cookie = get_server_side_cookie(request,
+												'last_visit',
+													str(datetime.now()))
+
+	last_visit_time = datetime.strptime(last_visit_cookie[:-7],
+											'%Y-%m-%d %H:%M:%S')
+	if ((datetime.now() - last_visit_time).days > 0) or first:
+		request.session['last_visit'] = str(datetime.now())
+
+		return True
+	else:
+		print (last_visit_time)
+		request.session['last_visit'] = last_visit_cookie
+		return False
+
+def get_server_side_cookie(request, cookie, default_val=None):
+	val = request.session.get(cookie)
+	if not val:
+		val = default_val
+	return val

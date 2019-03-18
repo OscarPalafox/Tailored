@@ -29,7 +29,21 @@
 					<div class="container h-100">
 						<div class="row h-100">
 							<div class="col-12 d-md-flex justify-content-between">
-								<div class="header-social-area"> <a href="#"><span class="tailored-level">Share</span> <i class="fa fa-pinterest" aria-hidden="true"></i></a> <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a> <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a> <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a> </div>
+								<div class="header-social-area"> 
+									<body>
+								<div>
+							<form action="/tailored/{{search}}{% if search != None and search != '' %}/{%endif%}{{category}}{% if category != None %}/{%endif%}"  method="POST">
+								{% csrf_token %}
+								{% if search == None %}
+							<input type="text" name="search">
+							{% else %}
+							<input type="text" name="search" placeholder="{{search}}">
+							{% endif %}
+							<input type="submit" name="request" value="search" ><br>
+								</form>
+							</div>
+								</div>
+
 								<div class="main-menu-area">
 									<nav class="navbar navbar-expand-lg align-items-start">
 										<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#tailored-navbar" aria-controls="tailored-navbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><i class="ti-menu"></i></span></button> 
