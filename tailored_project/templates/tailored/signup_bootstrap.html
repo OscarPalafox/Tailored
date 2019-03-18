@@ -18,7 +18,24 @@
 				 <div class="card card-4">
 					<div class="card-body">
 					   <h2 class="title">Register</h2>
-					   <form method="POST">
+					   <form method="POST" action = ".">
+					   		{{ csrf_token }}
+					   		<fieldset>
+					   			<legend>{{ title }}</legend>
+					   			<div class="row row-space">
+					   				{% for field in form %}
+					   					<div class="col-2">
+											<div class="input-group">
+								   				<label class="label">{{ field.label }}</label>
+								   					<div class="input--style-4">
+								   						{{ field }}
+								   					</div>
+											</div>
+							 			</div>
+					   			</div>
+
+					   		</fieldset>
+					   	<!--
 						  <div class="row row-space">
 							 <div class="col-2">
 								<div class="input-group">
@@ -62,7 +79,7 @@
 								   <input class="input--style-4" type="password" name="password">
 								</div>
 							 </div>
-						  </div>
+						  </div>-->
 						  <div class="p-t-15">
 							 <button class="btn btn--radius-2 btn--blue" type="submit">Submit</button>
 						  </div>
