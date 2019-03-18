@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
+   {% load staticfiles %}
+	{% block title_block %}
+		Login
+	{% endblock %}
 		<meta charset="UTF-8">
 		<meta name="description" content="">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<title>Tailored | Login</title>
 		<link rel="icon" href="">
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css'%}">
+		<link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css'%}">
 
-		<link rel="stylesheet" type="text/css" href="css/icon-font.min.css">
-		<link rel="stylesheet" type="text/css" href="css/util.css">
-		<link rel="stylesheet" type="text/css" href="css/main.css">
+		<link rel="stylesheet" type="text/css" href="{% static 'css/icon-font.min.css'%}">
+		<link rel="stylesheet" type="text/css" href="{% static 'css/util.css'%}">
+		<link rel="stylesheet" type="text/css" href="{% static 'css/main.css'%}">
    </head>
    <body>
       <body>
@@ -67,11 +70,11 @@
 				  </div>
 			   </div>
 			</div>           
-         <script src="js/jquery/jquery-3.2.1.min.js" ></script>
-         <script src="js/popper.min.js" ></script>
-         <script src="js/bootstrap.min.js" ></script>
-         <script src="js/select2.min.js" ></script>
-         <script src="js/main.js"</script>
+         <script src="{% static 'js/jquery/jquery-3.2.1.min.js'%}" ></script>
+         <script src="{% static 'js/popper.min.js'%}" ></script>
+         <script src="{% static 'js/bootstrap.min.js'%}" ></script>
+         <script src="{% static 'js/select2.min.js'%}" ></script>
+         <script src="{% static 'js/main.js'%}"</script>
          <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
          <script>
             window.dataLayer = window.dataLayer || [];
@@ -80,6 +83,6 @@
             
             gtag('config', 'UA-23581568-13');
          </script>
-         <script src="https://ajax.cloudflare.com/cdn-cgi/scripts/a2bd7673/cloudflare-static/rocket-loader.min.js" data-cf-settings="d7f0ee6292a92c016cdd2cb1-|49" defer=""></script>
+         <script src="https://ajax.cloudflare.com/cdn-cgi/scripts/a2bd7673/cloudflare-static/rocket-loader.min.js"  defer=""></script>
    </body>
 </html>
