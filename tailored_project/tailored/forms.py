@@ -63,7 +63,7 @@ class UserProfileForm(RegistrationFormTermsOfService, RegistrationFormUniqueEmai
 	picture = forms.ImageField(required = False)
 	postcode = forms.CharField(max_length = 8, validators = [RegexValidator(r'^(([gG][iI][rR] {0,}0[aA]{2})|((([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y]?[0-9][0-9]?)|(([a-pr-uwyzA-PR-UWYZ][0-9][a-hjkstuwA-HJKSTUW])|([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y][0-9][abehmnprv-yABEHMNPRV-Y]))) {0,}[0-9][abd-hjlnp-uw-zABD-HJLNP-UW-Z]{2}))$')])
 	phone = forms.CharField(max_length = 8, validators = [RegexValidator(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.0-9]*$')], required = False)
-
+        field_order = ['first_name', 'last_name','postcode','picture','phone']
 
 """class ReviewForm(forms.ModelForm):
 	"""
