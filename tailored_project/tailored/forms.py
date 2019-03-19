@@ -1,5 +1,5 @@
 from django import forms
-from tailored.models import Item, Category, Section, UserProfile, Review, Size
+from tailored.models import Item, Category, Section, Size, UserProfile, Review
 from datetime import date
 from registration.forms import RegistrationFormTermsOfService, RegistrationFormUniqueEmail
 from django.contrib.auth.models import User
@@ -20,9 +20,6 @@ class ItemForm(forms.ModelForm):
 	
 	section = forms.ModelChoiceField(queryset = Section.objects.all(), help_text = "Select a section: ")
 	category = forms.ModelChoiceField(queryset = Category.objects.all(), help_text = "Select a category: ")
-
-	itemPic = forms.ImageField(required = False, 
-		help_text = "Upload a picture of the item: ")
 	
 	description = forms.CharField(widget=forms.Textarea, 
 		help_text = "Please give a brief description of the item.")
@@ -30,16 +27,12 @@ class ItemForm(forms.ModelForm):
 	
 	dailyVisits = forms.IntegerField(widget=forms.HiddenInput(), initial = 0)
 
-	
 	size = forms.ModelChoiceField(queryset = Size.objects.all(), help_text = "Select the size: ")
-	
+        itemPic = forms.ImageField(required = False, 
+		help_text = "Upload a picture of the item: ")	
 	class Meta:
 		model = Item
 		exclude = ("itemID", "sold", )
-		help_texts = {"title": "Please enter the name of the item: ",
-					"price": "Enter the price: ",
-					"section": "Select a section: ",
-					"category": "Select a category: "}
 
 class CategoryForm(forms.ModelForm):
 	title = forms.CharField(max_length = 128, help_text = "Please enter the category title:")
