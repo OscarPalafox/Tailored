@@ -82,18 +82,9 @@
           
 }
 
-    $('.slider-range-price').each(function(){
-        $("#slider").click(function(){
-         var min = jQuery(this).data('min');
-         var max = jQuery(this).data('max');
-         slide: function(event, ui) {
-         filterByPrice(ui.values[0], ui.values[1]);
-                 }
-         });
-    });
+ 
     function filterByCategories(event) {
-          // Declare variables 
-          window.print("Hello There!");
+          // Declare variables
           var div, item, td, i, txtValue;
 
           div = document.getElementById("results");
@@ -116,7 +107,7 @@
           // Declare variables 
          var  items, i, priceValue, price, num;
 
-         alert(max)
+         
           items = document.getElementsByClassName("item");
           
           // Loop through all table rows, and hide those who don't match the search query
