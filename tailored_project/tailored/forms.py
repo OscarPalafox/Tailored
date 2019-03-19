@@ -36,6 +36,10 @@ class ItemForm(forms.ModelForm):
 	class Meta:
 		model = Item
 		exclude = ("itemID", "sold", )
+		help_texts = {"title": "Please enter the name of the item: ",
+					"price": "Enter the price: ",
+					"section": "Select a section: ",
+					"category": "Select a category: "}
 
 class CategoryForm(forms.ModelForm):
 	title = forms.CharField(max_length = 128, help_text = "Please enter the category title:")
