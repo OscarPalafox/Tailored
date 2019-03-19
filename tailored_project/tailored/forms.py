@@ -3,7 +3,7 @@ from tailored.models import Item, Category, Section, UserProfile, Review, Size
 from datetime import date
 from registration.forms import RegistrationFormTermsOfService, RegistrationFormUniqueEmail
 from django.contrib.auth.models import User
-from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
+from django.core.validators import RegexValidator
 import uuid
 
 class Search_bar(forms.ModelForm):
@@ -13,12 +13,16 @@ class Search_bar(forms.ModelForm):
 		fields = ('search',)
 
 class ItemForm(forms.ModelForm):
+	def __init__(self, section_set, *args, **kwargs):
+		super(ItemForm, self).__init__(*args, **kwargs)
+		self.fields['section'] = forms.ModelChoiceField(queryset = section_set, help_text = "Select a section: ")
+
 	title = forms.CharField(max_length = 128,
 		help_text = "Please enter the name of the item: ")
 	
-	price = forms.DecimalField(help_text = "Enter the price: ", validators = [MinValueValidator(0)], decimal_places = 2)
-	
-	section = forms.ModelChoiceField(queryset = Section.objects.all(), help_text = "Select a section: ")
+	price = forms.DecimalField(help_text = "Enter the price: ", min_value = 0, decimal_places = 2)
+
+	#section = forms.ModelChoiceField(queryset = Section.objects.all(), help_text = "Select a section: ")
 	category = forms.ModelChoiceField(queryset = Category.objects.all(), help_text = "Select a category: ")
 
 	picture = forms.ImageField(required = False, 
@@ -65,5 +69,21 @@ class UserProfileForm(RegistrationFormTermsOfService, RegistrationFormUniqueEmai
 	phone = forms.CharField(max_length = 8, validators = [RegexValidator(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.0-9]*$')], required = False)
 
 
-"""class ReviewForm(forms.ModelForm):
-	"""
+class ReviewForm(forms.ModelForm):
+	#reviewID = models.IntegerField(primary_key = True)
+	#buyerID = models.ForeignKey(UserProfile)
+	#itemID = models.ForeignKey(Item)
+	rating = forms.IntegerField(min_value = 0, max_value = 5)
+	review_text = forms.CharField(widget = forms.Textarea, 
+		help_text = "Please give a brief review of the seller.", required = False)
+	datePosted = forms.DateField(widget = forms.HiddenInput(), initial = date.today)
+
+
+	def __init__(self, user_items, *args, **kwargs):
+		super(ReviewForm, self).__init__(*args, **kwargs)
+		self.fields['item'] = forms.ModelChoiceField(queryset = user_items, help_text = "Select an item: ")
+
+	class Meta:
+		model = Review
+		exclude = ("reviewID", "buyer")
+		#fields = ('rating', 'review_text', 'datePosted')

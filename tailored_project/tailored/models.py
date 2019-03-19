@@ -39,7 +39,7 @@ class Category(models.Model):
 		return self.title
 
 
-class Section (models.Model):
+class Section(models.Model):
 	"""Class representing a section"""
 
 	title = models.CharField(max_length = 128, unique = True, primary_key = True)
@@ -62,7 +62,7 @@ class Item(models.Model):
 	price = models.DecimalField(help_text = "Enter the price: ",
 		validators = [MinValueValidator(0)], decimal_places = 2, default = 0, max_digits = 100)
 
-	sellerID = models.ForeignKey(UserProfile, related_name = 'seller')
+	seller = models.ForeignKey(UserProfile, related_name = 'seller')
 
 	category = models.ForeignKey(Category)
 	section = models.ForeignKey(Section)
@@ -74,19 +74,19 @@ class Item(models.Model):
 	
 	sold_to = models.ForeignKey(UserProfile, related_name = 'buyer', blank = True, null = True)
 	dailyVisits = models.IntegerField(default = 0)
-	size = models.CharField(max_length = 128)#models.ForeignKey(Size)
+	size = models.ForeignKey(Size)
 
 	def __str__(self):
 		return self.title
 
 class Review(models.Model):
 	"""Class representing a review."""
-	reviewID = models.IntegerField(primary_key = True)
-	buyerID = models.ForeignKey(UserProfile)
-	itemID = models.ForeignKey(Item)
-	rating = models.CharField(max_length = 1)
-	review = models.TextField(blank = True)
+	#reviewID = models.AutoField(primary_key = True)
+	buyer = models.ForeignKey(UserProfile)
+	item = models.ForeignKey(Item)
+	rating = models.IntegerField(validators = [MinValueValidator(0), MaxValueValidator(5)])
+	review_text = models.TextField(blank = True)
 	datePosted = models.DateField(default = date.today)
 
 	def __str__(self):
-		return self.reviewID
+		return "ID" + str(self.id)

@@ -1,12 +1,13 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from tailored.models import UserProfile, Category, Section, Item, Review
-from tailored.forms import Search_bar, ItemForm, CategoryForm, SectionForm, UserProfileForm
+from tailored.forms import Search_bar, ItemForm, CategoryForm, SectionForm, UserProfileForm, ReviewForm
 from django.db.models import Q
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
+from django.contrib.auth.models import User
 
 
 def index(request):
@@ -35,10 +36,6 @@ def add_category(request):
 			print(form.errors)
 
 	return render(request, 'tailored/add_category.html', {'form': form})
-
-
-"""def leave_review(request):
-	"""
 
 
 def show_section(request, title):
@@ -80,11 +77,12 @@ def show_category(request, title):
 
 @login_required
 def add_item(request):
-	form = ItemForm()
+	queryset = Section.objects.all()
+	form = ItemForm(section_set = queryset)
 
 	if (request.method == "POST"):
-		form = ItemForm(request.POST)
-		if (form.is_valid()):
+		form = ItemForm(queryset, request.POST)
+		if form.is_valid():
 			item = form.save(commit = False)
 			item.sellerID = UserProfile.objects.get(user = request.user)
 
@@ -101,55 +99,96 @@ def add_item(request):
 	return render(request, "tailored/add_item.html", {"form": form})
 
 
-def search_bar(request,search=None,category=None):
+@login_required
+def leave_review(request):
+	"""queryset = Item.objects.filter(Q(sold_to = UserProfile.objects.get(user = request.user)) &
+									~Q(item__in = Review.objects.filter(item__id = item.itemID)))"""
 
-	context_dict={}
-	categories=Category.objects.all()
+	items_reviewed = []
+
+	for review in Review.objects.select_related():
+		items_reviewed.append(review.item.itemID)
 	
-	context_dict['categories']=categories
-	if(request.method=='POST'):
-		check=request.POST.get('search')
-		if check!=None:
-			search=check
-		check=request.POST.get('choose')
-		if check!=None: 
-			category=check
-		if search != None:
-			search=search.split(" ")
-			searchS="_".join(search)
-		items= []
+	queryset = Item.objects.filter(Q(sold_to = UserProfile.objects.get(user = request.user))
+								).exclude(itemID__in = items_reviewed)
 
-		if category != None and search!=None:
+	print(not queryset) # Empty queryset
+
+	form = ReviewForm(user_items = queryset)
+
+	if(request.method == "POST"):
+		form = ReviewForm(queryset, request.POST)
+		if form.is_valid():
+			review = form.save(commit = False)
+			review.buyerID = UserProfile.objects.get(user = request.user)
+			review.save()
+
+			return HttpResponseRedirect(reverse('tailored:show_seller_profile',
+					kwargs = {'username': request["seller"].username}))
+		else:
+			print(form.errors)
+
+	return render(request, "tailored/leave_review.html", {"form": form})
+
+
+def show_seller_profile(request, username):
+	user = User.objects.filter(username = username)
+
+	return render(request, 'tailored/seller_profile.html', {'user': user})
+
+
+
+def search_bar(request, search = None, category = None):
+
+	context_dict = {}
+	categories = Category.objects.all()
+	
+	context_dict['categories'] = categories
+	if(request.method == 'POST'):
+		check = request.POST.get('search')
+		if check != None:
+			search = check
+		check = request.POST.get('choose')
+		if check != None: 
+			category = check
+		if search != None:
+			search = search.split(" ")
+			searchS = "_".join(search)
+		items = []
+
+		if category != None and search != None:
 			for word in search:
-				
-				items+=Item.objects.filter((Q(description__contains=word )|Q (title__contains=word)&(Q(category=category )|Q (category=category))))
-			context_dict['category']=category
-			context_dict['search']=searchS
+				items += Item.objects.filter((Q(description__contains = word) | Q(title__contains = word) & (Q(category = category) | Q(category = category))))
+			
+			context_dict['category'] = category
+			context_dict['search'] = searchS
+
 		elif search != None:	
 			for word in search:
-				items+=Item.objects.filter(Q(description__contains=word )|Q (title__contains=word))
-			context_dict['search']= searchS
+				items += Item.objects.filter(Q(description__contains = word ) | Q(title__contains = word))
+			
+			context_dict['search'] = searchS
 
-		elif category!=None:
+		elif category != None:
 				
-				items=Item.objects.filter(Q(category=category)|Q(category=category))
-				context_dict['category']=category
+				items = Item.objects.filter(Q(category = category) | Q(category = category))
+				context_dict['category'] = category
 
 		else:
 			return home_page(request)
 		
-		context_dict['items']=items
+		context_dict['items'] = items
 	
-		return render(request, 'tailored/search.html',context_dict)
+		return render(request, 'tailored/search.html', context_dict)
 	else :
 		render(request, 'tailored/index.html')
 
 
 def home_page(request):
-	context_dict={}
-	categories=Category.objects.all()
+	context_dict = {}
+	categories = Category.objects.all()
 	
-	context_dict['categories']=categories
+	context_dict['categories'] = categories
 
 	#placeholder for homepage, feel free to change it.
 
