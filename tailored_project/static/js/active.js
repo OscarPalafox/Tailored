@@ -85,6 +85,7 @@
         var label_result = jQuery(this).data('label-result');
         var t = $(this);
         $(this).slider({
+            
             range: true,
             min: min,
             max: max,

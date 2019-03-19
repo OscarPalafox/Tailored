@@ -140,7 +140,7 @@ def search_bar(request,search=None,category=None):
 		
 		context_dict['items']=items
 	
-		return render(request, 'tailored/search.html',context_dict)
+		return render(request, 'tailored/shop_bootstrap.html',context_dict)
 	else :
 		render(request, 'tailored/index.html', context_dict)
 

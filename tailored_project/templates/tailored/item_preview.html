@@ -1,18 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-<meta charset="UTF-8" />
-<link rel="stylesheet" type="text/css" href="/static/style.css">
-</head>
 
-<body>
-	<div class="preview">
-		<img src="{{ MEDIA_URL }}{{ item.itemPic }}" >
 
-		<h1 class="right"><a href="/item/{{item.itemID}}/">{{item.title}}</a></h1>
-		<p class="right">{{item.description}}</p>
-
-</div>
-
-</body>
-</html>
+									<div class="col-12 col-sm-6 item col-lg-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.2s">
+										<div class="product-img">
+											<img src="{{ MEDIA_URL }}{{ item.itemPic }}" alt="">								
+										</div>
+										<div class="product-description">
+											<h4 class="product-price">{{item.price}}</h4>
+											<p>{{item.description}}</p>
+											<p class="size" value="{{item.size}}">{{item.size}}</p>
+										</div>
+									</div>
+							
+		
