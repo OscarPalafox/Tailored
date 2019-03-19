@@ -8,13 +8,13 @@ from uuid import uuid4
 class UserProfile(models.Model):
 	"""Class representing a user profile."""
 	# This line links UserProfile to a User model instance
-	user = models.OneToOneField(User)
+	user = models.OneToOneField(User, on_delete = models.CASCADE)
 
 	# Additional attributes we wish to include
 	picture = models.ImageField(upload_to = "profile_images", blank = True)
 	postcode = models.CharField(max_length = 8, validators = [RegexValidator(r'^(([gG][iI][rR] {0,}0[aA]{2})|((([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y]?[0-9][0-9]?)|(([a-pr-uwyzA-PR-UWYZ][0-9][a-hjkstuwA-HJKSTUW])|([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y][0-9][abehmnprv-yABEHMNPRV-Y]))) {0,}[0-9][abd-hjlnp-uw-zABD-HJLNP-UW-Z]{2}))$')])
 	rating = models.IntegerField(default = 0)
-	phone = models.CharField(max_length = 8, blank = True, validators = [RegexValidator(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.0-9]*$')])
+	phone = models.CharField(max_length = 8, blank = True, validators = [RegexValidator(r'^\d*$')])
 
 	def __str__(self):
 		return self.user.username

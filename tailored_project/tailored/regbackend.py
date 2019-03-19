@@ -26,7 +26,6 @@ class MyRegistrationView(RegistrationView):
 		input_postcode = form_class.cleaned_data['postcode'].replace(' ', '').upper()
 		user_profile.postcode = input_postcode[:-3] + ' ' + input_postcode[-3:]
 		user_profile.phone = form_class.cleaned_data['phone']
-		user_profile.rating = 0
 
 		user_profile.save()
 		return user_profile
