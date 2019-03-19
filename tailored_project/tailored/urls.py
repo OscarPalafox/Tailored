@@ -14,6 +14,6 @@ urlpatterns = [
 	url(r'^home/$', views.home_page, name = 'home_page'),
 	url(r'^search/$', views.search_bar, name = 'search'),
 	url(r'^leave_review/$', views.leave_review, name = 'leave_review'),
-	url(r'^profile/(?P<username>[-\w]+)/$', views.show_seller_profile, name = 'show_seller_profile')
+	url(r'^profile/(?P<seller_username>[-\w]+)/$', views.show_seller_profile, name = 'show_seller_profile')
 ]
 

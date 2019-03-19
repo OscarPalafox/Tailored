@@ -24,23 +24,21 @@ class Category(models.Model):
 	"""Class representing a category."""
 
 	title = models.CharField(max_length = 128, unique = True, primary_key = True)
-
-	
 	slug = models.SlugField()
+
 	def save(self, *args, **kwargs):
 		self.slug = slugify(self.title)
 		super(Category, self).save(*args, **kwargs)
 	
-	
-	class Meta:
-		verbose_name_plural = "categories"
-	
 	def __str__(self):
 		return self.title
 
+	class Meta:
+		verbose_name_plural = "categories"
+
 
 class Section(models.Model):
-	"""Class representing a section"""
+	"""Class representing a section."""
 
 	title = models.CharField(max_length = 128, unique = True, primary_key = True)
 
@@ -49,6 +47,7 @@ class Section(models.Model):
 
 
 class Size(models.Model):
+	"""Class representing a size for an item."""
 	title = models.CharField(max_length = 128, primary_key = True)
 
 	def __str__(self):
@@ -81,7 +80,6 @@ class Item(models.Model):
 
 class Review(models.Model):
 	"""Class representing a review."""
-	#reviewID = models.AutoField(primary_key = True)
 	buyer = models.ForeignKey(UserProfile)
 	item = models.ForeignKey(Item)
 	rating = models.IntegerField(validators = [MinValueValidator(0), MaxValueValidator(5)])

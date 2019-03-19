@@ -39,7 +39,7 @@ class ItemForm(forms.ModelForm):
 	
 	class Meta:
 		model = Item
-		exclude = ("itemID", "sold_to", "sellerID")
+		exclude = ("itemID", "sold_to", "seller")
 
 class CategoryForm(forms.ModelForm):
 	title = forms.CharField(max_length = 128, help_text = "Please enter the category title:")
