@@ -5,24 +5,23 @@
 	<title>Tailored</title> </head>
 	<body> 
 		<div>
-			{{ section }}
-		{% if section %}
-			<h1>{{ section.title }}</h1> 
-			{% if items %}
-				<ul>
-				{% for item in items %}
-					<li>{{ item.title }}</li>
-					
-					<img src = "{{ MEDIA_URL }}{{ item.picture }}" />
+			{% if section %}
+				<h1>{{ section.title }}</h1> 
+				{% if items %}
+					<ul>
+					{% for item in items %}
+						<li>{{ item.title }}</li>
+						
+						<img src = "{{ MEDIA_URL }}{{ item.picture }}" />
 
-				{% endfor %}
-				</ul> 
+					{% endfor %}
+					</ul> 
+				{% else %}
+					<strong>No items currently in section.</strong> 
+				{% endif %}
 			{% else %}
-				<strong>No items currently in section.</strong> 
+				The specified section does not exist!
 			{% endif %}
-    	{% else %}
-        	The specified section does not exist!
-		{% endif %}
-	</div> 
+		</div> 
 </body>
 </html>

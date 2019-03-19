@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from tailored.models import UserProfile, Category, Section, Item, Review
-from tailored.forms import Search_bar, ItemForm, CategoryForm, SectionForm, UserProfileForm, ReviewForm
+from tailored.forms import Search_bar, ItemForm, UserProfileForm, ReviewForm
 from django.db.models import Q
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -19,23 +19,6 @@ def items(request):
 	context_dict = {'items': item_list}
 
 	return render(request, 'tailored/itemsList.html', context_dict)
-
-
-@login_required
-def add_category(request):
-	form = CategoryForm()
-
-	if request.method == 'POST':
-		form = CategoryForm(request.POST)
-
-		if form.is_valid():
-			form.save(commit = True)
-			return HttpResponseRedirect(reverse('tailored:index'))
-
-		else:
-			print(form.errors)
-
-	return render(request, 'tailored/add_category.html', {'form': form})
 
 
 def show_section(request, title):
@@ -77,28 +60,22 @@ def show_category(request, title):
 
 @login_required
 def add_item(request):
-	if isinstance(request.user, UserProfile):
-		queryset = Section.objects.all()
-		form = ItemForm(section_set = queryset)
+	try:
+		form = ItemForm()
 
 		if (request.method == "POST"):
-			form = ItemForm(queryset, request.POST)
+			form = ItemForm(request.POST, request.FILES)
 			if form.is_valid():
 				item = form.save(commit = False)
-				item.sellerID = UserProfile.objects.get(user = request.user)
-
-				if 'picture' in request.FILES:
-					item.picture = request.FILES['picture']
-				
+				item.seller = UserProfile.objects.get(user = request.user)
 				item.save()
-
 				return HttpResponseRedirect(reverse('tailored:show_section',
 					kwargs = {'title': str(form.cleaned_data.get("section"))}))
 
 			else:
 				print(form.errors)
 		return render(request, "tailored/add_item.html", {"form": form})
-	else:
+	except ZeroDivisionError:
 		return HttpResponse("You're an admin, add the item from the admin website.")
 
 
@@ -141,40 +118,37 @@ def show_seller_profile(request, seller_username):
 																						(user = seller_user))))
 
 	context_dict['reviews_seller'] = reviews_seller.order_by('-datePosted')
-	print(context_dict['reviews_seller'], "RS")
-	print(seller_username)
 
+	if request.user.is_authenticated():
+		try:
+			items_reviewed = []
+			for review in Review.objects.select_related():
+				items_reviewed.append(review.item.itemID)
+			
+			items_to_review = Item.objects.filter(Q(sold_to = UserProfile.objects.get(user = request.user)) &
+										Q(seller = UserProfile.objects.get(user = seller_user))
+										).exclude(itemID__in = items_reviewed)
+			
+			context_dict['items_to_review'] = items_to_review
+			if items_to_review:
+				form = ReviewForm(user_items = items_to_review)
 
-	if request.user.is_authenticated() and isinstance(request.user, UserProfile):
-		
-		items_reviewed = []
-		for review in Review.objects.select_related():
-			items_reviewed.append(review.item.itemID)
-		
-		items_to_review = Item.objects.filter(Q(sold_to = UserProfile.objects.get(user = request.user)) &
-									Q(seller = UserProfile.objects.get(user = seller_user))
-									).exclude(itemID__in = items_reviewed)
-		
-		context_dict['items_to_review'] = items_to_review
-		if items_to_review:
-			form = ReviewForm(user_items = items_to_review)
+				if(request.method == "POST"):
+					form = ReviewForm(items_to_review, request.POST)
+					if form.is_valid():
+						review = form.save(commit = False)
+						review.buyer = UserProfile.objects.get(user = request.user)
+						review.save()
 
-			if(request.method == "POST"):
-				form = ReviewForm(items_to_review, request.POST)
-				if form.is_valid():
-					review = form.save(commit = False)
-					review.buyer = UserProfile.objects.get(user = request.user)
-					review.save()
+						return HttpResponseRedirect(reverse('tailored:show_seller_profile',
+								kwargs = {'seller_username': seller_username}))
+					else:
+						print(form.errors)
 
-					return HttpResponseRedirect(reverse('tailored:show_seller_profile',
-							kwargs = {'seller_username': seller_username}))
-				else:
-					print(form.errors)
-
-			context_dict['form'] = form
-			return render(request, "tailored/Sprofile.html", context_dict)
-
-	return render(request, 'tailored/Sprofile.html', context_dict)
+				context_dict['form'] = form
+				return render(request, "tailored/Sprofile.html", context_dict)
+		finally:
+			return render(request, 'tailored/Sprofile.html', context_dict)
 
 
 
