@@ -1,5 +1,5 @@
 from django import forms
-from tailored.models import Item, Category, Section, Size, UserProfile, Review
+from tailored.models import Item, Category, Section, UserProfile, Review, Size
 from datetime import date
 from registration.forms import RegistrationFormTermsOfService, RegistrationFormUniqueEmail
 from django.contrib.auth.models import User
@@ -36,6 +36,10 @@ class ItemForm(forms.ModelForm):
 	class Meta:
 		model = Item
 		exclude = ("itemID", "sold", )
+		help_texts = {"title": "Please enter the name of the item: ",
+					"price": "Enter the price: ",
+					"section": "Select a section: ",
+					"category": "Select a category: "}
 
 class CategoryForm(forms.ModelForm):
 	title = forms.CharField(max_length = 128, help_text = "Please enter the category title:")

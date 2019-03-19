@@ -10,7 +10,7 @@ urlpatterns = [
 	url(r'^category/(?P<title>[-\w]+)/$', views.show_category, name='show_category'),
 	url(r'^index/$', views.home_page, name='home_page'),
 	url(r'^tailored/search/$', views.search_bar, name='search'),
-	url(r'add_item/$', views.add_item, name="add_item"),
+	url(r'user_profile/$', views.add_item, name="add_item"),
 	url(r'^home/$', views.home_page, name = 'home_page'),
 	url(r'^search/$', views.search_bar, name = 'search')
 ]

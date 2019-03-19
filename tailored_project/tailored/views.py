@@ -81,16 +81,15 @@ def add_item(request):
 	form = ItemForm()
 
 	if (request.method == "POST"):
-		
+		form = ItemForm(request.POST, request.FILES)
 		if (form.is_valid()):
 			form.save(commit = True)
-			
+
 			return show_section(request, str(form.cleaned_data.get("section")))
 
 		else:
 			print(form.errors)
-
-	return render(request, "tailored/add_item.html", {"form": form})
+	return render(request, "tailored/user_profile.html", {"form": form})
 
 def search_bar(request,search=None,category=None):
 
