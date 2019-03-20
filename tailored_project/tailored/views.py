@@ -113,7 +113,7 @@ def leave_review(request):
 		form = ReviewForm(items_to_review, request.POST)
 		if form.is_valid():
 			review = form.save(commit = False)
-			review.buyerID = UserProfile.objects.get(user = request.user)
+			#review.buyer = UserProfile.objects.get(user = request.user)
 			review.save()
 
 			return HttpResponseRedirect(reverse('tailored:show_seller_profile',
@@ -130,7 +130,7 @@ def show_seller_profile(request, seller_username):
 
 	reviews_seller = Review.objects.filter(Q(item__in = Item.objects.filter(seller = UserProfile.objects.get
 																						(user = seller_user))))
-
+	
 	context_dict['reviews_seller'] = reviews_seller.order_by('-datePosted')
 
 	if request.user.is_authenticated():
@@ -151,7 +151,7 @@ def show_seller_profile(request, seller_username):
 					form = ReviewForm(items_to_review, request.POST)
 					if form.is_valid():
 						review = form.save(commit = False)
-						review.buyer = UserProfile.objects.get(user = request.user)
+						#review.buyer = UserProfile.objects.get(user = request.user)
 						review.save()
 
 						return HttpResponseRedirect(reverse('tailored:show_seller_profile',
