@@ -137,6 +137,8 @@ def show_seller_profile(request, seller_username):
 
 	reviews_seller = Review.objects.filter(Q(item__in = Item.objects.filter(seller = UserProfile.objects.get
 																						(user = seller_user))))
+
+	print(reviews_seller)
 	
 	context_dict['reviews_seller'] = reviews_seller.order_by('-datePosted')
 
@@ -168,6 +170,15 @@ def show_seller_profile(request, seller_username):
 					if form.is_valid():
 						review = form.save(commit = False)
 						review.save()
+						items_to_review.exclude(itemID = review.item)
+						context_dict['items_to_review'] = items_to_review
+
+						rating = 0
+	
+						if reviews_seller:
+							for review in list(reviews_seller):
+								rating += review.rating
+							rating = rating/len(reviews_seller)
 
 						return HttpResponseRedirect(reverse('tailored:show_seller_profile',
 								kwargs = {'seller_username': seller_username}))
