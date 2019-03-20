@@ -98,7 +98,7 @@ def add_item(request):
 			else:
 				print(form.errors)
 		return render(request, "tailored/add_item.html", {"form": form})
-	except:
+	except UserProfile.DoesNotExist:
 		return HttpResponse("You're an admin, add the item from the admin website.")
 
 
@@ -133,24 +133,16 @@ def leave_review(request):
 
 def show_seller_profile(request, seller_username):
 	context_dict = {}
+	
 	seller_user = get_object_or_404(User, username = seller_username)
 	context_dict['seller_user'] = seller_user
+	
+	seller_user_profile = UserProfile.objects.get(user = seller_user)
+	context_dict['seller_user_profile'] = seller_user_profile
 
-	reviews_seller = Review.objects.filter(Q(item__in = Item.objects.filter(seller = UserProfile.objects.get
-																						(user = seller_user))))
-
-	print(reviews_seller)
+	reviews_seller = Review.objects.filter(Q(item__in = Item.objects.filter(seller = seller_user_profile)))
 	
 	context_dict['reviews_seller'] = reviews_seller.order_by('-datePosted')
-
-	rating = 0
-	
-	if reviews_seller:
-		for review in list(reviews_seller):
-			rating += review.rating
-		rating = rating/len(reviews_seller)
-	
-	context_dict['seller_rating'] = rating
 
 	if request.user.is_authenticated():
 		try:
@@ -163,23 +155,30 @@ def show_seller_profile(request, seller_username):
 										).exclude(itemID__in = items_reviewed)
 			
 			context_dict['items_to_review'] = items_to_review
+			print(items_to_review[0].itemID, 'items to review before if')
+
 			if items_to_review:
 				form = ReviewForm(user_items = items_to_review)
-
 				if(request.method == "POST"):
 					form = ReviewForm(items_to_review, request.POST)
 					if form.is_valid():
-						review = form.save(commit = False)
-						review.save()
-						items_to_review.exclude(itemID = review.item)
-						context_dict['items_to_review'] = items_to_review
+						review = form.save()
+						# Remove item just reviewed from the items to review
+						context_dict['items_to_review'] = items_to_review.exclude(itemID = review.item.itemID)
 
+						# Handle if there are more items to review
+						if context_dict['items_to_review']:
+							context_dict['form'] = ReviewForm(user_items = context_dict['items_to_review'])
+
+						reviews_seller_updated = Review.objects.filter(Q(item__in = Item.objects.filter(
+																	seller = seller_user_profile)))
 						rating = 0
-	
-						if reviews_seller:
-							for review in list(reviews_seller):
-								rating += review.rating
-							rating = rating/len(reviews_seller)
+						for review_updated in list(reviews_seller_updated):
+							rating += review_updated.rating
+						rating = round(rating/len(reviews_seller_updated), 1)
+
+						seller_user_profile.rating = rating
+						seller_user_profile.save()
 
 						return HttpResponseRedirect(reverse('tailored:show_seller_profile',
 								kwargs = {'seller_username': seller_username}))
@@ -187,7 +186,6 @@ def show_seller_profile(request, seller_username):
 						print(form.errors)
 
 				context_dict['form'] = form
-				return render(request, "tailored/Sprofile.html", context_dict)
 		finally:
 			return render(request, 'tailored/Sprofile.html', context_dict)
 	return render(request, 'tailored/Sprofile.html', context_dict)
@@ -219,7 +217,7 @@ def edit_profile(request):
 				print(form.errors)
 		return render(request, "tailored/edit_profile.html", {"form": form})
 
-	except ZeroDivisionError:
+	except UserProfile.DoesNotExist:
 		return HttpResponse("You're an admin, edit the profile from the admin website.")
 
 

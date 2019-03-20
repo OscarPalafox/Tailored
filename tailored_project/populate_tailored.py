@@ -42,13 +42,13 @@ def populate():
 	# Items data
 	T_Shirt_M = {'title': 'Maison Margiela T-Shirt', 'price': 60,
 					'description' : 'Slightly but still in good condition. Amazing quality',
-					'sold_to' : user_profiles_instances[randint(0, len(user_profiles_instances) - 1)],
+					'sold_to' : user_profiles_instances[0],
 					'dailyVisits': 30, 'size': 'S', 'picture': 'item_images/MaisonShirt.jpg',
 					'datePosted': date(2019, 1, 20)}
 
 	T_Shirt_W = {'title': 'Red shirt', 'price': 20,
 					'description' : "Brand new red shirt, only selling because it's the wrong size. Good quality",
-					'sold_to' : user_profiles_instances[randint(0, len(user_profiles_instances) - 1)],
+					'sold_to' : user_profiles_instances[1],
 					'dailyVisits': 17, 'size': 'M', 'picture':  'item_images/RedShirt.jpg',
 					'datePosted': date(2019, 2, 28)}
 
@@ -62,19 +62,19 @@ def populate():
 
 	Trousers_W = {'title': 'Ripped jeans', 'price': 5,
 					'description' : 'Heavily used jeans. Not great quality but selling it for cheap.',
-					'sold_to' : user_profiles_instances[randint(0, len(user_profiles_instances) - 1)],
+					'sold_to' : user_profiles_instances[2],
 					'dailyVisits': 0, 'size': 'M', 'picture': 'item_images/RippedJeans.jpg', 
 					'datePosted': date(2019, 2, 10)}
 
 	Trousers_K = {'title': 'Black Levi jeans', 'price': 30,
 					'description' : 'Second hand jeans. Have been used slighly. Selling because closet is full.',
-					'sold_to' : user_profiles_instances[randint(0, len(user_profiles_instances) - 1)],
+					'sold_to' : user_profiles_instances[3],
 					'dailyVisits': 20, 'size': 'XL', 'picture': 'item_images/LeviJeans.jpg',
 					'datePosted': date(2019, 3, 14)}
 
 	Jacket_M = {'title': 'Nike Jacket', 'price': 9,
 				'description' : 'Has been slightly used. Selling because closet is full',
-				'sold_to' : user_profiles_instances[randint(0, len(user_profiles_instances) - 1)],
+				'sold_to' : user_profiles_instances[2],
 				'dailyVisits': 10, 'size': 'S', 'picture': 'item_images/NikeJacket.jpg'}
 		
 	Jacket_W = {'title': 'American vintage jacket', 'price': 20,
@@ -83,7 +83,7 @@ def populate():
 
 	Jacket_K = {'title': 'Red Coat', 'price': 10,
 				'description' : 'Basic red coat for kids. Very warm and cozy. Has been used slighly.',
-				'sold_to' : user_profiles_instances[randint(0, len(user_profiles_instances) - 1)],
+				'sold_to' : user_profiles_instances[3],
 				'dailyVisits': 6, 'size': 'XXL', 'picture': 'item_images/RedCoat.jpg',
 				'datePosted': date(2018, 12, 23)}
 
@@ -142,6 +142,8 @@ def populate():
 		add_review(item, reviews[item_instances.index(item)]['rating'],
 					reviews[item_instances.index(item)]['review_text'],
 					reviews[item_instances.index(item)]['datePosted'])
+		item.seller.rating = reviews[item_instances.index(item)]['rating']
+		item.seller.save()
 
 						
 def add_item(title, price, description, sold_to, dailyVisits, size, category, section, picture, user, datePosted):
