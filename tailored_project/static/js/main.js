@@ -73,8 +73,10 @@
 		  	search.size=null;
 		  	if(search.cat==null || search.sect==null){
 		  		showAll();
+		  	}else{
+		  		  filterByCategories(search.cat, search.sect);
 		  	}
-		  	filterByCategories(search.cat, search.sect);
+		
 		  }else{
 		  items = document.getElementsByClassName("item");
 		  // Loop through all table rows, and hide those who don't match the search query
@@ -162,29 +164,18 @@
 	function showAll(){
 				 // Declare variables
 		  var sec, items,  i, catValue,secValue ,cat ,size, category;
-		  category="";
-		  var section="";
+
 
 		  items = document.getElementsByClassName("item");
 
 		  // Loop through all table rows, and hide those who don't match the search query
 		  for (i = 0; i < items.length; i++) {
-
-			cat = items[i].getElementsByClassName("category")[0];
-			sec = items[i].getElementsByClassName("section")[0];
-			if (cat&&sec) {
-			  catValue =cat.innerText;
-			  secValue =sec.innerText;
-			  if(search.size==null){
-				if (catValue.localeCompare(category)==0 && secValue.localeCompare(section)==0 ){
+	
+			
 					items[i].style.display = "";
-			  } else {
-					items[i].style.display = "";
-			  }
 
-			  }
-			}
-}}
+							}
+						}
 
 	function filterByPrice(min, max) {
 		  // Declare variables 
