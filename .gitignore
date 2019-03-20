@@ -7,6 +7,9 @@
 # Ignore db.sqlite3 file
 db.sqlite3
 
+# Ignore .db files
+*.db
+
 # Ignore .key files
 *.key
 
