@@ -6,9 +6,25 @@ from django.db.models import Q
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib import auth
+from datetime import date
+#from django.contrib import auth
 from django.contrib.auth.models import User
 
+def trending(request):
+	items = Item.objects.all()
+	trending = []
+
+	for item in Item.objects.order_by('-dailyVisits'):
+		
+		if ( (date.today() - item.datePosted).days <= 0 ):
+			if (len(trending) < 5):
+				trending.append(item)
+		else:
+			item.dailyVisits = 0
+			item.save()
+
+	context_dict = {"trendingItems": trending}
+	return render(request, 'tailored/trending.html', context_dict)
 
 def index(request):
 	return render(request, 'tailored/index.html')
@@ -71,11 +87,10 @@ def add_item(request):
 				item.save()
 				return HttpResponseRedirect(reverse('tailored:show_section',
 					kwargs = {'title': str(form.cleaned_data.get("section"))}))
-
 			else:
 				print(form.errors)
 		return render(request, "tailored/add_item.html", {"form": form})
-	except ZeroDivisionError:
+	except:
 		return HttpResponse("You're an admin, add the item from the admin website.")
 
 
@@ -105,8 +120,7 @@ def leave_review(request):
 					kwargs = {'seller_username': request["seller"].username}))
 		else:
 			print(form.errors)
-
-	return render(request, "tailored/leave_review.html", {"form": form})
+	return render(request, "tailored/user_profile.html", {"form": form})
 
 
 def show_seller_profile(request, seller_username):

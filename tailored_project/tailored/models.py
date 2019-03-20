@@ -5,6 +5,7 @@ from datetime import date
 from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
 from uuid import uuid4
 
+
 class UserProfile(models.Model):
 	"""Class representing a user profile."""
 	# This line links UserProfile to a User model instance

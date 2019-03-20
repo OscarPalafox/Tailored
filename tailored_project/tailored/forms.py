@@ -1,5 +1,5 @@
 from django import forms
-from tailored.models import Item, Category, Section, UserProfile, Review, Size
+from tailored.models import Item, Category, Section, Size, UserProfile, Review
 from datetime import date
 from registration.forms import RegistrationFormTermsOfService, RegistrationFormUniqueEmail
 from django.contrib.auth.models import User
@@ -16,10 +16,8 @@ class Search_bar(forms.ModelForm):
 		fields = ('search',)
 
 class ItemForm(forms.ModelForm):
-
 	title = forms.CharField(max_length = 128,
 		help_text = 'Please enter the name of the item: ')
-	
 	price = forms.DecimalField(help_text = 'Enter the price: ', min_value = 0, decimal_places = 2)
 
 	section = forms.ModelChoiceField(queryset = Section.objects.all(), help_text = 'Select a section: ')
@@ -31,7 +29,7 @@ class ItemForm(forms.ModelForm):
 	description = forms.CharField(widget = forms.Textarea, 
 		help_text = 'Please give a brief description of the item.')
 	size = forms.ModelChoiceField(queryset = Size.objects.all(), help_text = 'Select the size: ')
-	
+
 	# Inline class to provide additional information on the form
 	class Meta:
 		#Provide an association between the ModelForm and a model
