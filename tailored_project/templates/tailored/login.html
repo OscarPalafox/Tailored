@@ -1,10 +1,7 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html lang="en">
    <head>
-   {% load staticfiles %}
-	{% block title_block %}
-		Login
-	{% endblock %}
 		<meta charset="UTF-8">
 		<meta name="description" content="">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -62,7 +59,7 @@
 						   <span class="txt1">
 						   Not a member?
 						   </span>
-						   <a class="txt1 bo1 hov1" href="#">
+						   <a class="txt1 bo1 hov1" href="{% url 'registration_register' %}">
 						   Sign up now
 						   </a>
 						</div>

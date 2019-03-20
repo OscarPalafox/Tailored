@@ -4,9 +4,9 @@
 	<title>Tailored</title>
 </head>
 <body>
-	<h1>Add an Item</h1>
+	<h1>Leave a review</h1>
 	<div>
-		<form id = "item_form" method = "post" action = "{% url 'tailored:add_item' %}" enctype = "multipart/form-data">
+		<form id = "review_form" method = "post" action = "{% url 'tailored:leave_review' %}">
 			{% csrf_token %}
 			{% for hidden in form.hidden_fields %}
 				{{ hidden }}
@@ -18,7 +18,7 @@
 				{{ field }}
 			</li>
 			{% endfor %}
-			<input type = "submit" name = "submit" value = "Add an Item" />
+			<input type = "submit" name = "submit" value = "Leave a review" />
 		</form>
 	</div>
 </body>

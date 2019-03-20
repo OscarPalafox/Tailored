@@ -159,6 +159,13 @@ input{
     padding:57px 65px;
     padding-bottom:65px
 }
+.checkbox{
+	width: 3%
+}
+
+#id_tos{
+	width: 3%
+}
 @media(max-width:767px){
     .card-4 .card-body{
         padding:50px 40px
