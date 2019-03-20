@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from tailored.models import UserProfile, Category, Section, Item, Review
 from tailored.forms import Search_bar, ItemForm, UserProfileForm, ReviewForm
 from django.db.models import Q
@@ -132,13 +132,22 @@ def leave_review(request):
 
 def show_seller_profile(request, seller_username):
 	context_dict = {}
-	seller_user = User.objects.get(username = seller_username)
+	seller_user = get_object_or_404(User, username = seller_username)
 	context_dict['seller_user'] = seller_user
 
 	reviews_seller = Review.objects.filter(Q(item__in = Item.objects.filter(seller = UserProfile.objects.get
 																						(user = seller_user))))
 	
 	context_dict['reviews_seller'] = reviews_seller.order_by('-datePosted')
+
+	rating = 0
+	
+	if reviews_seller:
+		for review in list(reviews_seller):
+			rating += review.rating
+		rating = rating/len(reviews_seller)
+	
+	context_dict['seller_rating'] = rating
 
 	if request.user.is_authenticated():
 		try:
@@ -158,7 +167,6 @@ def show_seller_profile(request, seller_username):
 					form = ReviewForm(items_to_review, request.POST)
 					if form.is_valid():
 						review = form.save(commit = False)
-						#review.buyer = UserProfile.objects.get(user = request.user)
 						review.save()
 
 						return HttpResponseRedirect(reverse('tailored:show_seller_profile',
@@ -170,7 +178,7 @@ def show_seller_profile(request, seller_username):
 				return render(request, "tailored/Sprofile.html", context_dict)
 		finally:
 			return render(request, 'tailored/Sprofile.html', context_dict)
-
+	return render(request, 'tailored/Sprofile.html', context_dict)
 
 
 def search_bar(request, search = None, category = None):
