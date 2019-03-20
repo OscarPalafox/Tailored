@@ -4,7 +4,6 @@
 	
 
 	{% block body_block %}
-{% for item in items%}
             <div class="breadcumb_area">
 			   <div class="container">
 				  <div class="row">
@@ -29,8 +28,8 @@
 							  </ol> -->
 							  <div class="carousel-inner">
 								 <div class="carousel-item active">
-									<a class="gallery_img" href="{{ MEDIA_URL }}{{ item.itemPic }}">
-									<img class="d-block w-100" src="{{ MEDIA_URL }}{{ item.itemPic }}" alt="">
+									<a class="gallery_img" href="{{ MEDIA_URL }}{{ item.picture }}">
+									<img class="d-block w-100" src="{{ MEDIA_URL }}{{ item.picture }}" alt="">
 									</a>
 								 </div>
 							  </div>
@@ -39,9 +38,9 @@
 					 </div>
 					 <div class="col-12 col-md-6">
 						<div class="single_product_desc">
-						   <h4 class="title"><a href="#">{{item.title}}</a></h4>
+						   <h4 class="title"><a href="#">{{ item.title }}</a></h4>
 
-						   <h4 class="price">{{item.price}} £</h4>
+						   <h4 class="price">{{ item.price }} £</h4>
 						   <a href="#" class="seller">Sold by <span class="text-muted">Seller Name</span></a>
 						   <div class="single_product_ratings mb-15">
 							  <i class="fa fa-star" aria-hidden="true"></i>
@@ -54,7 +53,7 @@
 							  <h6 class="widget-title">Size</h6>
 							  <div class="widget-desc">
 								 <ul>
-									<li>{{item.size}}</li>
+									<li>{{ item.size }}</li>
 								 </ul>
 							  </div>
 						   </div>
@@ -68,7 +67,7 @@
 								 </div>
 								 <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
 									<div class="card-body">
-									   <p>{{item.description}}</p>
+									   <p>{{ item.description }}</p>
 
 									</div>
 								 </div>
@@ -141,6 +140,4 @@
 				  </div>
 			   </div>
 			</section>
-{%endfor%}
     {%endblock%}
-

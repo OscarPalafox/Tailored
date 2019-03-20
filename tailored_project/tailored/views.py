@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from tailored.models import UserProfile, Category, Section, Item, Review
 from tailored.forms import Search_bar, ItemForm, UserProfileForm, ReviewForm
 from django.db.models import Q
@@ -12,14 +12,20 @@ from django.contrib.auth.models import User
 
 
 from tailored.models import UserProfile, Category, Section, Item, Review
-
 from datetime import datetime
+
+
 def show_item(request, itemID):
-	item= Item.objects.filter(itemID=itemID)
-	context_dict={}
-	context_dict['items']=item
+	item = get_object_or_404(Item, itemID = itemID)
+	print(item)
+	context_dict = {}
+	context_dict['item'] = item
+	print(item.dailyVisits, 'before')
 	if first_visit(request):
-		print("increase daily views ")
+		print('HEY')
+		item.dailyVisits += 1
+		item.save()
+	print(item.dailyVisits, 'after')
 	return render(request, 'tailored/product.html', context_dict)
 
 def trending(request):
@@ -179,52 +185,51 @@ def show_seller_profile(request, seller_username):
 
 
 
-def search_bar(request, search = None, category = None):
+def search_bar(request, search = None, page=1):
 
-	context_dict = {}
+	
 	categories = Category.objects.all()
 	
-	context_dict['categories'] = categories
+	
 	if(request.method == 'POST'):
 		check = request.POST.get('search')
 		if check != None:
+			if(search==None):
+				return HttpResponseRedirect(check+"/")
 			search = check
-		check = request.POST.get('choose')
-		if check != None: 
-			category = check
-		if search != None:
-			search = search.split(" ")
-			searchS = "_".join(search)
-		items = []
-
-		if category != None and search != None:
-			for word in search:
-				items += Item.objects.filter((Q(description__contains = word) | Q(title__contains = word) & (Q(category = category) | Q(category = category))))
-			
-			context_dict['category'] = category
-			context_dict['search'] = searchS
-
-		elif search != None:	
-			for word in search:
-				items += Item.objects.filter(Q(description__contains = word ) | Q(title__contains = word))
-			
-			context_dict['search'] = searchS
-
-		elif category != None:
+			if(search=="" or search==None):
+				return HttpResponseRedirect("all/")
 				
-				items = Item.objects.filter(Q(category = category) | Q(category = category))
-				context_dict['category'] = category
-
-		else:
-			return home_page(request)
-		
-		context_dict['items'] = items
+				
 	
 
-		return render(request, 'tailored/shop_bootstrap.html',context_dict)
+	
+	context_dict = {}
+	context_dict['categories'] = categories
+	items = []	
+	if search=="all" or search==None or search=="":
+		search="all"
+		items=Item.objects.all()
+	else:
+		if search != None:
+			search=search.split(" ")
+			for word in search:
+				items += Item.objects.filter(Q(description__contains = word ) | Q(title__contains = word)
+					|Q(category=word)|Q(section=word))
+			searchS="_".join(search)
+			context_dict['search'] = searchS
+		else:
+			print(search, "this is the search")
+			return home_page(request)
 
-	else :
-		render(request, 'tailored/index.html', context_dict)
+	context_dict['page']  = page
+	context_dict['items'] = items
+
+	context_dict['min']=6*(int(page)-1)
+	context_dict['max']=6*(int(page))
+	return render(request, 'tailored/shop_bootstrap.html',context_dict)
+
+
 
 
 def home_page(request):
@@ -241,10 +246,8 @@ def home_page(request):
 
 
 def first_visit(request):
-	first= get_server_side_cookie(request,'last_visit')==None
-	last_visit_cookie = get_server_side_cookie(request,
-												'last_visit',
-													str(datetime.now()))
+	first = get_server_side_cookie(request,'last_visit') == None
+	last_visit_cookie = get_server_side_cookie(request, 'last_visit', str(datetime.now()))
 
 	last_visit_time = datetime.strptime(last_visit_cookie[:-7],
 											'%Y-%m-%d %H:%M:%S')
@@ -258,8 +261,8 @@ def first_visit(request):
 		return False
 
 def get_server_side_cookie(request, cookie, default_val=None):
-	val = request.session.get(cookie)
-	if not val:
-		val = default_val
-	return val
+	value = request.session.get(cookie)
+	if not value:
+		value = default_value
+	return value
 
