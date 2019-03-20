@@ -16,3 +16,6 @@ db.sqlite3
 # Ignore all files in migrations folder but the __init__.py
 tailored_project/tailored/migrations/**
 !tailored_project/tailored/migrations/__init__.py
+
+# Ignore all folders named __pycache__
+__pycache__/
