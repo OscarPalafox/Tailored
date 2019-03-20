@@ -47,7 +47,7 @@ def populate():
 					'datePosted': date(2019, 1, 20)}
 
 	T_Shirt_W = {'title': 'Red shirt', 'price': 20,
-					'description' : 'Brand new red shirt, only selling because it´s the wrong size. Good quality',
+					'description' : "Brand new red shirt, only selling because it's the wrong size. Good quality",
 					'sold_to' : user_profiles_instances[randint(0, len(user_profiles_instances) - 1)],
 					'dailyVisits': 17, 'size': 'M', 'picture':  'item_images/RedShirt.jpg',
 					'datePosted': date(2019, 2, 28)}

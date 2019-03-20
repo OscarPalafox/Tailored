@@ -1,13 +1,12 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from tailored.models import UserProfile, Category, Section, Item, Review
-from tailored.forms import Search_bar, ItemForm, UserProfileForm, ReviewForm
+from tailored.forms import Search_bar, ItemForm, EditUserProfileForm, UserProfileForm, ReviewForm
 from django.db.models import Q
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import date
-#from django.contrib import auth
 from django.contrib.auth.models import User
 
 def show_item(request, itemID):
@@ -192,6 +191,37 @@ def show_seller_profile(request, seller_username):
 		finally:
 			return render(request, 'tailored/Sprofile.html', context_dict)
 	return render(request, 'tailored/Sprofile.html', context_dict)
+
+@login_required
+def edit_profile(request):
+	try:
+		user = User.objects.get(username = request.user)
+		profile_user = UserProfile.objects.get(user = request.user)
+		form = EditUserProfileForm()
+
+		if (request.method == "POST"):
+			form = EditUserProfileForm(request.POST, request.FILES)
+			if form.is_valid():
+				form_keys = list(form.cleaned_data.keys())
+				print(form.cleaned_data['last_name'] == '', 'last_name')
+				
+				for key in form_keys[:2]:
+					if (form.cleaned_data[key] != '' and user.__dict__[key] != form.cleaned_data[key]):
+						print('HEY')
+						user.__dict__[key] = form.cleaned_data[key]
+				user.save()
+
+				for key in form_keys[2:]:
+					if (form.cleaned_data[key] != '' and profile_user.__dict__[key] != form.cleaned_data[key]):
+						profile_user.__dict__[key] = form.cleaned_data[key]
+				profile_user.save()
+			else:
+				print(form.errors)
+		return render(request, "tailored/edit_profile.html", {"form": form})
+
+	except ZeroDivisionError:
+		return HttpResponse("You're an admin, edit the profile from the admin website.")
+
 
 
 def search_bar(request, search = None, category = None):

@@ -60,3 +60,15 @@ class ReviewForm(forms.ModelForm):
 		#Provide an association between the ModelForm and a model
 		model = Review
 		exclude = ('buyer', 'datePosted')
+
+
+class EditUserProfileForm(forms.ModelForm):
+	first_name = forms.CharField(required = False, max_length = 128, validators = [RegexValidator(r'^([^0-9]*)$')])
+	last_name = forms.CharField(required = False, max_length = 128, validators = [RegexValidator(r'^([^0-9]*)$')])
+	picture = forms.ImageField(required = False)
+	postcode = forms.CharField(required = False, max_length = 8, validators = [RegexValidator(r'^(([gG][iI][rR] {0,}0[aA]{2})|((([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y]?[0-9][0-9]?)|(([a-pr-uwyzA-PR-UWYZ][0-9][a-hjkstuwA-HJKSTUW])|([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y][0-9][abehmnprv-yABEHMNPRV-Y]))) {0,}[0-9][abd-hjlnp-uw-zABD-HJLNP-UW-Z]{2}))$')])
+	phone = forms.CharField(required = False, max_length = 8, validators = [RegexValidator(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.0-9]*$')])
+
+	class Meta:
+		model = UserProfile
+		fields = ('first_name', 'last_name', 'picture', 'postcode', 'phone')
