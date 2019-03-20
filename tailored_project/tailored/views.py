@@ -6,7 +6,23 @@ from django.db.models import Q
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+import datetime
 
+def trending(request):
+	items = Item.objects.all()
+	trending = []
+
+	for item in Item.objects.order_by('-dailyVisits'):
+		
+		if ( (datetime.date.today() - item.datePosted).days <= 0 ):
+			if (len(trending) < 5):
+				trending.append(item)
+		else:
+			item.dailyVisits = 0
+			item.save()
+
+	context_dict = {"trendingItems": trending}
+	return render(request, 'tailored/trending.html', context_dict)
 
 def index(request):
 	return render(request, 'tailored/index.html')

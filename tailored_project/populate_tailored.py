@@ -13,28 +13,28 @@ def populate():
 				"sold" : False, "dailyVisits": 30, "size": "S", "itemPic": "item_images/MaisonShirt.jpg"}
 
 	T_Shirt_W = {"title": "Red shirt", "price": 20, "description" : "Brand new red shirt, only selling because it´s the wrong size. Good quality",
-								"sold" : False, "dailyVisits": 17, "size": "M", "itemPic":  "item_images/RedShirt.jpg"}
+				"sold" : False, "dailyVisits": 17, "size": "M", "itemPic":  "item_images/RedShirt.jpg"}
 
 	T_Shirt_K = {"title": "Blue shirt", "price": 8, "description" : "Second hand shirt. Has been used often. Still in good condition",
-								"sold" : False, "dailyVisits": 30, "size": "L", "itemPic": "item_images/BlueShirt.jpg"}
+				"sold" : False, "dailyVisits": 30, "size": "L", "itemPic": "item_images/BlueShirt.jpg"}
 
 	Trousers_M = {"title": "Blue jeans", "price": 15, "description" : "Never used before. Good quality jeans.",
-									"sold" : False, "dailyVisits": 16, "size": "S", "itemPic": "item_images/BlueJeans.jpg"}
+				"sold" : False, "dailyVisits": 16, "size": "S", "itemPic": "item_images/BlueJeans.jpg"}
 
 	Trousers_W = {"title": "Ripped jeans", "price": 5, "description" : "Heavily used jeans. Not great quality but selling it for cheap.",
-									"sold" : False, "dailyVisits": 0, "size": "M", "itemPic": "item_images/RippedJeans.jpg"}
+				"sold" : False, "dailyVisits": 0, "size": "M", "itemPic": "item_images/RippedJeans.jpg"}
 
 	Trousers_K = {"title": "Black Levi jeans", "price": 30, "description" : "Second hand jeans. Have been used slighly. Selling because closet is full.",
-									"sold" : False, "dailyVisits": 20, "size": "XL", "itemPic": "item_images/LeviJeans.jpg"}
+				"sold" : False, "dailyVisits": 20, "size": "XL", "itemPic": "item_images/LeviJeans.jpg"}
 
 	Jacket_M = {"title": "Nike Jacket", "price": 9, "description" : "Has been slightly used. Selling because closet is full",
-							"sold" : False, "dailyVisits": 10, "size": "S", "itemPic": "item_images/NikeJacket.jpg"}
+				"sold" : False, "dailyVisits": 10, "size": "S", "itemPic": "item_images/NikeJacket.jpg"}
 		
 	Jacket_W = {"title": "American vintage jacket", "price": 20, "description" : "Never used before, amazing quality",
-							"sold" : False, "dailyVisits": 4, "size": "M", "itemPic": "item_images/AmericanVintage.jpg"}
+				"sold" : False, "dailyVisits": 4, "size": "M", "itemPic": "item_images/AmericanVintage.jpg"}
 		
 	Jacket_K = {"title": "Red Coat", "price": 10, "description" : "Basic red coat for kids. Very warm and cozy. Has been used slighly.",
-							"sold" : False, "dailyVisits": 6, "size": "XXL", "itemPic": "item_images/RedCoat.jpg"}
+				"sold" : False, "dailyVisits": 6, "size": "XXL", "itemPic": "item_images/RedCoat.jpg"}
 
 	# List of items
 	items = [T_Shirt_M, T_Shirt_W, T_Shirt_K, Trousers_M, Trousers_W, Trousers_K, Jacket_M, Jacket_W, Jacket_K]

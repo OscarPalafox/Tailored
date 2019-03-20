@@ -10,7 +10,7 @@
       <link rel="icon" href="{% static 'images/Tailored.jpg' %}">
       <link rel="stylesheet" href="{% static 'css/core-style.css' %}">
       <link href="{% static 'css/responsive.css' %}" rel="stylesheet">
-      <link href="css/profile.css" rel="stylesheet">
+      <link href="{% static 'css/profile.css' %}" rel="stylesheet">
    </head>
    <body>
       <div id="wrapper">
@@ -284,11 +284,11 @@
          </div>
       </footer>
       </div>
-      <script src="js/jquery/jquery-2.2.4.min.js" ></script>
-      <script src="js/popper.min.js" ></script>
-      <script src="js/bootstrap.min.js" ></script>
-      <script src="js/plugins.js" ></script>
-      <script src="js/active.js" ></script>
+      <script src="{% static 'js/jquery/jquery-2.2.4.min.js' %}" ></script>
+      <script src="{% static 'js/popper.min.js' %}" ></script>
+      <script src="{% static 'js/bootstrap.min.js' %}" ></script>
+      <script src="{% static 'js/plugins.js' %}" ></script>
+      <script src="{% static 'js/active.js' %}" ></script>
       <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13" type="d7f0ee6292a92c016cdd2cb1-text/javascript"></script>
       <script type="d7f0ee6292a92c016cdd2cb1-text/javascript">
          window.dataLayer = window.dataLayer || [];

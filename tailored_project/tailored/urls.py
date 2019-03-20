@@ -13,5 +13,6 @@ urlpatterns = [
 	url(r'user_profile/$', views.add_item, name="add_item"),
 	url(r'^home/$', views.home_page, name = 'home_page'),
 	url(r'^search/$', views.search_bar, name = 'search'),
+	url(r'^trending/$', views.trending, name = "trending")
 ]
 

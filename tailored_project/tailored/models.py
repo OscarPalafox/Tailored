@@ -5,7 +5,7 @@ from django.core.validators import RegexValidator
 from datetime import date
 from django.template.defaultfilters import slugify
 import uuid
-
+import datetime
 class UserProfile(models.Model):
 	"""Class representing a user profile."""
 	# This line links UserProfile to a User model instance
