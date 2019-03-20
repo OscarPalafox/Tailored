@@ -59,9 +59,10 @@ class Item(models.Model):
 	"""Class representing an item."""
 	itemID = models.UUIDField(max_length = 128, primary_key=True, default=uuid.uuid4, editable = False)
 
-	title = models.CharField(max_length = 128, unique = False)
+	title = models.CharField(max_length = 128)
 	price = models.IntegerField(default = 0)
-	
+
+	sellerID = models.ForeignKey(UserProfile, related_name = 'seller')
 
 	category = models.ForeignKey(Category)
 	section = models.ForeignKey(Section)
@@ -71,7 +72,7 @@ class Item(models.Model):
 	description = models.TextField(blank = True)
 	datePosted = models.DateField(default = date.today)
 	
-	sold = models.BooleanField(default = False)
+	sold_to = models.ForeignKey(UserProfile, related_name = 'buyer', blank = True, null = True)
 	dailyVisits = models.IntegerField(default = 0)
 	size = models.ForeignKey(Size)
 

@@ -15,4 +15,3 @@ urlpatterns = [
 	url(r'^search/$', views.search_bar, name = 'search'),
 	url(r'^trending/$', views.trending, name = "trending")
 ]
-

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-{% load form_class%}
 <html lang="en">
    <head>
 		<meta charset="UTF-8">
@@ -16,25 +15,23 @@
 		<link rel="stylesheet" type="text/css" href="{% static 'css/main.css'%}">
    </head>
    <body>
+      <body>
             <div class="limiter">
 			   <div class="container-login">
 				  <div class="wrap-login p-l-50 p-r-50 p-t-77 p-b-30">
-					 <form class="login-form validate-form" method="post" acyion = ".">
-						{% csrf_token %}	
+					 <form class="login-form validate-form">
 						<span class="login-form-title p-b-55">
 						Login
 						</span>
 						<div class="wrap-input validate-input m-b-16" data-validate="Valid email is required: example@abc.com">
-						   
-						   {{form.username|addcss:"input"}}
-						   
+						   <input class="input" type="text" name="email" placeholder="Email">
 						   <span class="focus-input"></span>
 						   <span class="symbol-input">
-						   <span class="lnr lnr-user"></span>
+						   <span class="lnr lnr-envelope"></span>
 						   </span>
 						</div>
 						<div class="wrap-input validate-input m-b-16" data-validate="Password is required">
-						   {{form.password|addcss:"input"}}
+						   <input class="input" type="password" name="pass" placeholder="Password">
 						   <span class="focus-input"></span>
 						   <span class="symbol-input">
 						   <span class="lnr lnr-lock"></span>
@@ -60,17 +57,9 @@
 						</a>
 						<div class="text-center w-full p-t-115">
 						   <span class="txt1">
-						   Go Back
-						   </span>
-						   <a class="txt1 hov1" href="{% url 'tailored:index' %}">
-						   Home
-						   </a>
-						</div>
-						<div class="text-center w-full ">
-						   <span class="txt1">
 						   Not a member?
 						   </span>
-						   <a class="txt1 hov1" href="{% url 'registration_register' %}">
+						   <a class="txt1 bo1 hov1" href="{% url 'registration_register' %}">
 						   Sign up now
 						   </a>
 						</div>
@@ -91,5 +80,6 @@
             
             gtag('config', 'UA-23581568-13');
          </script>
+         <script src="https://ajax.cloudflare.com/cdn-cgi/scripts/a2bd7673/cloudflare-static/rocket-loader.min.js"  defer=""></script>
    </body>
 </html>
