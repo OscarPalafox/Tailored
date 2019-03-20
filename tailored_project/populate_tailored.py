@@ -10,19 +10,19 @@ from random import randint
 def populate():
 	# Instances of users
 	user1 = {'username': 'AndrewI', 'email': 'andrew@gmail.com', 'password': 'AndrewWorld2010',
-			'first_name': 'Andrew', 'last_name': 'Iniesta', 'picture': 'profile_images/Andrew.jpg', 'postcode': 'EC2R 8AH', 
+			'first_name': 'Andrew', 'last_name': 'Iniesta', 'picture': 'profile_images/AndrewI.jpg', 'postcode': 'EC2R 8AH', 
 			'phone': '00442078391377'}
 
 	user2 = {'username': 'CharlesP', 'email': 'charles@gmail.com', 'password': 'CharlesWorld2010',
-			'first_name': 'Charles', 'last_name': 'Puyol', 'picture': 'profile_images/Charles.jpg',
+			'first_name': 'Charles', 'last_name': 'Puyol', 'picture': 'profile_images/CharlesP.jpg',
 			'postcode': 'W1D 1AN', 'phone': '00442073726258'}
 
 	user3 = {'username': 'XavierH', 'email': 'xavier@gmail.com', 'password': 'XavierWorld2010',
-			'first_name': 'Xavier', 'last_name': 'Hernandez', 'picture': 'profile_images/Xavier.jpg',
+			'first_name': 'Xavier', 'last_name': 'Hernandez', 'picture': 'profile_images/XavierH.jpg',
 			'postcode': 'SO17 1BJ', 'phone': '0034687254448'}
 
 	user4 = {'username': 'IkerC', 'email': 'Iker@gmail.com', 'password': 'IkerWorld2010',
-			'first_name': 'Iker', 'last_name': 'Casillas', 'picture': 'profile_images/Iker.jpg',
+			'first_name': 'Iker', 'last_name': 'Casillas', 'picture': 'profile_images/IkerC.jpg',
 			'postcode': 'SA6 7JL', 'phone': '00442056343414'}
 
 	# List of users
