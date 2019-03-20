@@ -6,7 +6,7 @@
 <body>
 	<h1>Add an Item</h1>
 	<div>
-		<form id = "item_form" method="post" action="{% url 'tailored:add_item' %}" enctype = "multipart/form-data">
+		<form id = "item_form" method = "post" action = "{% url 'tailored:add_item' %}" enctype = "multipart/form-data">
 			{% csrf_token %}
 			{% for hidden in form.hidden_fields %}
 				{{ hidden }}
@@ -18,7 +18,7 @@
 				{{ field }}
 			</li>
 			{% endfor %}
-			<input type="submit" name="submit" value="Add an Item" />
+			<input type = "submit" name = "submit" value = "Add an Item" />
 		</form>
 	</div>
 </body>
