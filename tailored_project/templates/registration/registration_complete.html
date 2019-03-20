@@ -1,17 +1,11 @@
-<!DOCTYPE html>
+{% extends 'registration/registration_base.html' %}
 {% load staticfiles %}
-<html>
-	<head>
-		<title>Registration complete</title>
-	</head>
 
-	<body>
+
+
 		<h1>Registration complete</h1>
 		<p>Please activate your account :)</p>
 
 	<div>
 		<a href="{% url 'tailored:index' %}">Home</a>
 	</div>
-
-	</body>
-</html>
