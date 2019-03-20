@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 
 
 from tailored.models import UserProfile, Category, Section, Item, Review
-from tailored.forms import CategoryForm, SectionForm, UserProfileForm, Search_bar
+
 from datetime import datetime
 def show_item(request, itemID):
 	item= Item.objects.filter(itemID=itemID)
