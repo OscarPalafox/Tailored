@@ -1,15 +1,14 @@
 from django.contrib import admin
 from tailored.models import Section, Category, Item, UserProfile, Review, Size
+from registration.models import RegistrationProfile
+from tailored.myadmin import ItemAdmin, ReviewAdmin, UserProfileAdmin, MyRegistrationAdmin
 
-class PersonAdmin(admin.ModelAdmin):
-	readonly_fields = ('itemID', )
 
 admin.site.register(Section)
 admin.site.register(Category)
-admin.site.register(Item, PersonAdmin)
-
-admin.site.register(UserProfile)
-admin.site.register(Review)
+admin.site.register(Item, ItemAdmin)
+admin.site.register(UserProfile, UserProfileAdmin)
+admin.site.register(Review, ReviewAdmin)
 admin.site.register(Size)
-
-
+admin.site.unregister(RegistrationProfile)
+admin.site.register(RegistrationProfile, MyRegistrationAdmin)

@@ -80,6 +80,7 @@
         var label_result = jQuery(this).data('label-result');
         var t = $(this);
         $(this).slider({
+
             range: true,
             min: min,
             max: max,
@@ -88,7 +89,31 @@
                 var result = label_result + " " + unit + ui.values[0] + ' - ' + unit + ui.values[1];
                 console.log(t);
                 t.closest('.slider-range').find('.range-price').html(result);
+            var  items, i, priceValue, price, num;
+
+         
+          items = document.getElementsByClassName("item");
+          
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 0; i < items.length; i++) {
+            price = items[i].getElementsByClassName("product-price")[0];
+
+            if (price) {
+             
+                priceValue=price.innerText;
+                num=parseInt(price.innerText, 10);
+                
+              if (num>ui.values[0] && num<ui.values[1]  ){
+              
+                items[i].style.display = "";
+              } else {
+
+                items[i].style.display = "none";
+              }
+            } 
+          }
             }
+
         });
     })
     $("a[href='#']").on('click', function($) {
