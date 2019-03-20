@@ -10,6 +10,13 @@ from datetime import date
 #from django.contrib import auth
 from django.contrib.auth.models import User
 
+
+def show_item(request, itemID):
+	item = Item.objects.filter(itemID = itemID)
+	context_dict = {}
+	context_dict['items'] = item
+	return render(request, 'tailored/product.html', context_dict)
+
 def trending(request):
 	items = Item.objects.all()
 	trending = []
