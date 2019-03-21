@@ -21,13 +21,15 @@ def show_item(request, itemID):
 	context_dict = {}
 	context_dict['item'] = item
 	print(item.dailyVisits, 'before')
-	if first_visit(request):
+	response=render(request, 'tailored/product.html', context_dict)
+	if first_visit(request, response, str(item.itemID)):
 		print('HEY')
 		item.dailyVisits += 1
 		item.save()
 
+
 	print(item.dailyVisits, 'after')
-	return render(request, 'tailored/product.html', context_dict)
+	return response
 
 def trending(request):
 	items = Item.objects.all()
@@ -348,29 +350,20 @@ def home_page(request):
 	#placeholder for homepage, feel free to change it.
 	return render(request, 'tailored/index.html', context_dict)
 
-
-def first_visit(request):
-	first = get_server_side_cookie(request,'last_visit') == None
-
-	last_visit_cookie = get_server_side_cookie(request,
-												'last_visit',
-													str(datetime.now()))
-
-
-	last_visit_time = datetime.strptime(last_visit_cookie[:-7],
-											'%Y-%m-%d %H:%M:%S')
-	if ((datetime.now() - last_visit_time).days > 0) or first:
-		request.session['last_visit'] = str(datetime.now())
+def first_visit(request, response, item):
+	
+	last_visit_cookie=request.COOKIES.get('last_visit'+item, "first")
+	
+	if(last_visit_cookie=="first"):
+		response.set_cookie('last_visit'+item, str(datetime.now()))
 		return True
-
 	else:
-		request.session['last_visit'] = last_visit_cookie
-		return False
-
-def get_server_side_cookie(request, cookie, default_val=None):
-	value = request.session.get(cookie)
-	if not value:
-		value = default_value
-	return value
+		last_visit_time=datetime.strptime(last_visit_cookie[:-7],'%Y-%m-%d %H:%M:%S')
+		if ((datetime.now() - last_visit_time).days > 0):
+			response.set_cookie('last_visit'+item, str(datetime.now()))
+			return True
+		else:
+			response.set_cookie('last_visit'+item , last_visit_cookie)
+			return False
 
 
