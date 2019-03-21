@@ -6,12 +6,12 @@
 <body>
 	<h1>Add an Item</h1>
 	<div>
-		<form id = "item_form" method = "post" action = "{% url 'tailored:add_item' %}" enctype = "multipart/form-data">
+		<form id = "item_form" method = "post" action = "{% url 'tailored:user_profile' %}" enctype = "multipart/form-data">
 			{% csrf_token %}
-			{% for hidden in form.hidden_fields %}
+			{% for hidden in item_form.hidden_fields %}
 				{{ hidden }}
 			{% endfor %}
-			{% for field in form.visible_fields %}
+			{% for field in item_form.visible_fields %}
 			<li>
 				{{ field.errors }}
 				{{ field.help_text }}
