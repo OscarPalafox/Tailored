@@ -1,6 +1,4 @@
-
 from django.http import HttpResponseRedirect, HttpResponse, Http404
-
 from django.shortcuts import render, get_object_or_404
 from tailored.models import UserProfile, Category, Section, Item, Review
 from tailored.forms import Search_bar, ItemForm, EditUserProfileForm, UserProfileForm, ReviewForm, EditItemForm
@@ -96,6 +94,7 @@ def show_category(request, title):
 
 	return render(request, 'tailored/category.html', context_dict)
 
+
 @login_required
 def add_item(request):
 	form = ItemForm()
@@ -167,6 +166,7 @@ def show_seller_profile(request, seller_username):
 
 			context_dict['form'] = form
 	return render(request, 'tailored/Sprofile.html', context_dict)
+
 
 @login_required
 def edit_profile(request):
@@ -335,7 +335,7 @@ def new_in(request, search = None, page=1):
 		context_dict['items'] = items
 		context_dict['pages']= int(len(items)/6)
 		context_dict['min']=6*(int(page)-1)
-		context_dict['max']=6*(int(page))
+		context_dict['max'] = 6 * (int(page))
 		return render(request, 'tailored/shop_bootstrap.html',context_dict)
 	else:
 		return home_page(request)
@@ -352,18 +352,16 @@ def home_page(request):
 
 def first_visit(request, response, item):
 	
-	last_visit_cookie=request.COOKIES.get('last_visit'+item, "first")
+	last_visit_cookie = request.COOKIES.get('last_visit' + item, "first")
 	
-	if(last_visit_cookie=="first"):
-		response.set_cookie('last_visit'+item, str(datetime.now()))
+	if(last_visit_cookie == "first"):
+		response.set_cookie('last_visit' + item, str(datetime.now()))
 		return True
 	else:
-		last_visit_time=datetime.strptime(last_visit_cookie[:-7],'%Y-%m-%d %H:%M:%S')
+		last_visit_time = datetime.strptime(last_visit_cookie[:-7],'%Y-%m-%d %H:%M:%S')
 		if ((datetime.now() - last_visit_time).days > 0):
-			response.set_cookie('last_visit'+item, str(datetime.now()))
+			response.set_cookie('last_visit' + item, str(datetime.now()))
 			return True
 		else:
-			response.set_cookie('last_visit'+item , last_visit_cookie)
+			response.set_cookie('last_visit' + item , last_visit_cookie)
 			return False
-
-
