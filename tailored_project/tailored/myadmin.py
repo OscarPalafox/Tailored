@@ -7,7 +7,34 @@ from registration.users import UsernameField
 
 
 class ItemAdmin(admin.ModelAdmin):
+	list_display = ('title', 'seller', 'section', 'category', 'sold_to')
 	readonly_fields = ('itemID', )
+
+
+class ReviewAdmin(admin.ModelAdmin):
+	list_display = ('item', 'get_item_seller','rating', 'datePosted')
+
+	def get_item_seller(self, review):
+		return review.item.seller
+
+	get_item_seller.admin_order_field  = 'item__seller'
+	get_item_seller.short_description = 'Seller'
+
+
+class UserProfileAdmin(admin.ModelAdmin):
+	list_display = ('user', 'get_user_first', 'get_user_last', 'postcode')
+
+	def get_user_first(self, user_profile):
+		return user_profile.user.first_name
+
+	get_user_first.admin_order_field  = 'user__first_name'
+	get_user_first.short_description = 'First Name'
+
+	def get_user_last(self, user_profile):
+		return user_profile.user.last_name
+
+	get_user_last.admin_order_field  = 'user__last_name'
+	get_user_last.short_description = 'Last Name'
 
 
 class MyRegistrationAdmin(admin.ModelAdmin):
