@@ -46,7 +46,7 @@
 		$(thisAlert).removeClass('alert-validate');
 	}
 	
-
+	
 
 	$("#S").click(function(){
 		filterBySize("S");

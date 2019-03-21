@@ -15,11 +15,16 @@ def show_item(request, itemID):
 	item = get_object_or_404(Item, itemID = itemID)
 	print(item)
 	context_dict = {}
+	isSeller=request.user==item.seller.user
+	context_dict['isSeller']=isSeller
 	context_dict['item'] = item
+	context_dict['itemID']=item.itemID
 	print(item.dailyVisits, 'before')
 	related=Item.objects.filter(category=item.category)
-	context_dict['trendingItems']=related
+	context_dict['trendingItems']=related[0:3]
 	response=render(request, 'tailored/product.html', context_dict)
+	
+
 	if first_visit(request, response, str(item.itemID)):
 		print('HEY')
 		item.dailyVisits += 1
@@ -66,7 +71,7 @@ def trending(request):
 				trending.append(item)
 	
 
-	context_dict = {"trendingItems": trending}
+	context_dict = {"trendingItems": trending[0:3]}
 	return render(request, 'tailored/index.html', context_dict)
 
 
