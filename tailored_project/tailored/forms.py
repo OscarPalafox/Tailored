@@ -23,7 +23,7 @@ class ItemForm(forms.ModelForm):
 	section = forms.ModelChoiceField(queryset = Section.objects.all(), help_text = 'Select a section: ')
 	category = forms.ModelChoiceField(queryset = Category.objects.all(), help_text = 'Select a category: ')
 
-	picture = forms.ImageField(required = False, 
+	picture= forms.ImageField(required = False, 
 		help_text = 'Upload a picture of the item: ')
 	
 	description = forms.CharField(widget = forms.Textarea, 
@@ -46,14 +46,14 @@ class UserProfileForm(RegistrationFormTermsOfService, RegistrationFormUniqueEmai
 	field_order = ['first_name', 'last_name', 'postcode', 'phone', 'picture']
 
 class ReviewForm(forms.ModelForm):
-	rating = forms.IntegerField(help_text = 'Please give a rating to the seller', min_value = 0, max_value = 5)
+	rating = forms.IntegerField(help_text = 'Rate the seller out of 5:', min_value = 0, max_value = 5)
 	review_text = forms.CharField(widget = forms.Textarea, 
 		help_text = 'Please give a brief review of the seller.', required = False)
 
 
 	def __init__(self, user_items, *args, **kwargs):
 		super(ReviewForm, self).__init__(*args, **kwargs)
-		self.fields['item'] = forms.ModelChoiceField(queryset = user_items, help_text = 'Select an item: ')
+		self.fields['item'] = forms.ModelChoiceField(queryset = user_items, help_text = 'Select an item to review: ')
 
 	# Inline class to provide additional information on the form
 	class Meta:

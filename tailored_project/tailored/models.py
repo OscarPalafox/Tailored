@@ -81,7 +81,6 @@ class Item(models.Model):
 
 class Review(models.Model):
 	"""Class representing a review."""
-	buyer = models.ForeignKey(UserProfile)
 	item = models.ForeignKey(Item)
 	rating = models.IntegerField(validators = [MinValueValidator(0), MaxValueValidator(5)])
 	review_text = models.TextField(blank = True)

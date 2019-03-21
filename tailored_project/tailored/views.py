@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from tailored.models import UserProfile, Category, Section, Item, Review
 from tailored.forms import Search_bar, ItemForm, UserProfileForm, ReviewForm
 from django.db.models import Q
@@ -7,28 +7,54 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import date
-#from django.contrib import auth
 from django.contrib.auth.models import User
+
+"""
+def get_trending_items():
+	items = Item.objects.all()
+	trending = []
+
+	for item in Item.objects.order_by('-dailyVisits'):
+		if ( ((date.today() - item.datePosted).days <= 0) and (item.sold_to == None)):
+			if (len(trending) <= 5):
+				trending.append(item)
+		else:
+			item.dailyVisits = 0
+			item.save()
+	for item in Item.objects.order_by('-dailyVisits'):
+		if ((len(trending)) <= 5 and (item.sold_to == None) and (item not in trending)):
+			trending.append(item)
+	
+	return trending
+"""
 
 def trending(request):
 	items = Item.objects.all()
 	trending = []
 
 	for item in Item.objects.order_by('-dailyVisits'):
-		
-		if ( (date.today() - item.datePosted).days <= 0 ):
-			if (len(trending) < 5):
+		if ( ((date.today() - item.datePosted).days <= 0) and (item.sold_to == None)):
+			if (len(trending) <= 5):
 				trending.append(item)
 		else:
 			item.dailyVisits = 0
 			item.save()
 
-	context_dict = {"trendingItems": trending}
-	return render(request, 'tailored/trending.html', context_dict)
+	for item in Item.objects.order_by('-dailyVisits'):
+		if ((len(trending)) <= 5 and (item.sold_to == None) and (item not in trending)):
+			trending.append(item)
+	
+	return trending
 
+	context_dict = {"trendingItems": trending}
+	return render(request, 'tailored/index.html', context_dict)
+
+
+
+"""
 def index(request):
 	return render(request, 'tailored/index.html')
-
+"""
 
 def items(request):
 	item_list = Item.objects.order_by('-dailyVisits')[:5]
@@ -76,22 +102,28 @@ def show_category(request, title):
 
 @login_required
 def add_item(request):
-	try:
-		form = ItemForm()
+	form = ItemForm()
+	user_profile = get_object_or_404(UserProfile, user = User.objects.get(username = request.user))
+	context_dict = {}
+	context_dict["user_profile"] = user_profile
+	
 
-		if (request.method == "POST"):
-			form = ItemForm(request.POST, request.FILES)
-			if form.is_valid():
-				item = form.save(commit = False)
-				item.seller = UserProfile.objects.get(user = request.user)
-				item.save()
-				return HttpResponseRedirect(reverse('tailored:show_section',
-					kwargs = {'title': str(form.cleaned_data.get("section"))}))
-			else:
-				print(form.errors)
-		return render(request, "tailored/add_item.html", {"form": form})
-	except:
-		return HttpResponse("You're an admin, add the item from the admin website.")
+	reviews_user = Review.objects.filter(Q(item__in = Item.objects.filter(seller = user_profile)))
+	
+	context_dict['reviews_user'] = reviews_user.order_by('-datePosted')
+
+	if (request.method == "POST"):
+		form = ItemForm(request.POST, request.FILES)
+		if form.is_valid():
+			item = form.save(commit = False)
+			item.seller = UserProfile.objects.get(user = request.user)
+			item.save()
+			return HttpResponseRedirect(reverse('tailored:show_section',
+				kwargs = {'title': str(form.cleaned_data.get("section"))}))
+		else:
+			print(form.errors)
+	context_dict["form"] = form
+	return render(request, "tailored/user_profile.html", context_dict)
 
 
 @login_required
@@ -133,6 +165,11 @@ def show_seller_profile(request, seller_username):
 
 	context_dict['reviews_seller'] = reviews_seller.order_by('-datePosted')
 
+	
+	trending = get_trending_items()
+	context_dict["trendingItems"] = trending
+	
+
 	if request.user.is_authenticated():
 		try:
 			items_reviewed = []
@@ -160,10 +197,9 @@ def show_seller_profile(request, seller_username):
 						print(form.errors)
 
 				context_dict['form'] = form
-				return render(request, "tailored/Sprofile.html", context_dict)
+				return render(request, "tailored/seller_profile.html", context_dict)
 		finally:
-			return render(request, 'tailored/Sprofile.html', context_dict)
-
+			return render(request, 'tailored/seller_profile.html', context_dict)
 
 
 def search_bar(request, search = None, category = None):

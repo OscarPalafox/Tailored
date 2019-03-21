@@ -25,65 +25,58 @@
                      <h4 class="m-y-2">User Profile</h4>
                      <div class="row">
                         <div class="col-md-6">
-                           <h6>About</h6>
+                           <h6><font size="5">About</font></h6>
                            <p>
-                              Name: 
+                              <strong>Name: </strong> {{ user_profile }}
                            </p>
                            <p>
-                              Email: 
+                              <strong>Email: </strong> {{ user.email }}
                            </p>
                            <p>
-                              Phone Number: 
-                           </p>
-                           <h6>Location</h6>
-                           <p>
-                              City:
+                              <strong>Phone Number: </strong> {{ user_profile.phone }}
                            </p>
                            <p>
-                              Post Code:
+                              <strong>Post Code: </strong> {{ user_profile.postcode }}
                            </p>
                         </div>
                         <div class="col-md-6">
                            <h6>Rating</h6>
                            <div class="top_seller_product_rating mb-15">
+                              {% if rating == 0 %}
+                                 You don't have a rating
+                              {% else %}
+                                 {% for rate in rating %}
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                 {% endfor %}
+                              {% endif %}
+                              <!--
                               <i class="fa fa-star" aria-hidden="true"></i>
                               <i class="fa fa-star" aria-hidden="true"></i>
                               <i class="fa fa-star" aria-hidden="true"></i>
                               <i class="fa fa-star" aria-hidden="true"></i>
                               <i class="fa fa-star" aria-hidden="true"></i>
+                           -->
                            </div>
                         </div>
                         <div class="col-md-12">
-                           <h4 class="m-t-2"><span class="fa fa-clock-o ion-clock pull-xs-right"></span> Reviews</h4>
+                           <h4 class="m-t-2"><span class="fa fa-clock-o ion-clock pull-xs-right"></span>Your Reviews</h4>
+                           {% if reviews_user %}
                            <table class="table table-hover table-striped">
                               <tbody>
-                                 <tr>
-                                    <td>
-                                       <strong>Abby</strong> joined ACME Project Team in <strong>`Collaboration`</strong>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <strong>Gary</strong> deleted My Board1 in <strong>`Discussions`</strong>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <strong>Kensington</strong> deleted MyBoard3 in <strong>`Discussions`</strong>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <strong>John</strong> deleted My Board1 in <strong>`Discussions`</strong>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <strong>Skell</strong> deleted his post Look at Why this is.. in <strong>`Discussions`</strong>
-                                    </td>
-                                 </tr>
+                                 {% for review in reviews_user %}
+                                    <tr>
+                                       <td>
+                                          Item bought: "{{ review.item }}"<br />
+                                          {{ review.review_text }}. Rating: {{ review.rating }}/5 <br />
+                                          <font size="-1"> Date posted: {{ review.datePosted}} </font>
+                                       </td>
+                                    </tr>
+                                 {% endfor %} 
                               </tbody>
                            </table>
+                           {% else %}
+                              <strong>You have no reviews</strong>
+                           {% endif %}
                         </div>
                      </div>
                   </div>
@@ -126,7 +119,7 @@
                      <label class="col-lg-3 col-form-label form-control-label">Upload item's photo:</label>
                      <div class="col-lg-3">
                         <label class="custom-file">
-                           {{form.itemPic|addcss:"form-control"}}
+                           {{form.picture|addcss:"form-control"}}
                            <span class="custom-file-control">Choose file</span>
                         </label>
                      </div>
@@ -183,7 +176,7 @@
             </div>
          </div> 
        <div class="col-lg-4 pull-lg-8 text-xs-center">
-         <img src="{% static 'images/placeholder.jpg'%}" class="m-x-auto img-fluid img-circle" alt="avatar">
+         <img src="{{ MEDIA_URL }}{{ user_profile.picture }}" class="m-x-auto img-fluid img-circle" alt="avatar" />
          <h6 class="m-t-2">Upload a different photo</h6>
          <label class="custom-file">
             <input type="file" id="file" class="custom-file-input">

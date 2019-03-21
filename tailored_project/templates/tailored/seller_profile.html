@@ -21,20 +21,16 @@
                         <div class="col-md-6">
                            <h6>About</h6>
                            <p>
-                              Name: 
+                              Name: {{ seller_user }}
                            </p>
                            <p>
-                              Email: 
+                              Email: {{ seller_user.email }}
                            </p>
                            <p>
-                              Phone Number: 
-                           </p>
-                           <h6>Location</h6>
-                           <p>
-                              City:
+                              Phone Number: {{ seller_user.userprofile.phone }}
                            </p>
                            <p>
-                              Post Code:
+                              Post Code: {{ seller_user.userprofile.postcode }}
                            </p>
                         </div>
                         <div class="col-md-6">
@@ -51,64 +47,88 @@
                            <h4 class="m-t-2"><span class="fa fa-clock-o ion-clock pull-xs-right"></span> Reviews</h4>
                            <table class="table table-hover table-striped">
                               <tbody>
-                                 <tr>
-                                    <td>
-                                       <strong>Abby</strong> joined ACME Project Team in <strong>`Collaboration`</strong>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <strong>Gary</strong> deleted My Board1 in <strong>`Discussions`</strong>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <strong>Kensington</strong> deleted MyBoard3 in <strong>`Discussions`</strong>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <strong>John</strong> deleted My Board1 in <strong>`Discussions`</strong>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <strong>Skell</strong> deleted his post Look at Why this is.. in <strong>`Discussions`</strong>
-                                    </td>
-                                 </tr>
-								 <tr>
-									<td>
-										<form role="form">
-											<div class="form-group row">
-												<label class="col-lg-3 col-form-label form-control-label"></label>
-												<div class="col-lg-9">
-													<input class="form-control desc-form" type="text" placeholder="Add Review">
-												</div>
-											</div>
-											<div class="form-group row">
-												<label class="col-lg-3 col-form-label form-control-label"></label>
-												<div class="col-lg-9">
-													<button class="btn btn-primary" type="submit">Add Review</button>
-												</div>
-											</div>
-										</form>
-									</td>
-								</tr>
+                                 {% if reviews_seller %}
+                                    {% for review in reviews_seller %}
+                                       <tr>
+                                          <td>
+                                             Item bought: "{{ review.item }}"<br />
+                                             {{ review.review_text }}. Rating: {{ review.rating }}/5 <br />
+                                             <font size="-1"> Date posted: {{ review.datePosted}} </font> 
+                                          </td>
+                                       </tr>
+                                    {% endfor %}
+                                 {% else %}
+                                    <strong>This user has no reviews</strong>
+                                 {% endif %}
+                                 
+                             
+            								<tr>
+            									<td>
+
+
+            										
+            											<div class="form-group row">
+            												<label class="col-lg-3 col-form-label form-control-label"></label>
+            												<div class="col-lg-9">
+                                                   {% if items_to_review %}
+                                                   <div class="row">
+                                                      <form id = "review_form" method = "post" action = "{% url 'tailored:show_seller_profile' seller_user.username %}">
+                                                         {% csrf_token %}
+                                                         <div class="col-md-12">
+                                                            {% for field in form.visible_fields %}
+                                                               <div class="col-md-12">
+                                                                   {{field.help_text}}
+                                                                   <p>{{ field }}
+                                                               </div>
+                                                      
+                                                            {% endfor %}
+                                                            <button type="submit" class="btn btn-primary">
+                                                            <span class="glyphicon glyphicon-search"></span> Submit
+                                                         </button>
+                                                         </div>
+                                                         
+                                                    </form>
+                                                   </div>
+                                                   {% else %}
+                                                      You have no items to review from this user
+                                                   {% endif %}
+                                                   
+            												</div>
+            											
+                                             </div>
+            									</td>
+            								</tr>
+
                               </tbody>
                            </table>
                         </div>
                      </div>
-               </div>
+                  </div>
 			   <div class="tab-pane active" id="products">
 			   <div class="container">
                   <div class="row tailored-new-arrivals">
+                     <!--
+                     {% for item in trendingItems %}
+                  
+                        <div class="col-12 col-sm-6 col-md-4 single_gallery_item animated fadeInUpBig" data-wow-delay="0.125s">
+                           <div class="product-img">
+
+                              <img src="{{ MEDIA_URL }}{{ item.picture }}" alt="">               
+                           </div>
+                           <div class="product-description">
+                              <h4 class="product-price">£{{ item.price }}</h4>
+                              <p>{{ item.title }}</p>
+                           </div>
+                        </div>
+                     {% endfor %}
+                  -->
                      <div class="col-12 col-sm-6 col-md-4 single_gallery_item animated fadeInUpBig" data-wow-delay="0s">
                         <div class="product-img">
-                           <img src="img/product-img/product-1.jpg" alt="">               
+                           <img src="img/product-img/product-2.jpg" alt="">                        
                         </div>
                         <div class="product-description">
                            <h4 class="product-price">$39.90</h4>
-                           <p>Jeans midi cocktail dress</p>
+                           <p>Jeans midi cocktail dress</p>                           
                         </div>
                      </div>
                      <div class="col-12 col-sm-6 col-md-4 single_gallery_item animated fadeInUpBig" data-wow-delay="0.125s">
@@ -159,6 +179,7 @@
                            <p>Jeans midi cocktail dress</p>
                         </div>
                      </div>
+                  
                   </div>
                </div>
 			   </div>
