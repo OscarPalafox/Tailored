@@ -413,4 +413,3 @@ class ReviewMethodTests(TestCase):
 
 		review = Review(item = item, rating = 6)
 		self.assertRaises(ValidationError, review.save)
-

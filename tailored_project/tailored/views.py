@@ -89,6 +89,7 @@ def show_category(request, title):
 
 	return render(request, 'tailored/category.html', context_dict)
 
+
 @login_required
 def add_item(request):
 	form = ItemForm()
@@ -160,6 +161,7 @@ def show_seller_profile(request, seller_username):
 
 			context_dict['form'] = form
 	return render(request, 'tailored/Sprofile.html', context_dict)
+
 
 @login_required
 def edit_profile(request):
@@ -328,6 +330,7 @@ def first_visit(request):
 	else:
 		request.session['last_visit'] = last_visit_cookie
 		return False
+
 
 def get_server_side_cookie(request, cookie, default_val = None):
 	val = request.session.get(cookie)
