@@ -272,8 +272,8 @@ def search_bar(request, search = None, page=1):
 		check = request.POST.get('search')
 		print(check, "CHECK")
 		if check != None:
-			if check!="":
-				return HttpResponseRedirect(check+"/")
+			if check != "":
+				return HttpResponseRedirect(check + "/")
 			else:
 				return HttpResponseRedirect(reverse('tailored:search', kwargs = {'search': 'all'}))
 		else:
@@ -282,59 +282,58 @@ def search_bar(request, search = None, page=1):
 	context_dict = {}
 	context_dict['categories'] = categories
 	items = []	
-	if search=="all" or search==None or search=="":
-		search="all"
-		items=Item.objects.all()
+	if search == "all" or search == None or search == "":
+		search = "all"
+		items = Item.objects.all()
 	else:
 		if search != None:
-			search=search.split(" ")
+			search = search.split(" ")
 			for word in search:
 				items += Item.objects.filter(Q(description__contains = word ) | Q(title__contains = word)
-					|Q(category=word)|Q(section=word))
-			searchS="_".join(search)
+					| Q(category = word) | Q(section = word))
+			searchS = "_".join(search)
 			context_dict['search'] = searchS
 		else:
-			
 			return home_page(request)
-	maxi=0
+	maxi = 0
 	for item in items:
-		if item.price>maxi:
-			maxi=item.price
-	context_dict['maxi']=maxi
+		if item.price > maxi:
+			maxi = item.price
+	context_dict['maxi'] = maxi
 	context_dict['page']  = page
 	context_dict['items'] = items
 	context_dict['pages']= int(len(items)/6)
-	context_dict['min']=6*(int(page)-1)
-	context_dict['max']=6*(int(page))
+	context_dict['min'] = 6 * (int(page) - 1)
+	context_dict['max'] = 6 * (int(page))
 	return render(request, 'tailored/shop_bootstrap.html',context_dict)
 
 
-def new_in(request, search = None, page=1):
+def new_in(request, search = None, page = 1):
 	context_dict = {}
 	items = []	
-	search=search
+	search = search
 	print("hello")
 	if search != None:
-		search=search.split(" ")
-		toAdd=[]
+		search = search.split(" ")
+		toAdd = []
 		for word in search:
 
 			toAdd += Item.objects.filter(Q(description__contains = word ) | Q(title__contains = word)
-				|Q(category=word)|Q(section=word))
+				| Q(category = word) | Q(section = word))
 			for item in toAdd:
 				if (date.today()- item.datePosted).days<=7:
 					items+=[item]
 		searchS="_".join(search)
-		maxi=0
+		maxi = 0
 		for item in items:
-			if item.price>maxi:
-				maxi=item.price
-		context_dict['maxi']=maxi+5
+			if item.price > maxi:
+				maxi = item.price
+		context_dict['maxi'] = maxi + 5
 		context_dict['search'] = searchS
 		context_dict['page']  = page
 		context_dict['items'] = items
-		context_dict['pages']= int(len(items)/6)
-		context_dict['min']=6*(int(page)-1)
+		context_dict['pages'] = int(len(items)/6)
+		context_dict['min'] = 6 * (int(page) - 1)
 		context_dict['max'] = 6 * (int(page))
 		return render(request, 'tailored/shop_bootstrap.html',context_dict)
 	else:
