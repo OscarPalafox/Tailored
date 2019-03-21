@@ -95,24 +95,6 @@ def show_category(request, title):
 	return render(request, 'tailored/category.html', context_dict)
 
 
-@login_required
-def add_item(request):
-	form = ItemForm()
-	seller = get_object_or_404(UserProfile, user = request.user)
-
-	if request.method == 'POST':
-		form = ItemForm(request.POST, request.FILES)
-		if form.is_valid():
-			item = form.save(commit = False)
-			item.seller = seller
-			item.save()
-			return HttpResponseRedirect(reverse('tailored:show_section',
-				kwargs = {'title': str(form.cleaned_data.get('section'))}))
-		else:
-			print(form.errors)
-	return render(request, 'tailored/add_item.html', {'form': form})
-
-
 def show_seller_profile(request, seller_username):
 	context_dict = {}
 	
@@ -167,6 +149,25 @@ def show_seller_profile(request, seller_username):
 			context_dict['form'] = form
 	return render(request, 'tailored/Sprofile.html', context_dict)
 
+
+@login_required
+def user_profile(request):
+	context_dict = {}
+	item_form = ItemForm()
+	seller = get_object_or_404(UserProfile, user = request.user)
+
+	if request.method == 'POST':
+		item_form = ItemForm(request.POST, request.FILES)
+		if item_form.is_valid():
+			item = form.save(commit = False)
+			item.seller = seller
+			item.save()
+			return HttpResponseRedirect(reverse('tailored:show_section',
+				kwargs = {'title': str(form.cleaned_data.get('section'))}))
+		else:
+			print(item_form.errors)
+	context_dict['item_form'] = item_form
+	return render(request, 'tailored/add_item.html', context_dict)
 
 @login_required
 def edit_profile(request):
