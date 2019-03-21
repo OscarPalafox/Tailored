@@ -43,7 +43,7 @@
 						<div class="single_product_desc">
 						   <h4 class="title"><a href="#">{{ item.title }}</a></h4>
 
-						   <h4 class="price">{{ item.price }} £</h4>
+						   <h4 class="price">£{{ item.price }}</h4>
 						   <a href="{% url 'tailored:show_seller_profile' item.seller.user %}" class="seller">Sold by <span class="text-muted" >
                       {{item.seller.user}}</span></a>
                       

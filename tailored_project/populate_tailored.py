@@ -38,85 +38,128 @@ def populate():
 										user_data['postcode'], user_data['phone']))
 
 
+	# List of sections
+	sections = ['Men',  'Women', 'Kids']
+
+	
+	# List of categories
+	categories = ['T-Shirts',  'Trousers', 'Jackets']
+
+	# List of instances of sections
+	sections_instances = []
+	for section in sections:
+		sections_instances.append(add_section(section))
+
+	
+	# List of instances of categories
+	categories_instances = []
+	for category in categories:
+		categories_instances.append(add_category(category))
+
 	# Items data
 	T_Shirt_M = {'title': 'Maison Margiela T-Shirt', 'price': 60,
 					'description' : 'Slightly but still in good condition. Amazing quality',
 					'sold_to' : user_profiles_instances[0],
 					'seller': user_profiles_instances[1],
 					'dailyVisits': 30, 'size': 'S', 'picture': 'item_images/MaisonShirt.jpg',
-					'datePosted': date(2019, 1, 20)}
+					'datePosted': date(2019, 1, 20),
+					'category': categories_instances[0],
+					'section': sections_instances[0]}
+
+	T_Shirt2 = {'title': 'Green Hawaiian Shirt', 'price': 20,
+					'description' : 'Got it as an unwanted birthday gift. Selling for $$$. Never worn before.',
+					'sold_to' : None,
+					'seller': user_profiles_instances[1],
+					'dailyVisits': 30, 'size': 'XXL', 'picture': 'item_images/GreenHawaiianShirt.jpg',
+					'datePosted': date(2019, 1, 20),
+					'category': categories_instances[0],
+					'section': sections_instances[0]}
 
 	T_Shirt_W = {'title': 'Red shirt', 'price': 20,
 					'description' : "Brand new red shirt, only selling because it's the wrong size. Good quality",
 					'sold_to' : user_profiles_instances[1],
 					'seller': user_profiles_instances[2],
 					'dailyVisits': 17, 'size': 'M', 'picture':  'item_images/RedShirt.jpg',
-					'datePosted': date(2019, 2, 28)}
+					'datePosted': date(2019, 2, 28),
+					'category': categories_instances[0],
+					'section': sections_instances[1]}
 
 	T_Shirt_K = {'title': 'Blue shirt', 'price': 8,
 					'description' : 'Second hand shirt. Has been used often. Still in good condition',
 					'sold_to' : None, 'seller': user_profiles_instances[0], 'dailyVisits': 30, 'size': 'L',
-					'picture': 'item_images/BlueShirt.jpg'}
+					'picture': 'item_images/BlueShirt.jpg',
+					'category': categories_instances[0],
+					'section': sections_instances[2]}
 
 	Trousers_M = {'title': 'Blue jeans', 'price': 15,
 					'description' : 'Never used before. Good quality jeans.', 'sold_to' : None,
 					'seller': user_profiles_instances[3],
-					'dailyVisits': 16, 'size': 'XS', 'picture': 'item_images/BlueJeans.jpg'}
+					'dailyVisits': 16, 'size': 'XS', 'picture': 'item_images/BlueJeans.jpg',
+					'category': categories_instances[1],
+					'section': sections_instances[0]}
 
 	Trousers_W = {'title': 'Ripped jeans', 'price': 5,
 					'description' : 'Heavily used jeans. Not great quality but selling it for cheap.',
 					'sold_to' : user_profiles_instances[2],
 					'seller': user_profiles_instances[3],
 					'dailyVisits': 0, 'size': 'M', 'picture': 'item_images/RippedJeans.jpg', 
-					'datePosted': date(2019, 2, 10)}
+					'datePosted': date(2019, 2, 10),
+					'category': categories_instances[1],
+					'section': sections_instances[1]}
+
+	Trousers2 = {'title': 'Trousers for women', 'price': 10,
+					'description' : 'Used slightly and has a few stains, but still good quality.',
+					'sold_to' : None,
+					'seller': user_profiles_instances[3],
+					'dailyVisits': 0, 'size': 'XL', 'picture': 'item_images/WomenTrousers.jpg', 
+					'datePosted': date(2019, 2, 10),
+					'category': categories_instances[1],
+					'section': sections_instances[1]}
 
 	Trousers_K = {'title': 'Black Levi jeans', 'price': 30,
 					'description' : 'Second hand jeans. Have been used slighly. Selling because closet is full.',
 					'sold_to' : user_profiles_instances[3],
 					'seller': user_profiles_instances[0],
 					'dailyVisits': 20, 'size': 'XL', 'picture': 'item_images/LeviJeans.jpg',
-					'datePosted': date(2019, 3, 14)}
+					'datePosted': date(2019, 3, 14),
+					'category': categories_instances[1],
+					'section': sections_instances[2]}
 
 	Jacket_M = {'title': 'Nike Jacket', 'price': 9,
 				'description' : 'Has been slightly used. Selling because closet is full',
 				'sold_to' : user_profiles_instances[2],
 				'seller': user_profiles_instances[1],
-				'dailyVisits': 10, 'size': 'S', 'picture': 'item_images/NikeJacket.jpg'}
-		
+				'dailyVisits': 10, 'size': 'S', 'picture': 'item_images/NikeJacket.jpg',
+				'category': categories_instances[2],
+				'section': sections_instances[0]}
+	
+	Jacket2 = {'title': 'Season 4 TSM jacket', 'price': 50,
+				'description' : 'Never used before. Good quality merch.',
+				'sold_to' : None,
+				'seller': user_profiles_instances[1],
+				'dailyVisits': 10, 'size': 'M', 'picture': 'item_images/TSMJacket.jpg',
+				'category': categories_instances[2],
+				'section': sections_instances[0]}
+
 	Jacket_W = {'title': 'American vintage jacket', 'price': 20,
 				'description' : 'Never used before, amazing quality', 'sold_to' : None, 
 				'seller': user_profiles_instances[2], 'dailyVisits': 4,
-				'size': 'M', 'picture': 'item_images/AmericanVintage.jpg',}
+				'size': 'M', 'picture': 'item_images/AmericanVintage.jpg',
+				'category': categories_instances[2],
+				'section': sections_instances[1]}
 
 	Jacket_K = {'title': 'Red Coat', 'price': 10,
 				'description' : 'Basic red coat for kids. Very warm and cozy. Has been used slighly.',
 				'sold_to' : user_profiles_instances[3],
 				'seller': user_profiles_instances[0],
 				'dailyVisits': 6, 'size': 'XXL', 'picture': 'item_images/RedCoat.jpg',
-				'datePosted': date(2018, 12, 23)}
+				'datePosted': date(2018, 12, 23),
+				'category': categories_instances[2],
+				'section': sections_instances[2]}
 
 	# List of items
-	items = [T_Shirt_M, Trousers_W, Jacket_K, T_Shirt_W, T_Shirt_K, Trousers_M, Trousers_K, Jacket_M, Jacket_W]
-
-	
-	# List of sections
-	sections = [{'title': 'Men'}, {'title': 'Women'}, {'title': 'Kids'}]
-
-	
-	# List of categories
-	categories = [{'title': 'T-Shirts'}, {'title': 'Trousers'}, {'title': 'Jackets'}]
-
-	
-	# List of instances of sections
-	sections_instances = []
-	for section in sections:
-		sections_instances.append(add_section(section['title']))
-
-	
-	# List of instances of categories
-	categories_instances = []
-	for category in categories:
-		categories_instances.append(add_category(category['title']))
+	items = [T_Shirt_M, T_Shirt2, Trousers_W, Trousers2, Jacket_K, T_Shirt_W, 
+			T_Shirt_K, Trousers_M, Trousers_K, Jacket_M, Jacket2, Jacket_W]
 
 
 	# List of instances of items
@@ -125,11 +168,9 @@ def populate():
 		user_profiles_instances_copy = [user for user in user_profiles_instances if user != item_data['sold_to']]
 		itemSize = add_size(item_data['size'])
 	
-		item_instances.append(add_item(item_data['title'], item_data['price'], item_data['description'],
-				item_data['sold_to'], item_data['dailyVisits'], itemSize,
-				categories_instances[int(items.index(item_data)/len(categories_instances) 
-																% len(categories_instances))],
-				sections_instances[items.index(item_data) % len(sections_instances)],
+		item_instances.append(add_item(item_data['title'], item_data['price'], 
+				item_data['description'], item_data['sold_to'], item_data['dailyVisits'], 
+				itemSize, item_data['category'], item_data['section'],
 				item_data['picture'], item_data['seller'],
 				item_data.get('datePosted', date.today())))
 
