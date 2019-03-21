@@ -25,88 +25,78 @@
                      <h4 class="m-y-2">User Profile</h4>
                      <div class="row">
                         <div class="col-md-6">
-                           <h6>About</h6>
+                           <h6><font size="5">About</font></h6>
                            <p>
-                              Name: 
+                              <strong>Name: </strong> {{ user.first_name }} {{ user.last_name }}
                            </p>
                            <p>
-                              Email: 
+                              <strong>Email: </strong> {{ user.email }}
                            </p>
                            <p>
-                              Phone Number: 
-                           </p>
-                           <h6>Location</h6>
-                           <p>
-                              City:
+                              <strong>Phone Number: </strong> {{ user_profile.phone }}
                            </p>
                            <p>
-                              Post Code:
+                              <strong>Post Code: </strong> {{ user_profile.postcode }}
                            </p>
                         </div>
                         <div class="col-md-6">
                            <h6>Rating</h6>
                            <div class="top_seller_product_rating mb-15">
-                              <i class="fa fa-star" aria-hidden="true"></i>
-                              <i class="fa fa-star" aria-hidden="true"></i>
-                              <i class="fa fa-star" aria-hidden="true"></i>
-                              <i class="fa fa-star" aria-hidden="true"></i>
-                              <i class="fa fa-star" aria-hidden="true"></i>
+                              {% if user_profile.rating == 0 %}
+                                 You don't have any ratings
+                              {% else %}
+
+                                 {% for rate in user_rating %}
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                 {% endfor %}
+                              {% endif %}
                            </div>
                         </div>
                         <div class="col-md-12">
-                           <h4 class="m-t-2"><span class="fa fa-clock-o ion-clock pull-xs-right"></span> Reviews</h4>
+                           <h4 class="m-t-2"><span class="fa fa-clock-o ion-clock pull-xs-right"></span>Your Reviews</h4>
+                           {% if reviews_user %}
                            <table class="table table-hover table-striped">
                               <tbody>
-                                 <tr>
-                                    <td>
-                                       <strong>Abby</strong> joined ACME Project Team in <strong>`Collaboration`</strong>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <strong>Gary</strong> deleted My Board1 in <strong>`Discussions`</strong>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <strong>Kensington</strong> deleted MyBoard3 in <strong>`Discussions`</strong>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <strong>John</strong> deleted My Board1 in <strong>`Discussions`</strong>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td>
-                                       <strong>Skell</strong> deleted his post Look at Why this is.. in <strong>`Discussions`</strong>
-                                    </td>
-                                 </tr>
+                                 {% for review in reviews_user %}
+                                    <tr>
+                                       <td>
+                                          Item bought: "{{ review.item }}"<br />
+                                          {{ review.review_text }}. Rating: {{ review.rating }}/5 <br />
+                                          <font size="-1"> Date posted: {{ review.datePosted}} </font>
+                                       </td>
+                                    </tr>
+                                 {% endfor %} 
                               </tbody>
                            </table>
+                           {% else %}
+                              <strong>You have no reviews</strong>
+                           {% endif %}
                         </div>
                      </div>
                   </div>
                   <div class="tab-pane" id="sell">
                      <h4 class="m-y-2">Upload an item</h4>
-                     <form role="form">
+                     <form role="form" action = "{% url 'tailored:add_item' %}" method = "post" enctype = "multipart/form-data"> {% csrf_token %}
                   <div class="form-group row">
                            <label class="col-lg-3 col-form-label form-control-label">Title:</label>
                            <div class="col-lg-9">
                               {{form.title|addcss:"form-control"}}
                            </div>
+                           {{form.title.errors}}
                         </div>
                         <div class="form-group row">
                            <label class="col-lg-3 col-form-label form-control-label">Description:</label>
                            <div class="col-lg-9">
                               {{form.description|addcss:"form-control, desc-form"}}
                            </div>
+                           {{form.description.errors}}
                         </div>
                         <div class="form-group row">
                            <label class="col-lg-3 col-form-label form-control-label">Size:</label>
                            <div class="col-lg-3">
-                        {{form.size|addcss:"form-control"}}
+                              {{form.size|addcss:"form-control"}}
                            </div>
+                           {{form.size.errors}}
                            <label class="col-lg-3 col-form-label form-control-label">Section:</label>
                            <div class="col-lg-3">
                               {{form.section|addcss:"form-control"}}
@@ -121,14 +111,16 @@
                            <div class="col-lg-3">
                               {{form.price|addcss:"form-control"}}
                            </div>
+                           {{form.price.errors}}
                         </div>
                   <div class="form-group row">
                      <label class="col-lg-3 col-form-label form-control-label">Upload item's photo:</label>
                      <div class="col-lg-3">
                         <label class="custom-file">
-                           {{form.itemPic|addcss:"form-control"}}
+                           {{form.picture|addcss:"form-control"}}
                            <span class="custom-file-control">Choose file</span>
                         </label>
+                        {{form.picture.errors}}
                      </div>
                   </div>   
                         <div class="form-group row">
@@ -143,6 +135,23 @@
                </div>
                <div class="tab-pane" id="edit">
                   <h4 class="m-y-2">Edit Profile</h4>
+                     <form role = "form"  method = "post" action = "{% url 'tailored:edit_profile' %}" enctype = "multipart/form-data"> {% csrf_token %}
+                  <div class="form-group row">
+                        
+                        {% for hidden in form.hidden_fields %}
+                           {{ hidden }}
+                        {% endfor %}
+                        {% for field in form.visible_fields %}
+                           <li>
+                              {{ field.errors }}
+                              {{ field.help_text }}
+                              {{ field }}
+                           </li>
+                        {% endfor %}
+                        <input type = "submit" name = "submit" value = "Edit profile" />
+                  </div>
+                     </form>
+                  <!--
                   <form role="form">
                      <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label">Email:</label>
@@ -179,12 +188,15 @@
                         </div>
                      </div>
                   </form>
+               -->
+
                </div>
             </div>
-         </div> 
+         </div>
        <div class="col-lg-4 pull-lg-8 text-xs-center">
-         <img src="{% static 'images/placeholder.jpg'%}" class="m-x-auto img-fluid img-circle" alt="avatar">
-         <h6 class="m-t-2">Upload a different photo</h6>
+         <h6 class="m-t-2">{{ user_profile }}</h6>
+         <img src="{{ MEDIA_URL }}{{ user_profile.picture }}" class="m-x-auto img-fluid img-circle" alt="avatar" />
+         <h6 class="m-t-2">Change your profile picture</h6>
          <label class="custom-file">
             <input type="file" id="file" class="custom-file-input">
             <span class="custom-file-control">Choose file</span>

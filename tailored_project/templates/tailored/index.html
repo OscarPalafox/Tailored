@@ -18,60 +18,20 @@
 			</div>
 			<div class="container">
 				<div class="row tailored-new-arrivals">
-					<div class="col-12 col-sm-6 col-md-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0s">
-						<div class="product-img">
-							<img src="img/product-img/product-1.jpg" alt="">               
+
+					{% for item in trendingItems %}
+						<div class="col-12 col-sm-6 col-md-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.1s">
+							<div class="product-img">
+								<img src="{{ MEDIA_URL }}{{ item.picture}}" alt="">
+							</div>
+							<div class="product-description">
+								<h4 class="product-price">£{{ item.price }}</h4>
+								<p>{{ item.title }}</p>
+							</div>
 						</div>
-						<div class="product-description">
-							<h4 class="product-price">$39.90</h4>
-							<p>Jeans midi cocktail dress</p>
-						</div>
-					</div>
-					<div class="col-12 col-sm-6 col-md-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.125s">
-						<div class="product-img">
-							<img src="img/product-img/product-2.jpg" alt="">                        
-						</div>
-						<div class="product-description">
-							<h4 class="product-price">$39.90</h4>
-							<p>Jeans midi cocktail dress</p>
-						</div>
-					</div>
-					<div class="col-12 col-sm-6 col-md-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.175s">
-						<div class="product-img">
-							<img src="img/product-img/product-3.jpg" alt="">                       
-						</div>
-						<div class="product-description">
-							<h4 class="product-price">$39.90</h4>
-							<p>Jeans midi cocktail dress</p>
-						</div>
-					</div>
-					<div class="col-12 col-sm-6 col-md-4 single_gallery_item shoes wow fadeInUpBig" data-wow-delay="0.225s">
-						<div class="product-img">
-							<img src="img/product-img/product-4.jpg" alt="">                        
-						</div>
-						<div class="product-description">
-							<h4 class="product-price">$39.90</h4>
-							<p>Jeans midi cocktail dress</p>
-						</div>
-					</div>
-					<div class="col-12 col-sm-6 col-md-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.275s">
-						<div class="product-img">
-							<img src="img/product-img/product-5.jpg" alt="">                        
-						</div>
-						<div class="product-description">
-							<h4 class="product-price">$39.90</h4>
-							<p>Jeans midi cocktail dress</p>
-						</div>
-					</div>
-					<div class="col-12 col-sm-6 col-md-4 single_gallery_item kids wow fadeInUpBig" data-wow-delay="0.325s">
-						<div class="product-img">
-							<img src="img/product-img/product-6.jpg" alt="">                           
-						</div>
-						<div class="product-description">
-							<h4 class="product-price">$39.90</h4>
-							<p>Jeans midi cocktail dress</p>
-						</div>
-					</div>
+					{% endfor %}
+
+					
 				</div>
 			</div>
 		</section>

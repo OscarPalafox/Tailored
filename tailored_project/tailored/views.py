@@ -9,8 +9,6 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime, date
 from django.contrib.auth.models import User
 from django import forms
-from tailored.models import UserProfile, Category, Section, Item, Review
-from datetime import datetime
 
 
 def show_item(request, itemID):
@@ -29,25 +27,27 @@ def show_item(request, itemID):
 	print(item.dailyVisits, 'after')
 	return response
 
+
 def trending(request):
 	items = Item.objects.all()
 	trending = []
 
 	for item in Item.objects.order_by('-dailyVisits'):
-		
-		if ( (date.today() - item.datePosted).days <= 0 ):
-			if (len(trending) < 5):
+		if ( ((date.today() - item.datePosted).days <= 0) and (item.sold_to == None)):
+			if (len(trending) <= 5):
 				trending.append(item)
 		else:
 			item.dailyVisits = 0
 			item.save()
 
-	context_dict = {'trendingItems': trending}
-	return render(request, 'tailored/trending.html', context_dict)
+	if (len(trending) <= 5):
+		for item in Item.objects.order_by('-dailyVisits'):
+			if ((len(trending) <= 5) and (item.sold_to == None) and (item not in trending)):
+				trending.append(item)
+	
 
-
-def index(request):
-	return render(request, 'tailored/index.html')
+	context_dict = {"trendingItems": trending}
+	return render(request, 'tailored/index.html', context_dict)
 
 
 def items(request):
@@ -147,7 +147,7 @@ def show_seller_profile(request, seller_username):
 							kwargs = {'seller_username': seller_username}))
 
 			context_dict['form'] = form
-	return render(request, 'tailored/Sprofile.html', context_dict)
+	return render(request, 'tailored/seller_profile.html', context_dict)
 
 
 @login_required
@@ -168,6 +168,7 @@ def user_profile(request):
 			print(item_form.errors)
 	context_dict['item_form'] = item_form
 	return render(request, 'tailored/add_item.html', context_dict)
+
 
 @login_required
 def edit_profile(request):
@@ -195,9 +196,9 @@ def edit_profile(request):
 				keys = list(form.cleaned_data.keys())
 				for key in keys:
 					form.add_error(key, forms.ValidationError("You need to fill at least one field."))
-				return render(request, 'tailored/edit_profile.html', {'form': form})
+				return render(request, 'tailored/user_profile.html', {'form': form})
 
-	return render(request, 'tailored/edit_profile.html', {'form': form})
+	return render(request, 'tailored/user_profile.html', {'form': form})
 
 
 @login_required
