@@ -9,20 +9,25 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime, date
 from django.contrib.auth.models import User
 from django import forms
+from tailored.models import UserProfile, Category, Section, Item, Review
+from datetime import datetime
+
 
 def show_item(request, itemID):
 	item = get_object_or_404(Item, itemID = itemID)
+	print(item)
 	context_dict = {}
-	context_dict['items'] = item
+	context_dict['item'] = item
 	print(item.dailyVisits, 'before')
-	
-	if first_visit(request):
+	response=render(request, 'tailored/product.html', context_dict)
+	if first_visit(request, response, str(item.itemID)):
+		print('HEY')
 		item.dailyVisits += 1
 		item.save()
-		print('increase daily views ')
-	
+
+
 	print(item.dailyVisits, 'after')
-	return render(request, 'tailored/product.html', context_dict)
+	return response
 
 def trending(request):
 	items = Item.objects.all()
@@ -257,52 +262,83 @@ def edit_item(request, itemID):
 	return render(request, 'tailored/edit_item.html', context_dict)
 
 
-def search_bar(request, search = None, category = None):
+def search_bar(request, search = None, page=1):
 
-	context_dict = {}
+	
 	categories = Category.objects.all()
 	
-	context_dict['categories'] = categories
+	
 	if(request.method == 'POST'):
 		check = request.POST.get('search')
+		print(check, "CHECK")
 		if check != None:
-			search = check
-		check = request.POST.get('choose')
-		if check != None: 
-			category = check
-		if search != None:
-			search = search.split(' ')
-			searchS = '_'.join(search)
-		items = []
-
-		if category != None and search != None:
-			for word in search:
-				items += Item.objects.filter((Q(description__contains = word) | Q(title__contains = word) & (Q(category = category) | Q(category = category))))
-			
-			context_dict['category'] = category
-			context_dict['search'] = searchS
-
-		elif search != None:	
-			for word in search:
-				items += Item.objects.filter(Q(description__contains = word ) | Q(title__contains = word))
-			
-			context_dict['search'] = searchS
-
-		elif category != None:
-				
-				items = Item.objects.filter(Q(category = category) | Q(category = category))
-				context_dict['category'] = category
-
+			if check!="":
+				return HttpResponseRedirect(check+"/")
+			else:
+				return HttpResponseRedirect(reverse('tailored:search', kwargs = {'search': 'all'}))
 		else:
-			return home_page(request)
-		
-		context_dict['items'] = items
-	
+			return HttpResponseRedirect('all/')
 
-		return render(request, 'tailored/shop_bootstrap.html',context_dict)
-
+	context_dict = {}
+	context_dict['categories'] = categories
+	items = []	
+	if search=="all" or search==None or search=="":
+		search="all"
+		items=Item.objects.all()
 	else:
-		render(request, 'tailored/index.html', context_dict)
+		if search != None:
+			search=search.split(" ")
+			for word in search:
+				items += Item.objects.filter(Q(description__contains = word ) | Q(title__contains = word)
+					|Q(category=word)|Q(section=word))
+			searchS="_".join(search)
+			context_dict['search'] = searchS
+		else:
+			
+			return home_page(request)
+	maxi=0
+	for item in items:
+		if item.price>maxi:
+			maxi=item.price
+	context_dict['maxi']=maxi
+	context_dict['page']  = page
+	context_dict['items'] = items
+	context_dict['pages']= int(len(items)/6)
+	context_dict['min']=6*(int(page)-1)
+	context_dict['max']=6*(int(page))
+	return render(request, 'tailored/shop_bootstrap.html',context_dict)
+
+
+def new_in(request, search = None, page=1):
+	context_dict = {}
+	items = []	
+	search=search
+	print("hello")
+	if search != None:
+		search=search.split(" ")
+		toAdd=[]
+		for word in search:
+
+			toAdd += Item.objects.filter(Q(description__contains = word ) | Q(title__contains = word)
+				|Q(category=word)|Q(section=word))
+			for item in toAdd:
+				if (date.today()- item.datePosted).days<=7:
+					items+=[item]
+		searchS="_".join(search)
+		maxi=0
+		for item in items:
+			if item.price>maxi:
+				maxi=item.price
+		context_dict['maxi']=maxi+5
+		context_dict['search'] = searchS
+		context_dict['page']  = page
+		context_dict['items'] = items
+		context_dict['pages']= int(len(items)/6)
+		context_dict['min']=6*(int(page)-1)
+		context_dict['max'] = 6 * (int(page))
+		return render(request, 'tailored/shop_bootstrap.html',context_dict)
+	else:
+		return home_page(request)
 
 
 def home_page(request):
@@ -314,26 +350,18 @@ def home_page(request):
 	#placeholder for homepage, feel free to change it.
 	return render(request, 'tailored/index.html', context_dict)
 
-
-def first_visit(request):
-	first = get_server_side_cookie(request,'last_visit') == None
-	last_visit_cookie = get_server_side_cookie(request,
-												'last_visit',
-													str(datetime.now()))
-
-	last_visit_time = datetime.strptime(last_visit_cookie[:-7],
-											'%Y-%m-%d %H:%M:%S')
-	if ((datetime.now() - last_visit_time).days > 0) or first:
-		request.session['last_visit'] = str(datetime.now())
+def first_visit(request, response, item):
+	
+	last_visit_cookie = request.COOKIES.get('last_visit' + item, "first")
+	
+	if(last_visit_cookie == "first"):
+		response.set_cookie('last_visit' + item, str(datetime.now()))
 		return True
-
 	else:
-		request.session['last_visit'] = last_visit_cookie
-		return False
-
-
-def get_server_side_cookie(request, cookie, default_val = None):
-	val = request.session.get(cookie)
-	if not val:
-		val = default_val
-	return val
+		last_visit_time = datetime.strptime(last_visit_cookie[:-7],'%Y-%m-%d %H:%M:%S')
+		if ((datetime.now() - last_visit_time).days > 0):
+			response.set_cookie('last_visit' + item, str(datetime.now()))
+			return True
+		else:
+			response.set_cookie('last_visit' + item , last_visit_cookie)
+			return False
