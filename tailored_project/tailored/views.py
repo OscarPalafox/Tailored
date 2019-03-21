@@ -16,6 +16,7 @@ def show_item(request, itemID):
 	print(item)
 	context_dict = {}
 	context_dict['item'] = item
+	
 	print(item.dailyVisits, 'before')
 	response=render(request, 'tailored/product.html', context_dict)
 	if first_visit(request, response, str(item.itemID)):
@@ -134,7 +135,7 @@ def user_profile(request):
 
 	user_items = Item.objects.filter(seller = user_profile)
 	context_dict['user_items'] = user_items
-	
+
 	if (request.method == "POST"):
 		form = ItemForm(request.POST, request.FILES)
 		if form.is_valid():
