@@ -28,7 +28,7 @@ SECRET_KEY = 'b12u&9(vx(teeeuultxj5azuugfp1t-j(ou01&^4a$7ftt!dwz'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [http://tailored.pythonanywhere.com/]
+ALLOWED_HOSTS = ['http://tailored.pythonanywhere.com/']
 
 # Variables needed to send emails
 
