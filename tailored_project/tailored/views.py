@@ -107,34 +107,6 @@ def add_item(request):
 	return render(request, 'tailored/add_item.html', {'form': form})
 
 
-"""@login_required
-def leave_review(request):
-	items_reviewed = []
-
-	for review in Review.objects.select_related():
-		items_reviewed.append(review.item.itemID)
-	
-	items_to_review = Item.objects.filter(sold_to = UserProfile.objects.get(user = request.user)
-								).exclude(itemID__in = items_reviewed)
-
-	#print(not items_to_review) Empty queryset
-
-	form = ReviewForm(user_items = items_to_review)
-
-	if(request.method == 'POST'):
-		form = ReviewForm(items_to_review, request.POST)
-		if form.is_valid():
-			review = form.save(commit = False)
-			#review.buyer = UserProfile.objects.get(user = request.user)
-			review.save()
-
-			return HttpResponseRedirect(reverse('tailored:show_seller_profile',
-					kwargs = {'seller_username': request['seller'].username}))
-		else:
-			print(form.errors)
-	return render(request, 'tailored/user_profile.html', {'form': form})"""
-
-
 def show_seller_profile(request, seller_username):
 	context_dict = {}
 	
