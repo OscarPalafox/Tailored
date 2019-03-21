@@ -14,6 +14,66 @@
             </li>
          </ul>
          <div class="tab-content p-b-3">
+		 <div class="tab-pane active" id="products">
+               <div class="container">
+                  <div class="row tailored-new-arrivals">
+                     <div class="col-12 col-sm-6 col-md-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0s">
+                        <div class="product-img">
+                           <img src="img/product-img/product-2.jpg" alt="">                        
+                        </div>
+                        <div class="product-description">
+                           <h4 class="product-price">$39.90</h4>
+                           <p>Jeans midi cocktail dress</p>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6 col-md-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.125s">
+                        <div class="product-img">
+                           <img src="img/product-img/product-2.jpg" alt="">                        
+                        </div>
+                        <div class="product-description">
+                           <h4 class="product-price">$39.90</h4>
+                           <p>Jeans midi cocktail dress</p>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6 col-md-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.175s">
+                        <div class="product-img">
+                           <img src="img/product-img/product-3.jpg" alt="">                       
+                        </div>
+                        <div class="product-description">
+                           <h4 class="product-price">$39.90</h4>
+                           <p>Jeans midi cocktail dress</p>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6 col-md-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.225s">
+                        <div class="product-img">
+                           <img src="img/product-img/product-4.jpg" alt="">                        
+                        </div>
+                        <div class="product-description">
+                           <h4 class="product-price">$39.90</h4>
+                           <p>Jeans midi cocktail dress</p>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6 col-md-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.275s">
+                        <div class="product-img">
+                           <img src="img/product-img/product-5.jpg" alt="">                        
+                        </div>
+                        <div class="product-description">
+                           <h4 class="product-price">$39.90</h4>
+                           <p>Jeans midi cocktail dress</p>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6 col-md-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.325s">
+                        <div class="product-img">
+                           <img src="img/product-img/product-6.jpg" alt="">                           
+                        </div>
+                        <div class="product-description">
+                           <h4 class="product-price">$39.90</h4>
+                           <p>Jeans midi cocktail dress</p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
             <div class="tab-pane active" id="profile">
                <h4 class="m-y-2">About Seller</h4>
                <div class="row">
@@ -49,11 +109,12 @@
                            {% if reviews_seller %}
                            {% for review in reviews_seller %}
                            <tr>
-                              <td>
+                              <th>
                                  Item bought: "{{ review.item }}"<br />
-                                 {{ review.review_text }}. Rating: {{ review.rating }}/5 <br />
+                                 {{ review.review_text }} <br />
+								 Rating: {{ review.rating }}/5 <br />
                                  <font size="-1"> Date posted: {{ review.datePosted}} </font> 
-                              </td>
+                              </th>
                            </tr>
                            {% endfor %}
                            {% else %}
@@ -93,68 +154,8 @@
                   </div>
                </div>
             </div>
-            <div class="tab-pane" id="products">
-               <div class="container">
-                  <div class="row tailored-new-arrivals">
-                     <div class="col-12 col-sm-6 col-md-4 single_gallery_item animated fadeInUpBig" data-wow-delay="0s">
-                        <div class="product-img">
-                           <img src="img/product-img/product-2.jpg" alt="">                        
-                        </div>
-                        <div class="product-description">
-                           <h4 class="product-price">$39.90</h4>
-                           <p>Jeans midi cocktail dress</p>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6 col-md-4 single_gallery_item animated fadeInUpBig" data-wow-delay="0.125s">
-                        <div class="product-img">
-                           <img src="img/product-img/product-2.jpg" alt="">                        
-                        </div>
-                        <div class="product-description">
-                           <h4 class="product-price">$39.90</h4>
-                           <p>Jeans midi cocktail dress</p>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6 col-md-4 single_gallery_item animated fadeInUpBig" data-wow-delay="0.175s">
-                        <div class="product-img">
-                           <img src="img/product-img/product-3.jpg" alt="">                       
-                        </div>
-                        <div class="product-description">
-                           <h4 class="product-price">$39.90</h4>
-                           <p>Jeans midi cocktail dress</p>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6 col-md-4 single_gallery_item animated fadeInUpBig" data-wow-delay="0.225s">
-                        <div class="product-img">
-                           <img src="img/product-img/product-4.jpg" alt="">                        
-                        </div>
-                        <div class="product-description">
-                           <h4 class="product-price">$39.90</h4>
-                           <p>Jeans midi cocktail dress</p>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6 col-md-4 single_gallery_item animated fadeInUpBig" data-wow-delay="0.275s">
-                        <div class="product-img">
-                           <img src="img/product-img/product-5.jpg" alt="">                        
-                        </div>
-                        <div class="product-description">
-                           <h4 class="product-price">$39.90</h4>
-                           <p>Jeans midi cocktail dress</p>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6 col-md-4 single_gallery_item animated fadeInUpBig" data-wow-delay="0.325s">
-                        <div class="product-img">
-                           <img src="img/product-img/product-6.jpg" alt="">                           
-                        </div>
-                        <div class="product-description">
-                           <h4 class="product-price">$39.90</h4>
-                           <p>Jeans midi cocktail dress</p>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
+        </div>
+    </div>
       <div class="col-lg-4 pull-lg-8 text-xs-center">
          <img src="{%static 'images/placeholder.jpg'%}" class="m-x-auto img-fluid img-circle" alt="avatar">
       </div>

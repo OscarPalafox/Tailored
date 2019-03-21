@@ -20,16 +20,9 @@
 				<div class="row tailored-new-arrivals">
 
 					{% for item in trendingItems %}
-						<div class="col-12 col-sm-6 col-md-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.1s">
-							<div class="product-img">
-								<img src="{{ MEDIA_URL }}{{ item.picture}}" alt="">
-							</div>
-							<div class="product-description">
-								<h4 class="product-price">£{{ item.price }}</h4>
-								<p>{{ item.title }}</p>
-							</div>
-						</div>
+						{% include 'tailored/item_preview.html' %}
 					{% endfor %}
+						
 
 					
 				</div>

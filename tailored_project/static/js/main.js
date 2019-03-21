@@ -65,9 +65,11 @@
 		var thisURL=(window.location.href).replace("http://127.0.0.1:8000","").replace("2/","").replace("3/","");
 		window.location.href = thisURL;
 	});
-
+	
 	$("#S").click(function(){
+		
 		filterBySize("S");
+		
 	});
 	$("#L").click(function(){
 		filterBySize("L");
@@ -84,8 +86,6 @@
 	$("#M").click(function(){
 		filterBySize("M");
 	});
-
-
 	function filterBySize(selected) {
 		  // Declare variables 
 		  
