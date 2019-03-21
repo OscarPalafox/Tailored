@@ -1,7 +1,10 @@
+
 	var search={};
 	search.size=null;
 	search.sect=null;
 	search.cat=null;
+
+
 (function($) {
 	"use strict";
 	var input = $('.validate-input .input100');
@@ -47,7 +50,21 @@
 		$(thisAlert).removeClass('alert-validate');
 	}
 	
-	
+	$("#page1").click(function(){
+		var thisURL=(window.location.href).replace("http://127.0.0.1:8000","").replace("2/","").replace("3/","");
+		window.location.href = thisURL;
+
+	});
+
+	$("#page2").click(function(){
+		var thisURL=(window.location.href).replace("http://127.0.0.1:8000","").replace("3/","");
+		window.location.href = thisURL+'2/';
+	});
+
+	$("#page3").click(function(){
+		var thisURL=(window.location.href).replace("http://127.0.0.1:8000","").replace("2/","").replace("3/","");
+		window.location.href = thisURL;
+	});
 
 	$("#S").click(function(){
 		filterBySize("S");
@@ -68,11 +85,11 @@
 		filterBySize("M");
 	});
 
+
 	function filterBySize(selected) {
 		  // Declare variables 
 		  
 		  var  items, td, i, sizeValue, size, category, section;
-
 		  if(selected.localeCompare(search.size)==0){
 		  	search.size=null;
 		  	if(search.cat==null || search.sect==null){
@@ -91,8 +108,9 @@
 				sizeValue=size.innerText;
 				if(search.cat==null || search.sect==null){
 					if (sizeValue.localeCompare(selected)==0 ){
-			  
+							
 							items[i].style.display = "";
+
 				  	} else {
 
 							items[i].style.display = "none";
@@ -101,7 +119,7 @@
 					category=items[i].getElementsByClassName("category")[0].innerText;
 					section=items[i].getElementsByClassName("section")[0].innerText;
 					if (sizeValue.localeCompare(selected)==0 &&section.localeCompare(search.sect)==0 && category.localeCompare(search.cat)==0){
-					  
+					  	items[i].style.display = "revert";
 						items[i].style.display = "";
 					  } else {
 

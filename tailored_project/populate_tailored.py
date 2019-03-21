@@ -5,7 +5,6 @@ django.setup()
 from tailored.models import Category, Item, Section, Size, UserProfile, Review
 from registration.models import RegistrationProfile
 from django.contrib.auth.models import User
-from random import randint
 from datetime import date
 
 def populate():
@@ -42,13 +41,13 @@ def populate():
 	# Items data
 	T_Shirt_M = {'title': 'Maison Margiela T-Shirt', 'price': 60,
 					'description' : 'Slightly but still in good condition. Amazing quality',
-					'sold_to' : user_profiles_instances[randint(0, len(user_profiles_instances) - 1)],
+					'sold_to' : user_profiles_instances[0],
 					'dailyVisits': 30, 'size': 'S', 'picture': 'item_images/MaisonShirt.jpg',
 					'datePosted': date(2019, 1, 20)}
 
 	T_Shirt_W = {'title': 'Red shirt', 'price': 20,
 					'description' : "Brand new red shirt, only selling because it's the wrong size. Good quality",
-					'sold_to' : user_profiles_instances[randint(0, len(user_profiles_instances) - 1)],
+					'sold_to' : user_profiles_instances[1],
 					'dailyVisits': 17, 'size': 'M', 'picture':  'item_images/RedShirt.jpg',
 					'datePosted': date(2019, 2, 28)}
 
@@ -62,19 +61,19 @@ def populate():
 
 	Trousers_W = {'title': 'Ripped jeans', 'price': 5,
 					'description' : 'Heavily used jeans. Not great quality but selling it for cheap.',
-					'sold_to' : user_profiles_instances[randint(0, len(user_profiles_instances) - 1)],
+					'sold_to' : user_profiles_instances[2],
 					'dailyVisits': 0, 'size': 'M', 'picture': 'item_images/RippedJeans.jpg', 
 					'datePosted': date(2019, 2, 10)}
 
 	Trousers_K = {'title': 'Black Levi jeans', 'price': 30,
 					'description' : 'Second hand jeans. Have been used slighly. Selling because closet is full.',
-					'sold_to' : user_profiles_instances[randint(0, len(user_profiles_instances) - 1)],
+					'sold_to' : user_profiles_instances[3],
 					'dailyVisits': 20, 'size': 'XL', 'picture': 'item_images/LeviJeans.jpg',
 					'datePosted': date(2019, 3, 14)}
 
 	Jacket_M = {'title': 'Nike Jacket', 'price': 9,
 				'description' : 'Has been slightly used. Selling because closet is full',
-				'sold_to' : user_profiles_instances[randint(0, len(user_profiles_instances) - 1)],
+				'sold_to' : user_profiles_instances[2],
 				'dailyVisits': 10, 'size': 'S', 'picture': 'item_images/NikeJacket.jpg'}
 		
 	Jacket_W = {'title': 'American vintage jacket', 'price': 20,
@@ -83,7 +82,7 @@ def populate():
 
 	Jacket_K = {'title': 'Red Coat', 'price': 10,
 				'description' : 'Basic red coat for kids. Very warm and cozy. Has been used slighly.',
-				'sold_to' : user_profiles_instances[randint(0, len(user_profiles_instances) - 1)],
+				'sold_to' : user_profiles_instances[3],
 				'dailyVisits': 6, 'size': 'XXL', 'picture': 'item_images/RedCoat.jpg',
 				'datePosted': date(2018, 12, 23)}
 
@@ -114,6 +113,7 @@ def populate():
 	# List of instances of items
 	item_instances = []
 	for item_data in items:
+		user_profiles_instances_copy = [user for user in user_profiles_instances if user != item_data['sold_to']]
 		itemSize = add_size(item_data['size'])
 	
 		item_instances.append(add_item(item_data['title'], item_data['price'], item_data['description'],
@@ -121,7 +121,8 @@ def populate():
 				categories_instances[int(items.index(item_data)/len(categories_instances) 
 																% len(categories_instances))],
 				sections_instances[items.index(item_data) % len(sections_instances)],
-				item_data['picture'], user_profiles_instances[randint(0, len(user_profiles_instances) - 1)],
+				item_data['picture'], user_profiles_instances_copy[items.index(item_data) % len(
+																	user_profiles_instances_copy)],
 				item_data.get('datePosted', date.today())))
 
 	# Reviews data
@@ -138,17 +139,20 @@ def populate():
 	# List of reviews
 	reviews = [review1, review2, review3]
 
-	for item in item_instances[:3]:
-		add_review(item, reviews[item_instances.index(item)]['rating'],
-					reviews[item_instances.index(item)]['review_text'],
-					reviews[item_instances.index(item)]['datePosted'])
+	for item in item_instances:
+		if item_instances.index(item) % 4 == 0:
+			add_review(item, reviews[int(item_instances.index(item)/4)]['rating'],
+						reviews[int(item_instances.index(item)/4)]['review_text'],
+						reviews[int(item_instances.index(item)/4)]['datePosted'])
+			item.seller.rating = reviews[int(item_instances.index(item)/4)]['rating']
+			item.seller.save()
 
 						
-def add_item(title, price, description, sold_to, dailyVisits, size, category, section, picture, user, datePosted):
+def add_item(title, price, description, sold_to, dailyVisits, size, category, section, picture, seller, datePosted):
 	'''Adds a new item with the given parameters.'''
 	item = Item.objects.get_or_create(title = title, price = price, description = description,
 									sold_to = sold_to, dailyVisits = dailyVisits, size = size,
-									category = category, section = section, picture = picture, seller = user,
+									category = category, section = section, picture = picture, seller = seller,
 									datePosted = datePosted)[0]
 	item.save()
 	return item
