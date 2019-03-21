@@ -45,15 +45,12 @@
 		var thisAlert = $(input).parent();
 		$(thisAlert).removeClass('alert-validate');
 	}
-	function switcH(button){
-		b.getElementsById(button);
-		alert(b.stlye.backgroundColor);
-	}
+	
 
 
 	$("#S").click(function(){
-		switcH("S")
 		filterBySize("S");
+		
 	});
 	$("#L").click(function(){
 		filterBySize("L");

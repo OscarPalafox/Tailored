@@ -17,7 +17,6 @@ urlpatterns = [
 	url(r'^tailored/shop_bootstrap/$', views.search_bar, name='search'),
 	url(r'^tailored/(?P<search>[\w\-]+)/(?P<page>[\w\-]+)/$', views.search_bar, name='search'),
 	url(r'^tailored/(?P<search>[\w\-]+)/$', views.search_bar, name='search'),
-	url(r'^tailored/(?P<page>[\w\-]+)/$', views.search_bar, name='search'),
 	url(r'^item/(?P<itemID>[\w\-]+)/$', views.show_item, name='Item'),
 
 
