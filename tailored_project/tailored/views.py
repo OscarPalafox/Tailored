@@ -153,13 +153,12 @@ def show_seller_profile(request, seller_username):
 		for review in Review.objects.select_related():
 			items_reviewed.append(review.item.itemID)
 		
-		items_to_review = Item.objects.filter(Q(sold_to = get_object_or_404(UserProfile, 
-													user = request.user)) &
-									Q(seller = get_object_or_404(UserProfile, user = seller_user))
+		items_to_review = Item.objects.filter(Q(sold_to__in = UserProfile.objects.filter( 
+													user__in = User.objects.filter(username = request.user))) &
+									Q(seller = seller_user_profile)
 									).exclude(itemID__in = items_reviewed)
 		
 		context_dict['items_to_review'] = items_to_review
-		print(items_to_review[0].itemID, 'items to review before if')
 
 		if items_to_review:
 			form = ReviewForm(user_items = items_to_review)
@@ -175,7 +174,7 @@ def show_seller_profile(request, seller_username):
 						context_dict['form'] = ReviewForm(user_items = context_dict['items_to_review'])
 
 					reviews_seller_updated = Review.objects.filter(Q(item__in = Item.objects.filter(
-																seller = seller_user_profile)))
+																		seller = seller_user_profile)))
 					rating = 0
 					for review_updated in list(reviews_seller_updated):
 						rating += review_updated.rating
