@@ -9,8 +9,6 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime, date
 from django.contrib.auth.models import User
 from django import forms
-from tailored.models import UserProfile, Category, Section, Item, Review
-from datetime import datetime
 
 
 def show_item(request, itemID):
@@ -29,26 +27,52 @@ def show_item(request, itemID):
 	print(item.dailyVisits, 'after')
 	return response
 
+"""
+def get_trending_items():
+	items = Item.objects.all()
+	trending = []
+
+	for item in Item.objects.order_by('-dailyVisits'):
+		if ( ((date.today() - item.datePosted).days <= 0) and (item.sold_to == None)):
+			if (len(trending) <= 5):
+				trending.append(item)
+		else:
+			item.dailyVisits = 0
+			item.save()
+	for item in Item.objects.order_by('-dailyVisits'):
+		if ((len(trending)) <= 5 and (item.sold_to == None) and (item not in trending)):
+			trending.append(item)
+	
+	return trending
+"""
+
 def trending(request):
 	items = Item.objects.all()
 	trending = []
 
 	for item in Item.objects.order_by('-dailyVisits'):
-		
-		if ( (date.today() - item.datePosted).days <= 0 ):
-			if (len(trending) < 5):
+		if ( ((date.today() - item.datePosted).days <= 0) and (item.sold_to == None)):
+			if (len(trending) <= 5):
 				trending.append(item)
 		else:
 			item.dailyVisits = 0
 			item.save()
 
-	context_dict = {'trendingItems': trending}
-	return render(request, 'tailored/trending.html', context_dict)
+	if (len(trending) <= 5):
+		for item in Item.objects.order_by('-dailyVisits'):
+			if ((len(trending) <= 5) and (item.sold_to == None) and (item not in trending)):
+				trending.append(item)
+	
+
+	context_dict = {"trendingItems": trending}
+	return render(request, 'tailored/index.html', context_dict)
 
 
+
+"""
 def index(request):
 	return render(request, 'tailored/index.html')
-
+"""
 
 def items(request):
 	item_list = Item.objects.order_by('-dailyVisits')[:5]
@@ -98,19 +122,29 @@ def show_category(request, title):
 @login_required
 def add_item(request):
 	form = ItemForm()
-	seller = get_object_or_404(UserProfile, user = request.user)
 
-	if request.method == 'POST':
+	user_profile = get_object_or_404(UserProfile, user = User.objects.get(username = request.user))
+	context_dict = {}
+	context_dict["user_profile"] = user_profile
+	context_dict['user_rating'] = range(round(user_profile.rating, 1))
+	
+
+	reviews_user = Review.objects.filter(Q(item__in = Item.objects.filter(seller = user_profile)))
+	
+	context_dict['reviews_user'] = reviews_user.order_by('-datePosted')
+
+	if (request.method == "POST"):
 		form = ItemForm(request.POST, request.FILES)
 		if form.is_valid():
 			item = form.save(commit = False)
-			item.seller = seller
+			item.seller = UserProfile.objects.get(user = request.user)
 			item.save()
-			return HttpResponseRedirect(reverse('tailored:show_section',
-				kwargs = {'title': str(form.cleaned_data.get('section'))}))
+			return HttpResponseRedirect(reverse('tailored:index'))
 		else:
 			print(form.errors)
-	return render(request, 'tailored/add_item.html', {'form': form})
+	context_dict["form"] = form
+	return render(request, "tailored/user_profile.html", context_dict)
+
 
 
 def show_seller_profile(request, seller_username):
@@ -165,7 +199,7 @@ def show_seller_profile(request, seller_username):
 							kwargs = {'seller_username': seller_username}))
 
 			context_dict['form'] = form
-	return render(request, 'tailored/Sprofile.html', context_dict)
+	return render(request, 'tailored/seller_profile.html', context_dict)
 
 
 @login_required
@@ -194,9 +228,9 @@ def edit_profile(request):
 				keys = list(form.cleaned_data.keys())
 				for key in keys:
 					form.add_error(key, forms.ValidationError("You need to fill at least one field."))
-				return render(request, 'tailored/edit_profile.html', {'form': form})
+				return render(request, 'tailored/user_profile.html', {'form': form})
 
-	return render(request, 'tailored/edit_profile.html', {'form': form})
+	return render(request, 'tailored/user_profile.html', {'form': form})
 
 
 @login_required
@@ -272,8 +306,8 @@ def search_bar(request, search = None, page=1):
 		check = request.POST.get('search')
 		print(check, "CHECK")
 		if check != None:
-			if check!="":
-				return HttpResponseRedirect(check+"/")
+			if check != "":
+				return HttpResponseRedirect(check + "/")
 			else:
 				return HttpResponseRedirect(reverse('tailored:search', kwargs = {'search': 'all'}))
 		else:
@@ -282,59 +316,58 @@ def search_bar(request, search = None, page=1):
 	context_dict = {}
 	context_dict['categories'] = categories
 	items = []	
-	if search=="all" or search==None or search=="":
-		search="all"
-		items=Item.objects.all()
+	if search == "all" or search == None or search == "":
+		search = "all"
+		items = Item.objects.all()
 	else:
 		if search != None:
-			search=search.split(" ")
+			search = search.split(" ")
 			for word in search:
 				items += Item.objects.filter(Q(description__contains = word ) | Q(title__contains = word)
-					|Q(category=word)|Q(section=word))
-			searchS="_".join(search)
+					| Q(category = word) | Q(section = word))
+			searchS = "_".join(search)
 			context_dict['search'] = searchS
 		else:
-			
 			return home_page(request)
-	maxi=0
+	maxi = 0
 	for item in items:
-		if item.price>maxi:
-			maxi=item.price
-	context_dict['maxi']=maxi
+		if item.price > maxi:
+			maxi = item.price
+	context_dict['maxi'] = maxi
 	context_dict['page']  = page
 	context_dict['items'] = items
 	context_dict['pages']= int(len(items)/6)
-	context_dict['min']=6*(int(page)-1)
-	context_dict['max']=6*(int(page))
+	context_dict['min'] = 6 * (int(page) - 1)
+	context_dict['max'] = 6 * (int(page))
 	return render(request, 'tailored/shop_bootstrap.html',context_dict)
 
 
-def new_in(request, search = None, page=1):
+def new_in(request, search = None, page = 1):
 	context_dict = {}
 	items = []	
-	search=search
+	search = search
 	print("hello")
 	if search != None:
-		search=search.split(" ")
-		toAdd=[]
+		search = search.split(" ")
+		toAdd = []
 		for word in search:
 
 			toAdd += Item.objects.filter(Q(description__contains = word ) | Q(title__contains = word)
-				|Q(category=word)|Q(section=word))
+				| Q(category = word) | Q(section = word))
 			for item in toAdd:
 				if (date.today()- item.datePosted).days<=7:
 					items+=[item]
 		searchS="_".join(search)
-		maxi=0
+		maxi = 0
 		for item in items:
-			if item.price>maxi:
-				maxi=item.price
-		context_dict['maxi']=maxi+5
+			if item.price > maxi:
+				maxi = item.price
+		context_dict['maxi'] = maxi + 5
 		context_dict['search'] = searchS
 		context_dict['page']  = page
 		context_dict['items'] = items
-		context_dict['pages']= int(len(items)/6)
-		context_dict['min']=6*(int(page)-1)
+		context_dict['pages'] = int(len(items)/6)
+		context_dict['min'] = 6 * (int(page) - 1)
 		context_dict['max'] = 6 * (int(page))
 		return render(request, 'tailored/shop_bootstrap.html',context_dict)
 	else:

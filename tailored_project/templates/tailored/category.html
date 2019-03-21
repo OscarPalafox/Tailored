@@ -11,7 +11,8 @@
 				<ul>
 				{% for item in items %}
 					<li>{{ item.title }}</li>
-					<img src = "{{ MEDIA_URL }}{{ item.itemPic }}" />
+					{{ MEDIA_URL }}{{ item.picture }}
+					<img src = "{{ MEDIA_URL }}{{ item.picture }}" />
 				{% endfor %}
 				</ul> 
 			{% else %}

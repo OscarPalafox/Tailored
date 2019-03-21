@@ -13,15 +13,11 @@ urlpatterns = [
 	url(r'^', include('registration.backends.default.urls')),
 	url(r'^admin/', admin.site.urls),
 	url(r'index/$', views.home_page, name='home_page'),
-		url(r'^tailored/$', views.search_bar, name = 'home_page'),
+	url(r'^tailored/$', views.search_bar, name = 'home_page'),
 	url(r'^tailored/shop_bootstrap/$', views.search_bar, name='search'),
 	url(r'^tailored/(?P<search>[\w\-]+)/(?P<page>[\w\-]+)/$', views.search_bar, name='search'),
 	url(r'^tailored/(?P<search>[\w\-]+)/$', views.search_bar, name='search'),
+
 	url(r'^item/(?P<itemID>[\w\-]+)/$', views.show_item, name='Item'),
 
-
-
-
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
-
-
