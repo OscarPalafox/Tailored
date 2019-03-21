@@ -193,17 +193,17 @@ def search_bar(request, search = None, page=1):
 	
 	if(request.method == 'POST'):
 		check = request.POST.get('search')
+		print(check, "CHECK")
 		if check != None:
-			if(search==None):
+			if check!="":
 				return HttpResponseRedirect(check+"/")
-			search = check
-			if(search=="" or search==None):
-				return HttpResponseRedirect("all/")
-				
-				
-	
+			else:
+				return HttpResponseRedirect(reverse('tailored:search', kwargs = {'search': 'all'}))
+				return HttpResponseRedirect("/search/all/")
 
-	
+		else:
+			return HttpResponseRedirect('all/')
+
 	context_dict = {}
 	context_dict['categories'] = categories
 	items = []	
@@ -219,17 +219,53 @@ def search_bar(request, search = None, page=1):
 			searchS="_".join(search)
 			context_dict['search'] = searchS
 		else:
-			print(search, "this is the search")
+			
 			return home_page(request)
-
+	maxi=0
+	for item in items:
+		if item.price>maxi:
+			maxi=item.price
+	context_dict['maxi']=maxi
 	context_dict['page']  = page
 	context_dict['items'] = items
-
+	context_dict['pages']= int(len(items)/6)
 	context_dict['min']=6*(int(page)-1)
 	context_dict['max']=6*(int(page))
 	return render(request, 'tailored/shop_bootstrap.html',context_dict)
 
 
+def new_in(request, search = None, page=1):
+	context_dict = {}
+	items = []	
+	search=search
+	print("hello")
+	if search != None:
+		search=search.split(" ")
+		toAdd=[]
+		for word in search:
+
+			toAdd += Item.objects.filter(Q(description__contains = word ) | Q(title__contains = word)
+				|Q(category=word)|Q(section=word))
+			for item in toAdd:
+				if (date.today()- item.datePosted).days<=7:
+					items+=[item]
+		searchS="_".join(search)
+		maxi=0
+		for item in items:
+			if item.price>maxi:
+				maxi=item.price
+		context_dict['maxi']=maxi+5
+		context_dict['search'] = searchS
+		context_dict['page']  = page
+		context_dict['items'] = items
+		context_dict['pages']= int(len(items)/6)
+		context_dict['min']=6*(int(page)-1)
+		context_dict['max']=6*(int(page))
+		return render(request, 'tailored/shop_bootstrap.html',context_dict)
+	else:
+		return home_page(request)
+
+	
 
 
 def home_page(request):

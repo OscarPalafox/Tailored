@@ -10,7 +10,7 @@ urlpatterns = [
 	url(r'^trending/$', views.trending, name = "trending"),
 	url(r'^category/(?P<title>[-\w]+)/$', views.show_category, name = 'show_category'),
 	url(r'^index/$', views.home_page, name = 'home_page'),
-
+	url(r'^search/new/(?P<search>[-\w]+)/$', views.new_in, name = 'new_in'),
 	url(r'^home/$', views.home_page, name = 'home_page'),
 	url(r'^tailored/$', views.search_bar, name = 'home_page'),
 	url(r'^search/$', views.search_bar, name = 'search'),
