@@ -14,8 +14,9 @@ class UserProfile(models.Model):
 	# Additional attributes we wish to include
 	picture = models.ImageField(upload_to = "profile_images", blank = True)
 	postcode = models.CharField(max_length = 8, validators = [RegexValidator(r'^(([gG][iI][rR] {0,}0[aA]{2})|((([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y]?[0-9][0-9]?)|(([a-pr-uwyzA-PR-UWYZ][0-9][a-hjkstuwA-HJKSTUW])|([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y][0-9][abehmnprv-yABEHMNPRV-Y]))) {0,}[0-9][abd-hjlnp-uw-zABD-HJLNP-UW-Z]{2}))$')])
-	rating = models.IntegerField(default = 0)
-	phone = models.CharField(max_length = 8, blank = True, validators = [RegexValidator(r'^\d*$')])
+	rating = models.DecimalField(validators = [MinValueValidator(0), MaxValueValidator(5)], decimal_places = 1,
+									default = 0, max_digits = 2)
+	phone = models.CharField(max_length = 128, blank = True, validators = [RegexValidator(r'^\d*$')])
 
 	def __str__(self):
 		return self.user.username
@@ -59,8 +60,8 @@ class Item(models.Model):
 	itemID = models.UUIDField(max_length = 128, primary_key = True, default = uuid4, editable = False)
 
 	title = models.CharField(max_length = 128)
-	price = models.DecimalField(help_text = "Enter the price: ",
-		validators = [MinValueValidator(0)], decimal_places = 2, default = 0, max_digits = 100)
+	price = models.DecimalField(validators = [MinValueValidator(0)], decimal_places = 2, default = 0,
+								max_digits = 100)
 
 	seller = models.ForeignKey(UserProfile, related_name = 'seller')
 

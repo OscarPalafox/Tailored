@@ -60,3 +60,38 @@ class ReviewForm(forms.ModelForm):
 		#Provide an association between the ModelForm and a model
 		model = Review
 		exclude = ('buyer', 'datePosted')
+
+
+class EditUserProfileForm(forms.ModelForm):
+	first_name = forms.CharField(required = False, max_length = 128, validators = [RegexValidator(r'^([^0-9]*)$')])
+	last_name = forms.CharField(required = False, max_length = 128, validators = [RegexValidator(r'^([^0-9]*)$')])
+	picture = forms.ImageField(required = False)
+	postcode = forms.CharField(required = False, max_length = 8, validators = [RegexValidator(r'^(([gG][iI][rR] {0,}0[aA]{2})|((([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y]?[0-9][0-9]?)|(([a-pr-uwyzA-PR-UWYZ][0-9][a-hjkstuwA-HJKSTUW])|([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y][0-9][abehmnprv-yABEHMNPRV-Y]))) {0,}[0-9][abd-hjlnp-uw-zABD-HJLNP-UW-Z]{2}))$')])
+	phone = forms.CharField(required = False, max_length = 8, validators = [RegexValidator(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.0-9]*$')])
+
+	class Meta:
+		model = UserProfile
+		fields = ('first_name', 'last_name', 'picture', 'postcode', 'phone')
+
+class EditItemForm(forms.ModelForm):
+	title = forms.CharField(required = False, max_length = 128, help_text = 'Please enter the name of the item: ')
+	price = forms.DecimalField(required = False, help_text = 'Enter the price: ', min_value = 0, decimal_places = 2)
+
+	section = forms.ModelChoiceField(required = False, queryset = Section.objects.all(),
+										help_text = 'Select a section: ')
+	category = forms.ModelChoiceField(required = False, queryset = Category.objects.all(),
+										help_text = 'Select a category: ')
+
+	picture = forms.ImageField(required = False, 
+		help_text = 'Upload a picture of the item: ')
+	
+	description = forms.CharField(required = False, widget = forms.Textarea, 
+		help_text = 'Please give a brief description of the item.')
+	size = forms.ModelChoiceField(required = False, queryset = Size.objects.all(), help_text = 'Select the size: ')
+
+	sold_to = forms.CharField(required = False, max_length = 128,
+				help_text = 'Please enter the username of the buyer: ')
+
+	class Meta:
+		model = Item
+		exclude = ('itemID', 'seller', 'datePosted', 'dailyVisits', 'sold_to')

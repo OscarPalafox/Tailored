@@ -13,7 +13,7 @@
 				{% for item in trendingItems %}
 					
 					<li> {{ item.title }} has gotten <strong>{{ item.dailyVisits }}</strong> views in the past <strong>24</strong> hours</li>
-					<img src="{{ MEDIA_URL }}{{ item.itemPic }}"><br />	
+					<img src="{{ MEDIA_URL }}{{ item.picture }}"><br />	
 				{% endfor %}
 			{% else %}
 				No trending Items today!

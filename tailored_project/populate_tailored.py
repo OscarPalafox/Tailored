@@ -5,7 +5,6 @@ django.setup()
 from tailored.models import Category, Item, Section, Size, UserProfile, Review
 from registration.models import RegistrationProfile
 from django.contrib.auth.models import User
-from random import randint
 from datetime import date
 
 def populate():
@@ -114,6 +113,7 @@ def populate():
 	# List of instances of items
 	item_instances = []
 	for item_data in items:
+		user_profiles_instances_copy = [user for user in user_profiles_instances if user != item_data['sold_to']]
 		itemSize = add_size(item_data['size'])
 	
 		item_instances.append(add_item(item_data['title'], item_data['price'], item_data['description'],
@@ -121,7 +121,8 @@ def populate():
 				categories_instances[int(items.index(item_data)/len(categories_instances) 
 																% len(categories_instances))],
 				sections_instances[items.index(item_data) % len(sections_instances)],
-				item_data['picture'], user_profiles_instances[randint(0, len(user_profiles_instances) - 1)],
+				item_data['picture'], user_profiles_instances_copy[items.index(item_data) % len(
+																	user_profiles_instances_copy)],
 				item_data.get('datePosted', date.today())))
 
 	# Reviews data
@@ -138,19 +139,20 @@ def populate():
 	# List of reviews
 	reviews = [review1, review2, review3]
 
-	for item in item_instances[:3]:
-		add_review(item, reviews[item_instances.index(item)]['rating'],
-					reviews[item_instances.index(item)]['review_text'],
-					reviews[item_instances.index(item)]['datePosted'])
-		item.seller.rating = reviews[item_instances.index(item)]['rating']
-		item.seller.save()
+	for item in item_instances:
+		if item_instances.index(item) % 4 == 0:
+			add_review(item, reviews[int(item_instances.index(item)/4)]['rating'],
+						reviews[int(item_instances.index(item)/4)]['review_text'],
+						reviews[int(item_instances.index(item)/4)]['datePosted'])
+			item.seller.rating = reviews[int(item_instances.index(item)/4)]['rating']
+			item.seller.save()
 
 						
-def add_item(title, price, description, sold_to, dailyVisits, size, category, section, picture, user, datePosted):
+def add_item(title, price, description, sold_to, dailyVisits, size, category, section, picture, seller, datePosted):
 	'''Adds a new item with the given parameters.'''
 	item = Item.objects.get_or_create(title = title, price = price, description = description,
 									sold_to = sold_to, dailyVisits = dailyVisits, size = size,
-									category = category, section = section, picture = picture, seller = user,
+									category = category, section = section, picture = picture, seller = seller,
 									datePosted = datePosted)[0]
 	item.save()
 	return item

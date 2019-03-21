@@ -6,7 +6,8 @@
 	<body>
 		<h1>Seller profile</h1>
 		<div>
-			<p>{{ seller_user }}</p>
+			<p>Seller name: {{ seller_user }}</p>
+			<p>Seller rating: {{ seller_user_profile.rating }}</p> 
 		</div>
 
 		<div>
@@ -16,10 +17,9 @@
 				<p>Review text: {{ review.review_text }}</p>
 			{% endfor %}
 		</div>
-
-		<h1>Leave a review</h1>
 		
 		{% if items_to_review %}
+			<h1>Leave a review</h1>
 			<div>
 				<form id = "review_form" method = "post" action = "{% url 'tailored:show_seller_profile' seller_user.username %}">
 					{% csrf_token %}
@@ -33,11 +33,9 @@
 						{{ field }}
 					</li>
 					{% endfor %}
-					<input type = "submit" name = "submit" value = "Leave a review" />
+					<input type = "submit" name = "submit" id="submit" value = "Leave a review" />
 				</form>
 			</div>
-		{% else %}
-		<p> No items to review</p>
 		{% endif %}
 	</body>
 </html>
