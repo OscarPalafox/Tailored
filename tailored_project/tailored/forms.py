@@ -72,3 +72,26 @@ class EditUserProfileForm(forms.ModelForm):
 	class Meta:
 		model = UserProfile
 		fields = ('first_name', 'last_name', 'picture', 'postcode', 'phone')
+
+class EditItemForm(forms.ModelForm):
+	title = forms.CharField(required = False, max_length = 128, help_text = 'Please enter the name of the item: ')
+	price = forms.DecimalField(required = False, help_text = 'Enter the price: ', min_value = 0, decimal_places = 2)
+
+	section = forms.ModelChoiceField(required = False, queryset = Section.objects.all(),
+										help_text = 'Select a section: ')
+	category = forms.ModelChoiceField(required = False, queryset = Category.objects.all(),
+										help_text = 'Select a category: ')
+
+	picture = forms.ImageField(required = False, 
+		help_text = 'Upload a picture of the item: ')
+	
+	description = forms.CharField(required = False, widget = forms.Textarea, 
+		help_text = 'Please give a brief description of the item.')
+	size = forms.ModelChoiceField(required = False, queryset = Size.objects.all(), help_text = 'Select the size: ')
+
+	sold_to = forms.CharField(required = False, max_length = 128,
+				help_text = 'Please enter the username of the buyer: ')
+
+	class Meta:
+		model = Item
+		exclude = ('itemID', 'seller', 'datePosted', 'dailyVisits', 'sold_to')
