@@ -49,6 +49,7 @@
 
 
 	$("#S").click(function(){
+		
 		filterBySize("S");
 	});
 	$("#L").click(function(){
