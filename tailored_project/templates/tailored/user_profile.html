@@ -76,7 +76,7 @@
                   </div>
                   <div class="tab-pane" id="sell">
                      <h4 class="m-y-2">Upload an item</h4>
-                     <form role="form" action = "{% url 'tailored:add_item' %}" method = "post" enctype = "multipart/form-data"> {% csrf_token %}
+                     <form role="form" action = "{% url 'tailored:user_profile' %}" method = "post" enctype = "multipart/form-data"> {% csrf_token %}
                   <div class="form-group row">
                            <label class="col-lg-3 col-form-label form-control-label">Title:</label>
                            <div class="col-lg-9">

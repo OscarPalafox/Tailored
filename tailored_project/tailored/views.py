@@ -157,7 +157,7 @@ def user_profile(request):
 	user_profile = get_object_or_404(UserProfile, user = User.objects.get(username = request.user))
 	context_dict = {}
 	context_dict["user_profile"] = user_profile
-	context_dict['user_rating'] = range(round(user_profile.rating, 1))
+	context_dict['user_rating'] = range(int(round(user_profile.rating, 0)))
 	
 
 	reviews_user = Review.objects.filter(Q(item__in = Item.objects.filter(seller = user_profile)))
