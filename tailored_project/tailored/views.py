@@ -18,6 +18,8 @@ def show_item(request, itemID):
 	context_dict['item'] = item
 	
 	print(item.dailyVisits, 'before')
+	related=Item.objects.filter(category=item.category)
+	context_dict['trendingItems']=related
 	response=render(request, 'tailored/product.html', context_dict)
 	if first_visit(request, response, str(item.itemID)):
 		print('HEY')
@@ -26,9 +28,9 @@ def show_item(request, itemID):
 
 
 	print(item.dailyVisits, 'after')
+
 	return response
 
-"""
 def get_trending_items():
 	items = Item.objects.all()
 	trending = []
@@ -45,7 +47,7 @@ def get_trending_items():
 			trending.append(item)
 	
 	return trending
-"""
+
 
 def trending(request):
 	items = Item.objects.all()
