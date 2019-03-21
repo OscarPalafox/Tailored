@@ -152,23 +152,29 @@ def show_seller_profile(request, seller_username):
 
 @login_required
 def user_profile(request):
+	form = ItemForm()
+
+	user_profile = get_object_or_404(UserProfile, user = User.objects.get(username = request.user))
 	context_dict = {}
-	item_form = ItemForm()
-	seller = get_object_or_404(UserProfile, user = request.user)
+	context_dict["user_profile"] = user_profile
+	context_dict['user_rating'] = range(round(user_profile.rating, 1))
+	
 
-	if request.method == 'POST':
-		item_form = ItemForm(request.POST, request.FILES)
-		if item_form.is_valid():
+	reviews_user = Review.objects.filter(Q(item__in = Item.objects.filter(seller = user_profile)))
+	
+	context_dict['reviews_user'] = reviews_user.order_by('-datePosted')
+
+	if (request.method == "POST"):
+		form = ItemForm(request.POST, request.FILES)
+		if form.is_valid():
 			item = form.save(commit = False)
-			item.seller = seller
+			item.seller = UserProfile.objects.get(user = request.user)
 			item.save()
-			return HttpResponseRedirect(reverse('tailored:show_section',
-				kwargs = {'title': str(form.cleaned_data.get('section'))}))
+			return HttpResponseRedirect(reverse('tailored:index'))
 		else:
-			print(item_form.errors)
-	context_dict['item_form'] = item_form
-	return render(request, 'tailored/add_item.html', context_dict)
-
+			print(form.errors)
+	context_dict["form"] = form
+	return render(request, "tailored/user_profile.html", context_dict)
 
 @login_required
 def edit_profile(request):
