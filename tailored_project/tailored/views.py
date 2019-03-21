@@ -120,7 +120,7 @@ def show_category(request, title):
 
 
 @login_required
-def add_item(request):
+def user_profile(request):
 	form = ItemForm()
 
 	user_profile = get_object_or_404(UserProfile, user = User.objects.get(username = request.user))
@@ -128,11 +128,13 @@ def add_item(request):
 	context_dict["user_profile"] = user_profile
 	context_dict['user_rating'] = range(round(user_profile.rating, 1))
 	
-
 	reviews_user = Review.objects.filter(Q(item__in = Item.objects.filter(seller = user_profile)))
 	
 	context_dict['reviews_user'] = reviews_user.order_by('-datePosted')
 
+	user_items = Item.objects.filter(seller = user_profile)
+	context_dict['user_items'] = user_items
+	
 	if (request.method == "POST"):
 		form = ItemForm(request.POST, request.FILES)
 		if form.is_valid():
@@ -157,6 +159,14 @@ def show_seller_profile(request, seller_username):
 	context_dict['seller_user_profile'] = seller_user_profile
 	context_dict['seller_rating'] = range(int(round(seller_user_profile.rating, 1)))
 
+	seller_items = Item.objects.filter(seller = seller_user_profile)
+	itemList = []
+
+	for item in seller_items:
+		if (item.sold_to == None):
+			itemList.append(item)
+
+	context_dict['seller_items'] = itemList
 
 	reviews_seller = Review.objects.filter(Q(item__in = Item.objects.filter(seller = seller_user_profile)))
 	
@@ -298,9 +308,7 @@ def edit_item(request, itemID):
 	return render(request, 'tailored/edit_item.html', context_dict)
 
 
-def search_bar(request, search = None, page=1):
-
-	
+def search_bar(request, search = None, page=1):	
 	categories = Category.objects.all()
 	
 	
