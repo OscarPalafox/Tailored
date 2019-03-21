@@ -1,4 +1,3 @@
-
 	var search={};
 	search.size=null;
 	search.sect=null;
@@ -50,22 +49,7 @@
 		$(thisAlert).removeClass('alert-validate');
 	}
 	
-	$("#page1").click(function(){
-		var thisURL=(window.location.href).replace("http://127.0.0.1:8000","").replace("2/","").replace("3/","");
-		window.location.href = thisURL;
 
-	});
-
-	$("#page2").click(function(){
-		var thisURL=(window.location.href).replace("http://127.0.0.1:8000","").replace("3/","");
-		window.location.href = thisURL+'2/';
-	});
-
-	$("#page3").click(function(){
-		var thisURL=(window.location.href).replace("http://127.0.0.1:8000","").replace("2/","").replace("3/","");
-		window.location.href = thisURL;
-	});
-	
 	$("#S").click(function(){
 		
 		filterBySize("S");
@@ -119,7 +103,7 @@
 					category=items[i].getElementsByClassName("category")[0].innerText;
 					section=items[i].getElementsByClassName("section")[0].innerText;
 					if (sizeValue.localeCompare(selected)==0 &&section.localeCompare(search.sect)==0 && category.localeCompare(search.cat)==0){
-					  	items[i].style.display = "revert";
+					  	
 						items[i].style.display = "";
 					  } else {
 
@@ -198,68 +182,83 @@
 
 							}
 						}
+	function filterByPrice(min, max){
+		 var  items, i, priceValue, price, num, size, category, temp;
 
-	function filterByPrice(min, max) {
-		  // Declare variables 
-		 var  items, i, priceValue, price, num;
+                items = document.getElementsByClassName("item");
+             	  
+                for (var i=0; i<items.length; i++) {
+                    if(search.cat&&search.sect &&(!search.size)){
+                        category=items[i].getElementsByClassName("category")[0].innerText;
+                        category=items[i].getElementsByClassName("section")[0].innerText;
+                        if(category.localeCompare(search.cat)!=0 || section.localeCompare(search.sect)!=0){
+                            delete items[i];
+                    
+                    }   
+                }else
+                if(search.size && !search.cat){
+                        size = items[i].getElementsByClassName("size")[0].innerText;
+                        if(size.localeCompare(search.size)!=0){
+                            delete items[i];
+                    }
+                    }else
+                
+                if(search.cat&&search.sect &&search.size){
+                        size = items[i].getElementsByClassName("size")[0].innerText;
+                        category=items[i].getElementsByClassName("category")[0].innerText;
+                        category=items[i].getElementsByClassName("section")[0].innerText;
+                        if(category.localeCompare(search.cat)!=0 
+                            || section.localeCompare(search.sect)!=0 || size.localeCompare(search.size!=0)) {
+                            delete items[i];
+                    
+                    }   
+                }
+                }
+        
+          // Loop through all table rows, and hide those who don't match the price bracket
+                for (i = 0; i < items.length; i++) {
+                	if(items[i]){
+                    price = items[i].getElementsByClassName("product-price")[0];
+                    if (price ) {
+                        num=parseInt(price.innerText, 10);          
+                                if (num>min && num<max  ){
+                                    items[i].style.display = "";
+                                 } else {
 
-		  items = document.getElementsByClassName("item");
-		  
-		  // Loop through all table rows, and hide those who don't match the search query
-		  for (i = 0; i < items.length; i++) {
-				price = items[i].getElementsByClassName("product-price")[0];
+                                    items[i].style.display = "none";
+                                  }
+                            }
+                      }
+          }
+          // Loop through all table rows, and hide those who don't match the search query
+          
+            
+	}
 
-				if (price) {
-					 if(search.cat==null||search.sect==null){
-						if(search.size==null){
-							priceValue=price.innerText;
-							num=parseInt(price.innerText, 10);
-							
-						  if (num>min && num<max  ){
-									items[i].style.display = "";
-								  } else {
+    $('.slider-range-price').each(function() {
+        var min = jQuery(this).data('min');
+        var max = jQuery(this).data('max');
+        var unit = jQuery(this).data('unit');
+        var value_min = jQuery(this).data('value-min');
+        var value_max = jQuery(this).data('value-max');
+        var label_result = jQuery(this).data('label-result');
+        var t = $(this);
+        $(this).slider({
 
-									items[i].style.display = "none";
-								  }
-							}else{
-									size=items[i].getElementsByClassName("size")[0];
-								  if (num>min && num<max && size.localeCompare(search.size)==0 ){
-										items[i].style.display = "";
-						  } else {
+            range: true,
+            min: min,
+            max: max,
+            values: [value_min, value_max],
+            slide: function(event, ui) {
+                var result = label_result + " " + unit + ui.values[0] + ' - ' + unit + ui.values[1];
+                console.log(t);
+                t.closest('.slider-range').find('.range-price').html(result);
+                filterByPrice(ui.values[0], ui.values[1])
+          }     
 
-								items[i].style.display = "none";
-							  }
-								}
-						}else{
-							if(search.size==null){
-									category=items[i].getElementsByClassName("category")[0];
-									section=items[i].getElementsByClassName("section")[0];
-										  if (num>min && num<max && category.localeCompare(search.cat)==0 
-										  	&& section.localeCompare(search.sect)==0){
-								  
-												items[i].style.display = "";
-								  } else {
+        });
+    });
+			
 
-									items[i].style.display = "none";
-								 }
-							}else{
-									size=items[i].getElementsByClassName("size")[0];
-									category=items[i].getElementsByClassName("category")[0];
-									section=items[i].getElementsByClassName("section")[0];
-										  if (num>min && num<max && category.localeCompare(search.cat)==0 
-										  	&& section.localeCompare(search.sect)==0 && size.localeCompare(search.size)==0){
-								  
-												items[i].style.display = "";
-								  } else {
-
-									items[i].style.display = "none";
-								 }
-
-							}
-						}
-
-				}
-			} 
-		  }
 
 })(jQuery);
