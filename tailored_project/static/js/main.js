@@ -50,8 +50,7 @@
 	}
 	
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 	});
 
 	$("#page2").click(function(){
@@ -64,11 +63,6 @@
 		window.location.href = thisURL;
 	});
 	
-=======
-
->>>>>>> 16cf8abe12bdbad731ae5a0c0e3c92dff96fd332
-=======
->>>>>>> 42a7ef51442fd600e384161199552a154b67f06e
 	$("#S").click(function(){
 		
 		filterBySize("S");

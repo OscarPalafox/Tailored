@@ -95,6 +95,33 @@ def show_category(request, title):
 	return render(request, 'tailored/category.html', context_dict)
 
 
+@login_required
+def add_item(request):
+	form = ItemForm()
+
+	user_profile = get_object_or_404(UserProfile, user = User.objects.get(username = request.user))
+	context_dict = {}
+	context_dict["user_profile"] = user_profile
+	context_dict['user_rating'] = range(round(user_profile.rating, 1))
+	
+
+	reviews_user = Review.objects.filter(Q(item__in = Item.objects.filter(seller = user_profile)))
+	
+	context_dict['reviews_user'] = reviews_user.order_by('-datePosted')
+
+	if (request.method == "POST"):
+		form = ItemForm(request.POST, request.FILES)
+		if form.is_valid():
+			item = form.save(commit = False)
+			item.seller = UserProfile.objects.get(user = request.user)
+			item.save()
+			return HttpResponseRedirect(reverse('tailored:index'))
+		else:
+			print(form.errors)
+	context_dict["form"] = form
+	return render(request, "tailored/user_profile.html", context_dict)
+
+
 def show_seller_profile(request, seller_username):
 	context_dict = {}
 	
