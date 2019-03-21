@@ -123,6 +123,7 @@ def add_item(request):
 	user_profile = get_object_or_404(UserProfile, user = User.objects.get(username = request.user))
 	context_dict = {}
 	context_dict["user_profile"] = user_profile
+	context_dict['user_rating'] = range(round(user_profile.rating, 1))
 	
 
 	reviews_user = Review.objects.filter(Q(item__in = Item.objects.filter(seller = user_profile)))
@@ -135,8 +136,7 @@ def add_item(request):
 			item = form.save(commit = False)
 			item.seller = UserProfile.objects.get(user = request.user)
 			item.save()
-			return HttpResponseRedirect(reverse('tailored:show_section',
-				kwargs = {'title': str(form.cleaned_data.get("section"))}))
+			return HttpResponseRedirect(reverse('tailored:index'))
 		else:
 			print(form.errors)
 	context_dict["form"] = form
@@ -196,7 +196,7 @@ def show_seller_profile(request, seller_username):
 							kwargs = {'seller_username': seller_username}))
 
 			context_dict['form'] = form
-	return render(request, 'tailored/Sprofile.html', context_dict)
+	return render(request, 'tailored/seller_profile.html', context_dict)
 
 @login_required
 def edit_profile(request):
@@ -224,9 +224,9 @@ def edit_profile(request):
 				keys = list(form.cleaned_data.keys())
 				for key in keys:
 					form.add_error(key, forms.ValidationError("You need to fill at least one field."))
-				return render(request, 'tailored/edit_profile.html', {'form': form})
+				return render(request, 'tailored/user_profile.html', {'form': form})
 
-	return render(request, 'tailored/edit_profile.html', {'form': form})
+	return render(request, 'tailored/user_profile.html', {'form': form})
 
 
 @login_required
@@ -402,7 +402,7 @@ def first_visit(request):
 def get_server_side_cookie(request, cookie, default_val=None):
 	value = request.session.get(cookie)
 	if not value:
-		value = default_value
+		value = default_val
 	return value
 
 
