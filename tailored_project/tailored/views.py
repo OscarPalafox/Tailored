@@ -155,6 +155,8 @@ def show_seller_profile(request, seller_username):
 	
 	seller_user_profile = get_object_or_404(UserProfile, user = seller_user)
 	context_dict['seller_user_profile'] = seller_user_profile
+	context_dict['seller_rating'] = range(int(round(seller_user_profile.rating, 1)))
+
 
 	reviews_seller = Review.objects.filter(Q(item__in = Item.objects.filter(seller = seller_user_profile)))
 	
