@@ -47,15 +47,24 @@
 						<div class="single_product_desc">
 						   <h4 class="title"><a href="#">{{ item.title }}</a></h4>
 
-						   <h4 class="price">{{ item.price }} £</h4>
+						   <h4 class="price">£{{ item.price }}</h4>
 						   <a href="{% url 'tailored:show_seller_profile' item.seller.user %}" class="seller">Sold by <span class="text-muted" >
                       {{item.seller.user}}</span></a>
-						   <div class="single_product_ratings mb-15">
-							  <i class="fa fa-star" aria-hidden="true"></i>
-							  <i class="fa fa-star" aria-hidden="true"></i>
-							  <i class="fa fa-star" aria-hidden="true"></i>
-							  <i class="fa fa-star" aria-hidden="true"></i>
-							  <i class="fa fa-star-o" aria-hidden="true"></i>
+                      
+						   	<div class="single_product_ratings mb-15">
+						   	{% if item.seller.user.userprofile.rating == 0 %}
+						   		<i class="fa fa-star-o" aria-hidden="true"></i>
+						   		<i class="fa fa-star-o" aria-hidden="true"></i>
+						   		<i class="fa fa-star-o" aria-hidden="true"></i>
+						   		<i class="fa fa-star-o" aria-hidden="true"></i>
+						   		<i class="fa fa-star-o" aria-hidden="true"></i>
+						   	{% else %}
+						   		{% for rating in i|rjust:item.seller.user.userprofile.rating %}
+						   			
+							  		<i class="fa fa-star" aria-hidden="true"></i>
+						   		
+								{% endfor %}
+							{% endif %}
 						   </div>
 						   <div class="widget size mb-50">
 							  <h6 class="widget-title">Size</h6>

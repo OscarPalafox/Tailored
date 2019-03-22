@@ -57,6 +57,7 @@
 								</div>
 							{% else %}
 								<div class="login">
+
 									<a href="{% url 'tailored:user_profile' %}"><i class="ti-user"></i>My Account</a>
 								</div>
 								<div class="login">
@@ -112,7 +113,7 @@
                      <div class="col-12 col-sm-6 col-md-3 col-lg-2">
                         <div class="single_footer_area">
                            <ul class="footer_widget_menu">
-                              <li><a href="#">My Account</a></li>
+                              <li><a href="{% url 'tailored:user_profile' %}">My Account</a></li>
                               <li><a href="#">Our Policies</a></li>
                            </ul>
                         </div>

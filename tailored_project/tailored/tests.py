@@ -145,7 +145,7 @@ class UserProfileMethodTests(TestCase):
 		user_profile.save()
 		self.assertEqual(valid_phone_number, user_profile.phone)
 
-	def test_phone_number_has_no_spaced(self):
+	def test_phone_number_has_no_spaces(self):
 		'''Test that the database does not store a spaced phone number.'''
 		valid_postcode = 'EC2R 8AH'
 		user_profile = UserProfile(user = User.objects.create_user(username = 'testphonenumber',

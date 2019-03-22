@@ -80,9 +80,11 @@ class EditUserProfileForm(forms.ModelForm):
 
 
 class EditItemForm(forms.ModelForm):
+
 	sold_to = forms.CharField(max_length = 128,
 				help_text = 'Please enter the username of the buyer: ')
 
 	class Meta:
 		model = Item
 		fields = []
+

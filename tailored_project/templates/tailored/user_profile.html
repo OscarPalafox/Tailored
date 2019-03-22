@@ -14,11 +14,15 @@
                      <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
                   </li>
                   <li class="nav-item">
+                     <a href="" data-target="#items" data-toggle="tab" class="nav-link">Current Items</a>
+                  </li>
+                  <li class="nav-item">
                      <a href="" data-target="#sell" data-toggle="tab" class="nav-link">Sell an Item</a>
                   </li>
                   <li class="nav-item">
                      <a href="" data-target="#edit" data-toggle="tab" class="nav-link">Edit Profile</a>
                   </li>
+                  
                </ul>
                <div class="tab-content p-b-3">
                   <div class="tab-pane active" id="profile">
@@ -74,9 +78,23 @@
                            {% endif %}
                         </div>
                      </div>
+
+                  </div>
+                  <div class="tab-pane" id = "items">
+                     <h4 class = "m-y-2">Your current items</h4>
+                        <div class="row">
+                           {% if user_items %}
+                              {% for item in user_items %}
+                                 {% include 'tailored/item_preview.html' %}
+                              {% endfor %}
+                           {% else %}
+                              You are not selling any items at the moment
+                           {% endif %}
+                        </div>
                   </div>
                   <div class="tab-pane" id="sell">
                      <h4 class="m-y-2">Upload an item</h4>
+
                      <form role="form" action = "{% url 'tailored:user_profile' %}" method = "post" enctype = "multipart/form-data">
                         {% csrf_token %}
                   <div class="form-group row">

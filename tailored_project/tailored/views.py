@@ -38,7 +38,9 @@ def show_item(request, itemID):
 	isSeller = request.user == item.seller.user
 	context_dict['isSeller'] = isSeller
 	context_dict['item'] = item
+
 	related = Item.objects.filter(category = item.category)
+
 	context_dict['trendingItems'] = related[0:3]
 	response = render(request, 'tailored/product.html', context_dict)
 	
@@ -83,29 +85,12 @@ def show_item(request, itemID):
 	
 
 
-def get_trending_items():
-	items = Item.objects.all()
-	trending = []
-
-	for item in Item.objects.order_by('-dailyVisits'):
-		if ( ((date.today() - item.datePosted).days <= 0) and (item.sold_to == None)):
-			if (len(trending) <= 5):
-				trending.append(item)
-		else:
-			item.dailyVisits = 0
-			item.save()
-	for item in Item.objects.order_by('-dailyVisits'):
-		if ((len(trending)) <= 5 and (item.sold_to == None) and (item not in trending)):
-			trending.append(item)
-	
-	return trending
-
-
 def trending(request):
 	items = Item.objects.all()
 	trending = []
 
 	for item in Item.objects.order_by('-dailyVisits'):
+		#Include items that have been uploaded within the past day and havent been sold
 		if ( ((date.today() - item.datePosted).days <= 0) and (item.sold_to == None)):
 			if (len(trending) <= 5):
 				trending.append(item)
@@ -113,42 +98,14 @@ def trending(request):
 			item.dailyVisits = 0
 			item.save()
 
+	#If there are not enough items in the trending list, add older items to the list
 	if (len(trending) <= 5):
 		for item in Item.objects.order_by('-dailyVisits'):
 			if ((len(trending) <= 5) and (item.sold_to == None) and (item not in trending)):
 				trending.append(item)
-	
 
 	context_dict = {"trendingItems": trending[0:3], "search_bar" :Search_bar()}
 	return render(request, 'tailored/index.html', context_dict)
-
-
-@login_required
-def add_item(request):
-	form = ItemForm()
-
-	user_profile = get_object_or_404(UserProfile, user = User.objects.get(username = request.user))
-	context_dict = {}
-	form = Search_bar()
-	context_dict['search_bar']=form
-	u_items=Item.objects.filter(seller)
-	context_dict["user_profile"] = user_profile
-	context_dict['user_rating'] = range(round(user_profile.rating, 1))
-	
-
-	reviews_user = Review.objects.filter(Q(item__in = Item.objects.filter(seller = user_profile)))
-	
-	context_dict['reviews_user'] = reviews_user.order_by('-datePosted')
-
-	if (request.method == "POST"):
-		form = ItemForm(request.POST, request.FILES)
-		if form.is_valid():
-			item = form.save(commit = False)
-			item.seller = UserProfile.objects.get(user = request.user)
-			item.save()
-			return HttpResponseRedirect(reverse('tailored:index'))
-	context_dict["form"] = form
-	return render(request, "tailored/user_profile.html", context_dict)
 
 
 def show_seller_profile(request, seller_username):
@@ -162,6 +119,16 @@ def show_seller_profile(request, seller_username):
 	context_dict['selling']=selling[0:3]
 	seller_user_profile = get_object_or_404(UserProfile, user = seller_user)
 	context_dict['seller_user_profile'] = seller_user_profile
+	context_dict['seller_rating'] = range(int(round(seller_user_profile.rating, 1)))
+
+	seller_items = Item.objects.filter(seller = seller_user_profile)
+	itemList = []
+
+	for item in seller_items:
+		if (item.sold_to == None):
+			itemList.append(item)
+
+	context_dict['seller_items'] = itemList
 
 	reviews_seller = Review.objects.filter(Q(item__in = Item.objects.filter(seller = seller_user_profile)))
 	
@@ -223,6 +190,9 @@ def user_profile(request):
 	reviews_user = Review.objects.filter(Q(item__in = Item.objects.filter(seller = user_profile)))
 	context_dict['reviews_user'] = reviews_user.order_by('-datePosted')
 
+	user_items = Item.objects.filter(seller = user_profile, sold_to = None)
+	context_dict['user_items'] = user_items
+	
 	item_form = ItemForm()
 	user_form = EditUserProfileForm()
 
@@ -232,6 +202,12 @@ def user_profile(request):
 		
 		if item_form.is_valid():
 			item = item_form.save(commit = False)
+
+			if not item_form.cleaned_data['picture']:
+				item.picture = 'item_images/placeholder.png'
+			else:
+				item.picture = item_form.cleaned_data['picture']
+
 			item.seller = user_profile
 			item.save()
 
@@ -266,8 +242,8 @@ def user_profile(request):
 	return render(request, "tailored/user_profile.html", context_dict)
 
 
-
 def search_bar(request, search = None, page=1):
+
 	categories = Category.objects.all()
 	
 	
