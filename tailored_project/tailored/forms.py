@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
 class Search_bar(forms.ModelForm):
-	search = forms.CharField(label="", required=False)
+	search = forms.CharField(label="", required=False )
 
 	# Inline class to provide additional information on the form
 	class Meta:
