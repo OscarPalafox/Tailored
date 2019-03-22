@@ -14,7 +14,7 @@ urlpatterns = [
 	url(r'^admin/', admin.site.urls),
 	url(r'^tailored/$', views.search_bar, name = 'home_page'),
 	url(r'^tailored/shop_bootstrap/$', views.search_bar, name='search'),
-	url(r'^tailored/(?P<search>[\w\-]+)/(?P<page>[\w\-]+)/$', views.search_bar, name='search'),
+
 	url(r'^tailored/(?P<search>[\w\-]+)/$', views.search_bar, name='search'),
 
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

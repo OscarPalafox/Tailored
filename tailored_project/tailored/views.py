@@ -242,7 +242,7 @@ def user_profile(request):
 	return render(request, "tailored/user_profile.html", context_dict)
 
 
-def search_bar(request, search = None, page=1):
+def search_bar(request, search = None):
 
 	categories = Category.objects.all()
 	
@@ -281,12 +281,11 @@ def search_bar(request, search = None, page=1):
 	for item in items:
 		if item.price > maxi:
 			maxi = item.price
-	context_dict['maxi'] = maxi
-	context_dict['page']  = page
+	context_dict['maxi'] = maxi+5
+
 	context_dict['items'] = items
 	context_dict['pages']= int(len(items)/6)
-	context_dict['min'] = 6 * (int(page) - 1)
-	context_dict['max'] = 6 * (int(page))
+	
 	return render(request, 'tailored/shop_bootstrap.html',context_dict)
 
 
