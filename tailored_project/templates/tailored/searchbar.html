@@ -9,8 +9,9 @@
 	<div>
 		{% if search%}
 <form action="{% url 'tailored:search' search %}" class="search" method="POST">
-		{% endif %}
+		{%else%}
 <form action="{% url 'tailored:search'  %}" class="search" method="POST">		
+	{% endif %}
 	{% csrf_token %}
 	
 	{{search_bar}}
