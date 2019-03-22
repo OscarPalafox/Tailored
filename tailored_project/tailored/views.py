@@ -314,7 +314,8 @@ def search_bar(request, search = None, page=1):
 		print(check, "CHECK")
 		if check != None:
 			if check != "":
-				return HttpResponseRedirect(check + "/")
+				check="-".join(check.split(" "))
+				return HttpResponseRedirect(reverse('tailored:search', kwargs = {'search': check}))
 			else:
 				return HttpResponseRedirect(reverse('tailored:search', kwargs = {'search': 'all'}))
 		else:
