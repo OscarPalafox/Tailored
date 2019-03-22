@@ -42,6 +42,7 @@ def show_item(request, itemID):
 
 	return response
 
+'''
 #Helper method used to find 'trending' items in a simple way
 def get_trending_items():
 	items = Item.objects.all()
@@ -63,27 +64,29 @@ def get_trending_items():
 			trending.append(item)
 	
 	return trending
-
-
+'''
+#View used to find trending items in a simple way
 def trending(request):
 	items = Item.objects.all()
 	trending = []
 
 	for item in Item.objects.order_by('-dailyVisits'):
+		#Include items that have been uploaded within the past day and havent been sold
 		if ( ((date.today() - item.datePosted).days <= 0) and (item.sold_to == None)):
-			if (len(trending) <= 5):
+			if (len(trending) < 3):
 				trending.append(item)
 		else:
 			item.dailyVisits = 0
 			item.save()
 
-	if (len(trending) <= 5):
+	#If there arent enough items in the trending list, add older items to the list
+	if (len(trending) < 3):
 		for item in Item.objects.order_by('-dailyVisits'):
 			if ((len(trending) <= 5) and (item.sold_to == None) and (item not in trending)):
 				trending.append(item)
 	
 
-	context_dict = {"trendingItems": trending[0:3]}
+	context_dict = {"trendingItems": trending}
 	return render(request, 'tailored/index.html', context_dict)
 
 
@@ -131,32 +134,6 @@ def show_category(request, title):
 
 	return render(request, 'tailored/category.html', context_dict)
 
-
-@login_required
-def user_profile(request):
-	form = ItemForm()
-
-	user_profile = get_object_or_404(UserProfile, user = User.objects.get(username = request.user))
-	context_dict = {}
-	context_dict["user_profile"] = user_profile
-	context_dict['user_rating'] = range(round(user_profile.rating, 1))
-	
-	reviews_user = Review.objects.filter(Q(item__in = Item.objects.filter(seller = user_profile)))
-	
-	context_dict['reviews_user'] = reviews_user.order_by('-datePosted')
-
-	user_items = Item.objects.filter(seller = user_profile)
-	context_dict['user_items'] = user_items
-
-	if (request.method == "POST"):
-		form = ItemForm(request.POST, request.FILES)
-		if form.is_valid():
-			item = form.save(commit = False)
-			item.seller = UserProfile.objects.get(user = request.user)
-			item.save()
-			return HttpResponseRedirect(reverse('tailored:index'))
-	context_dict["form"] = form
-	return render(request, "tailored/user_profile.html", context_dict)
 
 
 def show_seller_profile(request, seller_username):
@@ -236,6 +213,9 @@ def user_profile(request):
 	reviews_user = Review.objects.filter(Q(item__in = Item.objects.filter(seller = user_profile)))
 	context_dict['reviews_user'] = reviews_user.order_by('-datePosted')
 
+	user_items = Item.objects.filter(seller = user_profile, sold_to = None)
+	context_dict['user_items'] = user_items
+	
 	item_form = ItemForm()
 	user_form = EditUserProfileForm()
 
@@ -245,6 +225,12 @@ def user_profile(request):
 		
 		if item_form.is_valid():
 			item = item_form.save(commit = False)
+
+			if not item_form.cleaned_data['picture']:
+				item.picture = 'item_images/placeholder.png'
+			else:
+				item.picture = item_form.cleaned_data['picture']
+
 			item.seller = user_profile
 			item.save()
 
