@@ -1,8 +1,12 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from tailored.models import Item, Category, Section, Size, UserProfile, Review
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseNotFound
+from datetime import date
+from registration.models import RegistrationProfile
 
 
 class UserProfileMethodTests(TestCase):
@@ -413,3 +417,92 @@ class ReviewMethodTests(TestCase):
 
 		review = Review(item = item, rating = 6)
 		self.assertRaises(ValidationError, review.save)
+
+
+def add_user_profile(username, email, password, first_name, last_name, postcode, phone = '', picture = ''):
+	'''Adds a new user profile with the given parameters.'''
+	user = User.objects.create_user(username = username, email = email, password = password,
+									first_name = first_name, last_name = last_name)
+	user = RegistrationProfile.objects.create_inactive_user(site = None, new_user = user, send_email = False)
+	RegistrationProfile.objects.activate_user(activation_key = RegistrationProfile.objects.get(user = user
+												).activation_key, site = None)
+	
+	user_profile = UserProfile()
+	user_profile.user = user
+	user_profile.picture = picture
+	
+	user_profile.postcode = postcode
+	user_profile.phone = phone
+	user_profile.rating = 0
+
+	user_profile.save()
+
+	return user_profile
+
+def add_category(title):
+	'''Adds a new category with the given title to the database.'''
+	category = Category.objects.get_or_create(title = title)[0]
+	category.save()
+	return category
+
+
+def add_section(title):
+	'''Adds a new section with the given title to the database.'''
+	section = Section.objects.get_or_create(title = title)[0]
+	section.save()
+	return section
+
+
+def add_size(title):
+	'''Adds a new size with the given title to the database.'''
+	size = Size.objects.get_or_create(title = title)[0]
+	size.save()
+	return size
+
+def add_item(title, price, description, size, category, section, seller, dailyVisits = None, picture = '',
+				sold_to = None):
+	'''Adds a new item with the given parameters.'''
+	item = Item.objects.get_or_create(title = title, price = price, description = description,
+									sold_to = sold_to, size = size, category = category, section = section,
+									seller = seller)[0]
+	item.save()
+	return item
+
+
+class ShowItemViewTests(TestCase):
+
+	def test_show_item_inexistent_item_gives_404(self):
+		'''Test that if the item does not exist, the view raises a 404.'''
+		test_inexistent_item_UUID = '71c0baa2-aab8-4880-86e2-3d4f0b65e585'
+		response = self.client.get(reverse('tailored:show_item', kwargs = {'itemID': test_inexistent_item_UUID}))
+		self.assertEqual(404, response.status_code)
+
+	def test_show_item_existent_item_displays(self):
+		'''Test that the show item displays the correct item.'''
+		category = add_category('test')
+		section = add_section('test')
+		size = add_size('test')
+		user = add_user_profile(username = 'test', email = 'test@gmail.com', password = 'test123',
+									first_name = 'test', last_name = 'test', postcode = 'EC2R 8AH')
+		item = add_item(title = 'test', price = 20, description = 'Test', size = size, category = category,
+							section = section, seller = user)
+		response = self.client.get(reverse('tailored:show_item', kwargs = {'itemID': item.itemID}))
+		self.assertEqual(200, response.status_code)
+		self.assertEqual(response.context['item'], item)
+
+
+class ShowSellerProfileViewTests(TestCase):
+	def test_show_seller_inexistent_profile_gives_404(self):
+		'''Test that if the item does not exist, the view raises a 404.'''
+		response = self.client.get(reverse('tailored:show_seller_profile', kwargs = {'seller_username': 'test'}))
+		self.assertEqual(404, response.status_code)
+
+	def test_show_item_existent_item_displays(self):
+		'''Test that the show item displays the correct item.'''
+		user_profile = add_user_profile(username = 'test', email = 'test@gmail.com', password = 'test123',
+									first_name = 'test', last_name = 'test', postcode = 'EC2R 8AH')
+		response = self.client.get(reverse('tailored:show_seller_profile', kwargs = {'seller_username': user_profile.user.username}))
+		self.assertEqual(200, response.status_code)
+		self.assertEqual(response.context['seller_user'], user_profile.user)
+
+class SearchbarViewTests(TestCase):

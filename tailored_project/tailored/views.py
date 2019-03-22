@@ -16,7 +16,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 
 def delete(request, itemID):
-	item=Item.objects.filter(itemID=itemID)
+	item = Item.objects.filter(itemID = itemID)
 	if item:
 		get_object_or_404(Item, itemID = itemID).delete()
 		return render(request,"tailored/deleted.html")
@@ -24,48 +24,24 @@ def delete(request, itemID):
 		return home_page(request)
 
 def show_item(request, itemID):
-		
 	item = get_object_or_404(Item, itemID = itemID)
 	context_dict = {}
-	isSeller=request.user==item.seller.user
-	context_dict['isSeller']=isSeller
+	isSeller = request.user == item.seller.user
+	context_dict['isSeller'] = isSeller
 	context_dict['item'] = item
 
-	related=Item.objects.filter(category = item.category)
+	related = Item.objects.filter(category = item.category)
+
 	context_dict['trendingItems'] = related[0:3]
 	response = render(request, 'tailored/product.html', context_dict)
 	
-
 	if first_visit(request, response, str(item.itemID)):
 		item.dailyVisits += 1
 		item.save()
 
 	return response
 
-'''
-#Helper method used to find 'trending' items in a simple way
-def get_trending_items():
-	items = Item.objects.all()
-	trending = []
 
-	for item in Item.objects.order_by('-dailyVisits'):
-		#Include items that have been uploaded within the past day and havent been sold
-		if ( ((date.today() - item.datePosted).days <= 0) and (item.sold_to == None)):
-			if (len(trending) <= 5):
-				trending.append(item)
-		else:
-			#Reset the daily visits of the items
-			item.dailyVisits = 0
-			item.save()
-	
-	#If there arent enough items in the trending list, add older items to the list
-	for item in Item.objects.order_by('-dailyVisits'):
-		if ((len(trending)) <= 5 and (item.sold_to == None) and (item not in trending)):
-			trending.append(item)
-	
-	return trending
-'''
-#View used to find trending items in a simple way
 def trending(request):
 	items = Item.objects.all()
 	trending = []
@@ -90,58 +66,14 @@ def trending(request):
 	return render(request, 'tailored/index.html', context_dict)
 
 
-def items(request):
-	item_list = Item.objects.order_by('-dailyVisits')[:5]
-	context_dict = {'items': item_list}
-
-	return render(request, 'tailored/itemsList.html', context_dict)
-
-
-def show_section(request, title):
-	context_dict = {}
-
-	try:
-		title = title.lower().capitalize()
-		
-		section = Section.objects.get(title = title)
-		items = Item.objects.filter(section = section)
-		context_dict['items'] = items
-		context_dict['section'] = section
-
-	except Section.DoesNotExist:
-
-		context_dict['section'] = None
-		context_dict['items'] = None
-
-	return render(request, 'tailored/section.html', context_dict)
-
-
-def show_category(request, title):
-	context_dict = {}
-
-	try:
-		title = title.lower()
-		
-		category = Category.objects.get(slug = title)
-		items = Item.objects.filter(category = category)
-		context_dict['items'] = items
-		context_dict['category'] = category
-
-	except Category.DoesNotExist:
-
-		context_dict['category'] = None
-		context_dict['items'] = None
-
-	return render(request, 'tailored/category.html', context_dict)
-
-
-
 def show_seller_profile(request, seller_username):
 	context_dict = {}
 	
 	seller_user = get_object_or_404(User, username = seller_username)
 	context_dict['seller_user'] = seller_user
-	
+	seller_user_profile=get_object_or_404(UserProfile, user=seller_user)
+	selling=Item.objects.filter(seller=seller_user_profile)
+	context_dict['selling']=selling[0:3]
 	seller_user_profile = get_object_or_404(UserProfile, user = seller_user)
 	context_dict['seller_user_profile'] = seller_user_profile
 	context_dict['seller_rating'] = range(int(round(seller_user_profile.rating, 1)))
@@ -383,15 +315,6 @@ def new_in(request, search = None, page = 1):
 	else:
 		return home_page(request)
 
-
-def home_page(request):
-	context_dict = {}
-	categories = Category.objects.all()
-	
-	context_dict['categories'] = categories
-
-	#placeholder for homepage, feel free to change it.
-	return render(request, 'tailored/index.html', context_dict)
 
 def first_visit(request, response, item):
 	
