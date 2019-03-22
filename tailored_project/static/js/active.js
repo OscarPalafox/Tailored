@@ -55,12 +55,7 @@
             });
         });
     }
-    $('#sideMenuBtn').on('click', function() {
-        $('#wrapper').toggleClass('tailored-side-menu-open');
-    })
-    $('#sideMenuClose').on('click', function() {
-        $('#wrapper').removeClass('tailored-side-menu-open');
-    })
+ 
     if ($.fn.magnificPopup) {
         $('.gallery_img').magnificPopup({
             type: 'image',

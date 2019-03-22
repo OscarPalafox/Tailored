@@ -43,7 +43,9 @@ class UserProfileForm(RegistrationFormTermsOfService, RegistrationFormUniqueEmai
 	picture = forms.ImageField(required = False)
 	postcode = forms.CharField(max_length = 8, validators = [RegexValidator(r'^(([gG][iI][rR] {0,}0[aA]{2})|((([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y]?[0-9][0-9]?)|(([a-pr-uwyzA-PR-UWYZ][0-9][a-hjkstuwA-HJKSTUW])|([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y][0-9][abehmnprv-yABEHMNPRV-Y]))) {0,}[0-9][abd-hjlnp-uw-zABD-HJLNP-UW-Z]{2}))$')])
 	phone = forms.CharField(max_length = 8, required = False, validators = [RegexValidator(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.0-9]*$')])
-	field_order = ['first_name', 'last_name', 'postcode', 'phone', 'picture']
+
+	field_order = ["first_name","last_name", "phone","postcode", "picture"]
+
 
 class ReviewForm(forms.ModelForm):
 	rating = forms.IntegerField(help_text = 'Rate the seller out of 5:', min_value = 0, max_value = 5)
@@ -63,15 +65,20 @@ class ReviewForm(forms.ModelForm):
 
 
 class EditUserProfileForm(forms.ModelForm):
-	first_name = forms.CharField(required = False, max_length = 128, validators = [RegexValidator(r'^([^0-9]*)$')])
-	last_name = forms.CharField(required = False, max_length = 128, validators = [RegexValidator(r'^([^0-9]*)$')])
-	picture = forms.ImageField(required = False)
-	postcode = forms.CharField(required = False, max_length = 8, validators = [RegexValidator(r'^(([gG][iI][rR] {0,}0[aA]{2})|((([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y]?[0-9][0-9]?)|(([a-pr-uwyzA-PR-UWYZ][0-9][a-hjkstuwA-HJKSTUW])|([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y][0-9][abehmnprv-yABEHMNPRV-Y]))) {0,}[0-9][abd-hjlnp-uw-zABD-HJLNP-UW-Z]{2}))$')])
-	phone = forms.CharField(required = False, max_length = 8, validators = [RegexValidator(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.0-9]*$')])
+	first_name = forms.CharField(help_text = 'First name: ', required = False, max_length = 128,
+									validators = [RegexValidator(r'^([^0-9]*)$')])
+	last_name = forms.CharField(help_text = 'Last name: ', required = False, max_length = 128,
+									validators = [RegexValidator(r'^([^0-9]*)$')])
+	picture = forms.ImageField(help_text = 'Picture: ', required = False)
+	postcode = forms.CharField(help_text = 'Postcode: ', required = False, max_length = 8,
+								validators = [RegexValidator(r'^(([gG][iI][rR] {0,}0[aA]{2})|((([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y]?[0-9][0-9]?)|(([a-pr-uwyzA-PR-UWYZ][0-9][a-hjkstuwA-HJKSTUW])|([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y][0-9][abehmnprv-yABEHMNPRV-Y]))) {0,}[0-9][abd-hjlnp-uw-zABD-HJLNP-UW-Z]{2}))$')])
+	phone = forms.CharField(help_text = 'Phone: ', required = False, max_length = 8,
+						validators = [RegexValidator(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.0-9]*$')])
 
 	class Meta:
 		model = UserProfile
 		fields = ('first_name', 'last_name', 'picture', 'postcode', 'phone')
+
 
 class EditItemForm(forms.ModelForm):
 	title = forms.CharField(required = False, max_length = 128, help_text = 'Please enter the name of the item: ')
@@ -95,3 +102,4 @@ class EditItemForm(forms.ModelForm):
 	class Meta:
 		model = Item
 		exclude = ('itemID', 'seller', 'datePosted', 'dailyVisits', 'sold_to')
+

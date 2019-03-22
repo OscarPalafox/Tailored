@@ -42,6 +42,7 @@
                         <div class="col-md-6">
                            <h6>Rating</h6>
                            <div class="top_seller_product_rating mb-15">
+                              {% csrf_token %}
                               {% if user_profile.rating == 0 %}
                                  You don't have any ratings
                               {% else %}
@@ -76,51 +77,52 @@
                   </div>
                   <div class="tab-pane" id="sell">
                      <h4 class="m-y-2">Upload an item</h4>
-                     <form role="form" action = "{% url 'tailored:add_item' %}" method = "post" enctype = "multipart/form-data"> {% csrf_token %}
+                     <form role="form" action = "{% url 'tailored:user_profile' %}" method = "post" enctype = "multipart/form-data">
+                        {% csrf_token %}
                   <div class="form-group row">
                            <label class="col-lg-3 col-form-label form-control-label">Title:</label>
                            <div class="col-lg-9">
-                              {{form.title|addcss:"form-control"}}
+                              {{item_form.title|addcss:"form-control"}}
                            </div>
-                           {{form.title.errors}}
+                           {{item_form.title.errors}}
                         </div>
                         <div class="form-group row">
                            <label class="col-lg-3 col-form-label form-control-label">Description:</label>
                            <div class="col-lg-9">
-                              {{form.description|addcss:"form-control, desc-form"}}
+                              {{item_form.description|addcss:"form-control, desc-form"}}
                            </div>
-                           {{form.description.errors}}
+                           {{item_form.description.errors}}
                         </div>
                         <div class="form-group row">
                            <label class="col-lg-3 col-form-label form-control-label">Size:</label>
                            <div class="col-lg-3">
-                              {{form.size|addcss:"form-control"}}
+                              {{item_form.size|addcss:"form-control"}}
                            </div>
-                           {{form.size.errors}}
+                           {{ item_form.size.errors }}
                            <label class="col-lg-3 col-form-label form-control-label">Section:</label>
                            <div class="col-lg-3">
-                              {{form.section|addcss:"form-control"}}
+                              {{ item_form.section|addcss:"form-control" }}
                            </div>
                         </div>
                         <div class="form-group row">
                            <label class="col-lg-3 col-form-label form-control-label">Category:</label>
                            <div class="col-lg-3">
-                              {{form.category|addcss:"form-control"}}
+                              {{ item_form.category|addcss:"form-control" }}
                            </div>
                            <label class="col-lg-3 col-form-label form-control-label">Price:</label>
                            <div class="col-lg-3">
-                              {{form.price|addcss:"form-control"}}
+                              {{ item_form.price|addcss:"form-control" }}
                            </div>
-                           {{form.price.errors}}
+                           {{ item_form.price.errors }}
                         </div>
                   <div class="form-group row">
                      <label class="col-lg-3 col-form-label form-control-label">Upload item's photo:</label>
                      <div class="col-lg-3">
                         <label class="custom-file">
-                           {{form.picture|addcss:"form-control"}}
+                           {{ item_form.picture|addcss:"form-control" }}
                            <span class="custom-file-control">Choose file</span>
                         </label>
-                        {{form.picture.errors}}
+                        {{ item_form.picture.errors }}
                      </div>
                   </div>   
                         <div class="form-group row">
@@ -133,74 +135,30 @@
                 
                   </form>
                </div>
-               <div class="tab-pane" id="edit">
+               <div class="tab-pane" id = "edit">
                   <h4 class="m-y-2">Edit Profile</h4>
-                     <form role = "form"  method = "post" action = "{% url 'tailored:edit_profile' %}" enctype = "multipart/form-data"> {% csrf_token %}
-                  <div class="form-group row">
-                        
-                        {% for hidden in form.hidden_fields %}
-                           {{ hidden }}
-                        {% endfor %}
-                        {% for field in form.visible_fields %}
-                           <li>
-                              {{ field.errors }}
-                              {{ field.help_text }}
-                              {{ field }}
-                           </li>
-                        {% endfor %}
-                        <input type = "submit" name = "submit" value = "Edit profile" />
-                  </div>
+                     <form role = "form"  method = "post" action = "{% url 'tailored:user_profile' %}" enctype = "multipart/form-data"> {% csrf_token %}
+						<div class="form-group row">
+							{% for field in user_form.visible_fields %}
+								<label class="col-lg-3 col-form-label form-control-label">{{ field.help_text }}</label>
+								<div class="col-lg-9">
+									{{ field }}
+									{{ field.errors }}  
+								</div>
+								                
+                         
+							{% endfor %}
+                        <button class="btn btn-primary" type="submit">Save changes</button>
+						</div>
                      </form>
-                  <!--
-                  <form role="form">
-                     <div class="form-group row">
-                        <label class="col-lg-3 col-form-label form-control-label">Email:</label>
-                        <div class="col-lg-9">
-                           <input class="form-control" type="email" placeholder="Email">
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <label class="col-lg-3 col-form-label form-control-label">Address:</label>
-                        <div class="col-lg-6">
-                           <input class="form-control" type="text" value="" placeholder="City">
-                        </div>
-                        <div class="col-lg-3">
-                           <input class="form-control" type="text" value="" placeholder="Post Code">
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <label class="col-lg-3 col-form-label form-control-label">Password:</label>
-                        <div class="col-lg-9">
-                           <input class="form-control" type="password" placeholder="Password">
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <label class="col-lg-3 col-form-label form-control-label">Confirm password:</label>
-                        <div class="col-lg-9">
-                           <input class="form-control" type="password" placeholder="Confirm Password">
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <label class="col-lg-3 col-form-label form-control-label"></label>
-                        <div class="col-lg-9">
-                           <button type="reset" class="btn btn-secondary"value="Reset">Reset</button>
-                           <button class="btn btn-primary" type="submit">Save changes</button>
-                        </div>
-                     </div>
-                  </form>
-               -->
 
                </div>
             </div>
          </div>
        <div class="col-lg-4 pull-lg-8 text-xs-center">
-         <h6 class="m-t-2">{{ user_profile }}</h6>
+         
          <img src="{{ MEDIA_URL }}{{ user_profile.picture }}" class="m-x-auto img-fluid img-circle" alt="avatar" />
-         <h6 class="m-t-2">Change your profile picture</h6>
-         <label class="custom-file">
-            <input type="file" id="file" class="custom-file-input">
-            <span class="custom-file-control">Choose file</span>
-         </label>
+         <h6 class="m-t-2">{{ user_profile }}</h6>
       </div>
       </div>
       </div>

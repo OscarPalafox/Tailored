@@ -96,7 +96,7 @@ def populate():
 				'datePosted': date(2018, 12, 23)}
 
 	# List of items
-	items = [T_Shirt_M, Trousers_W, Jacket_K, T_Shirt_W, T_Shirt_K, Trousers_M, Trousers_K, Jacket_M, Jacket_W]
+	items = [T_Shirt_M, T_Shirt_W, T_Shirt_K, Trousers_M, Trousers_W, Trousers_K, Jacket_M, Jacket_W, Jacket_K]
 
 	
 	# List of sections

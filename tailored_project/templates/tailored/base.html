@@ -35,7 +35,7 @@
 						<div class="container h-100">
 							<div class="row h-100">
 								<div class="col-12 d-md-flex justify-content-between">
-									<div class="header-social-area"> 	
+									<div class="header-search"> 	
 										{% include 'tailored/searchbar.html' %}
 									</div>
 									<div class="main-menu-area">
@@ -53,14 +53,14 @@
 									</div>
 							{% if not user.is_authenticated %}
 								<div class="login">
-									<a href="{% url 'auth_login' %}"><i class="ti-user"></i> Login or Sign up</a>
+									<a href="{% url 'auth_login' %}"><i class="ti-user"></i>Login or Sign up</a>
 								</div>
 							{% else %}
 								<div class="login">
-									<a href="{% url 'tailored:add_item' %}"><i class="ti-user"></i> My Account</a>
+									<a href="{% url 'tailored:user_profile' %}"><i class="ti-user"></i>My Account</a>
 								</div>
 								<div class="login">
-									<a href="{% url 'auth_logout' %}"><i class="ti-user"></i> Logout</a>
+									<a href="{% url 'auth_logout' %}"><i class="ti-user"></i>Logout</a>
 								</div>
 							{% endif %}
 								</div>
@@ -71,11 +71,11 @@
 			<section class="top-newin-area d-md-flex align-items-center">
 					<div class="single-newin-area">
 						<h5 >New In Men</h5>
-						<h6><a href="{% url 'tailored:new_in' 'Men' %}" >SHOP NOW</a></h6>
+						<h6><a href="{% url 'tailored:new_in' 'Men' %}">SHOP NOW</a></h6>
 					</div>
 					<div class="single-newin-area">
 						<h5>New In Women</h5>
-						<h6><a href="{% url 'tailored:new_in' 'Women' %}" >SHOP NOW</a></h6>
+						<h6><a href="{% url 'tailored:new_in' 'Women' %}">SHOP NOW</a></h6>
 					</div>
 					<div  class="single-newin-area">
 						<h5 >New In Kids</h5>
@@ -83,7 +83,6 @@
 					</div>
 				</section>
 			<div>
-			<!-- Page specific content goes here -->
 			{% block body_block %}
 			{% endblock %}
 			</div>
@@ -153,13 +152,6 @@
 			 <script src="{%static 'js/plugins.js' %}"></script>
 			 <script src="{%static 'js/active.js' %}" ></script>
 			 <script src="{%static 'js/main.js' %}" ></script>
-			 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
-			 <script>
-				window.dataLayer = window.dataLayer || [];
-				function gtag(){dataLayer.push(arguments);}
-				gtag('js', new Date());
-				
-				gtag('config', 'UA-23581568-13');
-			 </script>
+			
 	</body>
 </html>
