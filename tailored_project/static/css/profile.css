@@ -59,7 +59,9 @@ body {
     border-color: #ff084e;
 }
 .btn-primary:hover{
+    color: #fff;
     background-color: black;
+    border-color: #007bff;
 }
 @media (min-width: 800px){
     .push-lg-4 {

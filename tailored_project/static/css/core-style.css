@@ -238,6 +238,15 @@ img {
     text-align: left!important
 }
 
+.btn-primary {
+    color: #fff;
+    background-color: #ff084e;
+    border-color: #ff084e;
+}
+.btn-primary:hover{
+    background-color: black;
+}
+
 .tailored-btn {
     display: inline-block;
     min-width: 170px;

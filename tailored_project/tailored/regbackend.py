@@ -18,7 +18,7 @@ class MyRegistrationView(RegistrationView):
 		user_profile = UserProfile()
 		user_profile.user = user
 		
-		if form_class.cleaned_data['picture'] == None:
+		if not form_class.cleaned_data['picture']:
 			user_profile.picture = 'profile_images/placeholder.jpg'
 		else:
 			user_profile.picture = form_class.cleaned_data['picture']
