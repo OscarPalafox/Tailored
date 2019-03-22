@@ -1,47 +1,50 @@
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404
 from tailored.models import UserProfile, Category, Section, Item, Review
-from tailored.forms import Search_bar, ItemForm, EditUserProfileForm, UserProfileForm, ReviewForm, EditItemForm
+from tailored.forms import Search_bar, ItemForm, EditUserProfileForm, UserProfileForm, ReviewForm, SoldItemForm
 from django.db.models import Q
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime, date
 from django.contrib.auth.models import User
-from django.contrib.auth.views import password_change
 from django import forms
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib import messages
-from django.views.decorators.csrf import csrf_protect
-from django.views.decorators.debug import sensitive_post_parameters
 
+
+@login_required
 def delete(request, itemID):
-
+	'''This view deletes the given item if the logged in user is the seller.'''
 	try:
-		item=get_object_or_404(Item, itemID = itemID)
+		item = get_object_or_404(Item, itemID = itemID)
+	# Handle when the given itemID is not UUID
 	except:
 		raise Http404
+
+	if (item.seller.user != request.user):
+		raise Http404
+	
 	item.delete()
 	return HttpResponseRedirect(reverse('tailored:index'))
 
 
 def show_item(request, itemID):
+	'''This view displays the given item and if the logged in user is the seller, it allows him to specify the
+		buyer or delete the item.'''
+	
 	try:
 		item = get_object_or_404(Item, itemID = itemID)
+	# Handle when the given itemID is not UUID
 	except:
 		raise Http404
 
-
 	context_dict = {}
-	form = Search_bar()
-	context_dict['search_bar'] = form
+	search_form = Search_bar()
+	context_dict['search_bar'] = search_form
 	isSeller = request.user == item.seller.user
 	context_dict['isSeller'] = isSeller
 	context_dict['item'] = item
-	context_dict['seller_rating'] = range(int(round(item.seller.rating, 1)))
 
-
-	related = Item.objects.filter(category = item.category)
+	related = Item.objects.filter(category = item.category).exclude(itemID = item.itemID)
 
 	context_dict['trendingItems'] = related[0:3]
 	response = render(request, 'tailored/product.html', context_dict)
@@ -55,10 +58,10 @@ def show_item(request, itemID):
 	if (item.seller.user != request.user):
 		return response
 
-	sold_form = EditItemForm()
+	sold_form = SoldItemForm()
 
 	if request.method == 'POST':
-		sold_form = EditItemForm(request.POST, request.FILES)
+		sold_form = SoldItemForm(request.POST, request.FILES)
 
 		if sold_form.is_valid():
 			user_query = User.objects.filter(username = sold_form.cleaned_data['sold_to'])

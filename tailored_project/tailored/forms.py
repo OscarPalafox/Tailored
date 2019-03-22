@@ -81,11 +81,11 @@ class EditUserProfileForm(forms.ModelForm):
 		fields = ('first_name', 'last_name', 'picture', 'postcode', 'phone')
 
 
-class EditItemForm(forms.ModelForm):
+class SoldItemForm(forms.ModelForm):
+	sold_to = forms.CharField(max_length = 128, help_text = 'Please enter the username of the buyer: ')
 
-	sold_to = forms.CharField(max_length = 128,
-				help_text = 'Please enter the username of the buyer: ')
-
+	# Inline class to provide additional information on the form
 	class Meta:
+		#Provide an association between the ModelForm and a model
 		model = Item
 		fields = []

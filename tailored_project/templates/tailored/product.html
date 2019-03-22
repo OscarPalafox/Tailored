@@ -12,9 +12,9 @@
 					 <div class="col-12">
 						<ol class="breadcrumb d-flex align-items-center">
 						   <li class="breadcrumb-item"><a href="#">Home</a></li>
-						   <li class="breadcrumb-item"><a href="#">{{item.category}}</a></li>
-                     <li class="breadcrumb-item"><a href="#">{{item.section}}</a></li>
-						   <li class="breadcrumb-item active">{{item.title}}</li>
+						   <li class="breadcrumb-item"><a href="#">{{ item.category }}</a></li>
+                     <li class="breadcrumb-item"><a href="#">{{ item.section }}</a></li>
+						   <li class="breadcrumb-item active">{{ item.title }}</li>
 						</ol>
 					 </div>
 				  </div>
@@ -27,9 +27,6 @@
 					 <div class="col-12 col-md-6">
 						<div class="single_product_thumb">
 						   <div id="product_details_slider" class="carousel slide" data-ride="carousel">
-							  <!-- <ol class="carousel-indicators">
-								 <li class="active" data-target="#product_details_slider" data-slide-to="0" style="background-image: url({{ MEDIA_URL }}{{ item.itemPic }});"></li>
-							  </ol> -->
 							  <div class="carousel-inner">
 								 <div class="carousel-item active">
 									<a class="gallery_img" href="{{ MEDIA_URL }}{{ item.picture }}">
