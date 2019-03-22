@@ -8,26 +8,37 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime, date
 from django.contrib.auth.models import User
+from django.contrib.auth.views import password_change
 from django import forms
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib import messages
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.debug import sensitive_post_parameters
 
+def delete(request, itemID):
+	item=Item.objects.filter(itemID=itemID)
+	if item:
+		get_object_or_404(Item, itemID = itemID).delete()
+		return render(request,"tailored/deleted.html")
+	else:
+		return home_page(request)
 
 def show_item(request, itemID):
+		
 	item = get_object_or_404(Item, itemID = itemID)
-	print(item)
 	context_dict = {}
+	isSeller=request.user==item.seller.user
+	context_dict['isSeller']=isSeller
 	context_dict['item'] = item
+
+	related=Item.objects.filter(category = item.category)
+	context_dict['trendingItems'] = related[0:3]
+	response = render(request, 'tailored/product.html', context_dict)
 	
-	print(item.dailyVisits, 'before')
-	related=Item.objects.filter(category=item.category)
-	context_dict['trendingItems']=related
-	response=render(request, 'tailored/product.html', context_dict)
+
 	if first_visit(request, response, str(item.itemID)):
-		print('HEY')
 		item.dailyVisits += 1
 		item.save()
-
-
-	print(item.dailyVisits, 'after')
 
 	return response
 
@@ -72,7 +83,7 @@ def trending(request):
 				trending.append(item)
 	
 
-	context_dict = {"trendingItems": trending}
+	context_dict = {"trendingItems": trending[0:3]}
 	return render(request, 'tailored/index.html', context_dict)
 
 
@@ -144,8 +155,6 @@ def user_profile(request):
 			item.seller = UserProfile.objects.get(user = request.user)
 			item.save()
 			return HttpResponseRedirect(reverse('tailored:index'))
-		else:
-			print(form.errors)
 	context_dict["form"] = form
 	return render(request, "tailored/user_profile.html", context_dict)
 
@@ -230,7 +239,7 @@ def user_profile(request):
 	item_form = ItemForm()
 	user_form = EditUserProfileForm()
 
-	if (request.method == "POST"):
+	if request.method == "POST":
 		item_form = ItemForm(request.POST, request.FILES)
 		user_form = EditUserProfileForm(request.POST, request.FILES)
 		
@@ -255,17 +264,17 @@ def user_profile(request):
 					if user_form.cleaned_data[key] and profile_user.__dict__[key] != user_form.cleaned_data[key]:
 						profile_user.__dict__[key] = user_form.cleaned_data[key]
 				user_profile.save()
-				context_dict["item_form"] = item_form
+				context_dict['item_form'] = item_form
 				return HttpResponseRedirect(reverse('tailored:index'))
 			else:
 				keys = list(user_form.cleaned_data.keys())
 				for key in keys:
 					user_form.add_error(key, forms.ValidationError("You need to fill at least one field."))
-				context_dict["item_form"] = item_form
+				context_dict['item_form'] = item_form
 				context_dict['user_form'] = user_form
 				return render(request, 'tailored/user_profile.html', context_dict)
 
-	context_dict["item_form"] = item_form
+	context_dict['item_form'] = item_form
 	context_dict['user_form'] = user_form
 	return render(request, "tailored/user_profile.html", context_dict)
 
@@ -274,58 +283,56 @@ def user_profile(request):
 def edit_item(request, itemID):
 	context_dict = {}
 	item = get_object_or_404(Item, itemID = itemID)
-	
+	context_dict['itemID'] = item.itemID
+
 	if (item.seller.user != request.user):
 		raise Http404
 
-	form = EditItemForm()
-	context_dict['itemID'] = item.itemID
-	
-	if request.method == 'POST':
-		form = EditItemForm(request.POST or None, request.FILES)
-		print(form)
-		if form.is_valid():
-			form_keys = form.cleaned_data.keys()
-			for key in form_keys:
-				if key == 'sold_to':
-					if form.cleaned_data['sold_to']:
-						user_query = User.objects.filter(username = form.cleaned_data['sold_to'])
-						
-						if not user_query:
-							form.add_error('sold_to', forms.ValidationError('The given user does not exist.'))
-							context_dict['form'] = form
-							return render(request, 'tailored/edit_item.html', context_dict)
+	sold_form = EditItemForm()
 
-						elif user_query[0] != request.user:
-							try:
-								print(user_query[0])
-								item.sold_to = UserProfile.objects.get(user = user_query[0])
-								item.save()
-							except UserProfile.DoesNotExist:
-								form.add_error('sold_to', forms.ValidationError('The given user does not exist.'))
-								context_dict['form'] = form
-								return render(request, 'tailored/edit_item.html', context_dict)
-						else:
-							form.add_error('sold_to', forms.ValidationError("You can't sell an item to yourself."))
-							context_dict['form'] = form
-							return render(request, 'tailored/edit_item.html', context_dict)
+	if request.method == 'POST':
+
+		sold_form = EditItemForm(request.POST, request.FILES)
+
+		if sold_form.is_valid():
+			user_query = User.objects.filter(username = sold_form.cleaned_data['sold_to'])
+			if not user_query:
+				sold_form.add_error('sold_to', forms.ValidationError('The given user does not exist.'))
+				context_dict['form'] = sold_form
+				return render(request, 'tailored/edit_item.html', context_dict)
+
+			elif user_query[0] != request.user:
+				try:
+					item.sold_to = UserProfile.objects.get(user = user_query[0])
+					item.save()
+				except UserProfile.DoesNotExist:
+					sold_form.add_error('sold_to', forms.ValidationError('The given user does not exist.'))
+					context_dict['form'] = sold_form
+					return render(request, 'tailored/edit_item.html', context_dict)
+			else:
+				sold_form.add_error('sold_to', forms.ValidationError("You can't sell an item to yourself."))
+				context_dict['form'] = sold_form
+				return render(request, 'tailored/edit_item.html', context_dict)
+			item.save()
 
 			return HttpResponseRedirect(reverse('tailored:index'))
 
-	context_dict['form'] = form
+	context_dict['form'] = sold_form
 	return render(request, 'tailored/edit_item.html', context_dict)
 
 
-def search_bar(request, search = None, page=1):	
+
+def search_bar(request, search = None, page=1):
+
 	categories = Category.objects.all()
 	
 	
 	if(request.method == 'POST'):
 		check = request.POST.get('search')
-		print(check, "CHECK")
 		if check != None:
 			if check != "":
-				return HttpResponseRedirect(check + "/")
+				check="-".join(check.split(" "))
+				return HttpResponseRedirect(reverse('tailored:search', kwargs = {'search': check}))
 			else:
 				return HttpResponseRedirect(reverse('tailored:search', kwargs = {'search': 'all'}))
 		else:
@@ -339,7 +346,7 @@ def search_bar(request, search = None, page=1):
 		items = Item.objects.all()
 	else:
 		if search != None:
-			search = search.split(" ")
+			search = search.split("-")
 			for word in search:
 				items += Item.objects.filter(Q(description__contains = word ) | Q(title__contains = word)
 					| Q(category = word) | Q(section = word))
@@ -364,7 +371,6 @@ def new_in(request, search = None, page = 1):
 	context_dict = {}
 	items = []	
 	search = search
-	print("hello")
 	if search != None:
 		search = search.split(" ")
 		toAdd = []

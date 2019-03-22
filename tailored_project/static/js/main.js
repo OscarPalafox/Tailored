@@ -7,10 +7,6 @@
 (function($) {
 	
 
-	$("#page2").click(function(){
-		var thisURL=(window.location.href).replace("http://127.0.0.1:8000","").replace("3/","");
-		window.location.href = thisURL+'2/';
-	});
 
 	$("#page3").click(function(){
 		var thisURL=(window.location.href).replace("http://127.0.0.1:8000","").replace("2/","").replace("3/","");

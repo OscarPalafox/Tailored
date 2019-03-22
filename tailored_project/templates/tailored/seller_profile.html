@@ -112,53 +112,7 @@
                            This user is not selling any products at the moment
                         {% endif %}
                      </div>
-                     <!--
-                     <div class="col-12 col-sm-6 col-md-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.125s">
-                        <div class="product-img">
-                           <img src="img/product-img/product-2.jpg" alt="">                        
-                        </div>
-                        <div class="product-description">
-                           <h4 class="product-price">$39.90</h4>
-                           <p>Jeans midi cocktail dress</p>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6 col-md-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.175s">
-                        <div class="product-img">
-                           <img src="img/product-img/product-3.jpg" alt="">                       
-                        </div>
-                        <div class="product-description">
-                           <h4 class="product-price">$39.90</h4>
-                           <p>Jeans midi cocktail dress</p>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6 col-md-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.225s">
-                        <div class="product-img">
-                           <img src="img/product-img/product-4.jpg" alt="">                        
-                        </div>
-                        <div class="product-description">
-                           <h4 class="product-price">$39.90</h4>
-                           <p>Jeans midi cocktail dress</p>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6 col-md-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.275s">
-                        <div class="product-img">
-                           <img src="img/product-img/product-5.jpg" alt="">                        
-                        </div>
-                        <div class="product-description">
-                           <h4 class="product-price">$39.90</h4>
-                           <p>Jeans midi cocktail dress</p>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6 col-md-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.325s">
-                        <div class="product-img">
-                           <img src="img/product-img/product-6.jpg" alt="">                           
-                        </div>
-                        <div class="product-description">
-                           <h4 class="product-price">$39.90</h4>
-                           <p>Jeans midi cocktail dress</p>
-                        </div>
-                     </div>
-                  -->
+                     
                   </div>
                </div>
             </div>
@@ -166,9 +120,10 @@
          </div>
       </div>
       <div class="col-lg-4 pull-lg-8 text-xs-center">
-         
-         <img src="{{MEDIA_URL}}{{seller_user.userprofile.picture}}" class="m-x-auto img-fluid img-circle" alt="avatar">
-         <strong>{{ seller_user }}</strong>
+
+         <img src="{{ MEDIA_URL }}{{ seller_user.userprofile.picture }}" class="m-x-auto img-fluid img-circle" alt="avatar">
+         <br />
+         <h5><strong>{{ seller_user }}</strong></h5>
 
       </div>
    </div>
