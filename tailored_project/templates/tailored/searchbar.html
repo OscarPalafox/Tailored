@@ -6,13 +6,15 @@
 
 <body>
 	<div>
-<form action="/search/{{search}}{% if search != None and search != '' %}/{%endif%}" class="search" method="POST">
+		{% if search%}
+<form action="{% url 'tailored:search' search %}" class="search" method="POST">
+		{% endif %}
+<form action="{% url 'tailored:search'  %}" class="search" method="POST">		
 	{% csrf_token %}
-	{% if search == None %}
-<input type="text" name="search">
-{% else %}
-<input type="text" name="search" placeholder="{{search}}">
-{% endif %}
+	
+	{{search_bar}}
+			
+
 <input type="submit" name="request" value="submit" ><br>
 	</form>
 </div>
