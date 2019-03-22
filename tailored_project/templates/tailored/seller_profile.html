@@ -103,14 +103,16 @@
 			   <div class="container">
                   <div class="row tailored-new-arrivals">
                      <div class="col-12 col-sm-6 col-md-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0s">
-                        <div class="product-img">
-                           <img src="img/product-img/product-2.jpg" alt="">                        
-                        </div>
-                        <div class="product-description">
-                           <h4 class="product-price">$39.90</h4>
-                           <p>Jeans midi cocktail dress</p>
-                        </div>
+                        {% if seller_items %}
+                        {{ seller_items }}
+                           {% for item in seller_items %}
+                              {% include 'tailored/item_preview.html' %}
+                           {% endfor %}
+                        {% else %}
+                           This user is not selling any products at the moment
+                        {% endif %}
                      </div>
+                     <!--
                      <div class="col-12 col-sm-6 col-md-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.125s">
                         <div class="product-img">
                            <img src="img/product-img/product-2.jpg" alt="">                        
@@ -156,6 +158,7 @@
                            <p>Jeans midi cocktail dress</p>
                         </div>
                      </div>
+                  -->
                   </div>
                </div>
             </div>

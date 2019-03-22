@@ -278,52 +278,35 @@ def edit_item(request, itemID):
 	context_dict['itemID'] = item.itemID
 	
 	if request.method == 'POST':
-		form = EditItemForm(request.POST, request.FILES)
-
+		form = EditItemForm(request.POST or None, request.FILES)
+		print(form)
 		if form.is_valid():
-			if form.has_changed():
-				form_keys = form.cleaned_data.keys()
-				for key in form_keys:
-					if key == 'section' or key == 'category' or key == 'size':
-						if form.cleaned_data[key] and item.__dict__[key + '_id'] != form.cleaned_data[key]:
-							item.__dict__[key] = form.cleaned_data[key]
+			form_keys = form.cleaned_data.keys()
+			for key in form_keys:
+				if key == 'sold_to':
+					if form.cleaned_data['sold_to']:
+						user_query = User.objects.filter(username = form.cleaned_data['sold_to'])
+						
+						if not user_query:
+							form.add_error('sold_to', forms.ValidationError('The given user does not exist.'))
+							context_dict['form'] = form
+							return render(request, 'tailored/edit_item.html', context_dict)
 
-					elif key == 'sold_to':
-						if form.cleaned_data['sold_to']:
-							user_query = User.objects.filter(username = form.cleaned_data['sold_to'])
-							
-							if not user_query:
+						elif user_query[0] != request.user:
+							try:
+								print(user_query[0])
+								item.sold_to = UserProfile.objects.get(user = user_query[0])
+								item.save()
+							except UserProfile.DoesNotExist:
 								form.add_error('sold_to', forms.ValidationError('The given user does not exist.'))
 								context_dict['form'] = form
 								return render(request, 'tailored/edit_item.html', context_dict)
+						else:
+							form.add_error('sold_to', forms.ValidationError("You can't sell an item to yourself."))
+							context_dict['form'] = form
+							return render(request, 'tailored/edit_item.html', context_dict)
 
-							elif user_query[0] != request.user:
-								try:
-									print(user_query[0])
-									item.sold_to = UserProfile.objects.get(user = user_query[0])
-									item.save()
-								except UserProfile.DoesNotExist:
-									form.add_error('sold_to', forms.ValidationError('The given user does not exist.'))
-									context_dict['form'] = form
-									return render(request, 'tailored/edit_item.html', context_dict)
-							else:
-								form.add_error('sold_to', forms.ValidationError("You can't sell an item to yourself."))
-								context_dict['form'] = form
-								return render(request, 'tailored/edit_item.html', context_dict)
-
-					else:
-						if form.cleaned_data[key] and item.__dict__[key] != form.cleaned_data[key]:
-							item.__dict__[key] = form.cleaned_data[key]
-							item.__dict__[key] = form.cleaned_data[key]
-				item.save()
-				return HttpResponseRedirect(reverse('tailored:index'))
-
-			else:
-				keys = list(form.cleaned_data.keys())
-				for key in keys:
-					form.add_error(key, forms.ValidationError("You need to fill at least one field."))
-				context_dict['form'] = form
-				return render(request, 'tailored/edit_item.html', context_dict)
+			return HttpResponseRedirect(reverse('tailored:index'))
 
 	context_dict['form'] = form
 	return render(request, 'tailored/edit_item.html', context_dict)
