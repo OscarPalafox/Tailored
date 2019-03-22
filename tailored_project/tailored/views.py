@@ -91,6 +91,7 @@ def show_item(request, itemID):
 
 
 def trending(request):
+	'''This view gives the five trending objects.'''
 	items = Item.objects.all()
 	trending = []
 

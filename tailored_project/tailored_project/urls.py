@@ -11,11 +11,6 @@ urlpatterns = [
 	url(r'^', include('tailored.urls')),
 	url(r'^register/$', MyRegistrationView.as_view(form_class = UserProfileForm), name = 'registration_register'),
 	url(r'^', include('registration.backends.default.urls')),
-	url(r'^admin/', admin.site.urls),
-	url(r'^tailored/$', views.search_bar, name = 'home_page'),
-
-
-
-	url(r'^tailored/(?P<search>[\w\-]+)/$', views.search_bar, name='search'),
+	url(r'^admin/', admin.site.urls)
 
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

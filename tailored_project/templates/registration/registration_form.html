@@ -9,7 +9,7 @@
 	<form  method="POST" action = "." enctype = "multipart/form-data" novalidate>
 		{% csrf_token %}
 		{% for field in form %}
-		{%if field.field.widget.input_type == "checkbox"%}
+		{% if field.field.widget.input_type == "checkbox" %}
 		<div class="form-row row-space">
 			<div class="col-3">
 				<div class="input-group form-control  p-t-15 ">
