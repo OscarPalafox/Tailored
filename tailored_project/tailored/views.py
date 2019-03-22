@@ -10,8 +10,16 @@ from datetime import datetime, date
 from django.contrib.auth.models import User
 from django import forms
 
+def delete(request, itemID):
+	item=Item.objects.filter(itemID=itemID)
+	if item:
+		get_object_or_404(Item, itemID = itemID).delete()
+		return render(request,"tailored/deleted.html")
+	else:
+		return home_page(request)
 
 def show_item(request, itemID):
+		
 	item = get_object_or_404(Item, itemID = itemID)
 	print(item)
 	context_dict = {}
@@ -329,7 +337,7 @@ def search_bar(request, search = None, page=1):
 		items = Item.objects.all()
 	else:
 		if search != None:
-			search = search.split(" ")
+			search = search.split("-")
 			for word in search:
 				items += Item.objects.filter(Q(description__contains = word ) | Q(title__contains = word)
 					| Q(category = word) | Q(section = word))

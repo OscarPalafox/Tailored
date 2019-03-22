@@ -4,6 +4,8 @@
 	
 
 	{% block body_block %}
+   
+
             <div class="breadcumb_area">
 			   <div class="container">
 				  <div class="row">
@@ -40,6 +42,7 @@
 
 					 </div>
                </div>
+               {% if item%}
 					 <div class="col-12 col-md-6">
 						<div class="single_product_desc">
 						   <h4 class="title"><a href="#">{{ item.title }}</a></h4>
@@ -81,14 +84,14 @@
              <div class="card-header" role="tab" id="headingTwo">
 
                            <h6 class="mb-0">
-                              <a data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"> Edit item</a>
+                           <a data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"> Edit item</a>
                            </h6>
                         </div>
                         <div id="collapseTwo" class="collapse show" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
                            <div class="card-body">
-               {% include "tailored/edit_item.html" %}
-              
-                
+               
+                        
+                <a href="{% url 'tailored:delete' itemID %}">Delete this item</a>
                {% endif %} 
 									</div>
 								</div>
@@ -96,6 +99,9 @@
 						</div>
 					</div>
 				</div>
+            {%else%}
+            <h1>This item doesn't exist or has been deleted.</h1>
+            {% endif %}
 			</div>
 		</div>
    </div>
