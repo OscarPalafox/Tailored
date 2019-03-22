@@ -44,7 +44,8 @@
 						   <h4 class="title"><a href="#">{{ item.title }}</a></h4>
 
 						   <h4 class="price">{{ item.price }} £</h4>
-						   <a href="#" class="seller">Sold by <span class="text-muted">Seller Name</span></a>
+						   <a href="{% url 'tailored:show_seller_profile' item.seller.user %}" class="seller">Sold by <span class="text-muted" >
+                      {{item.seller.user}}</span></a>
 						   <div class="single_product_ratings mb-15">
 							  <i class="fa fa-star" aria-hidden="true"></i>
 							  <i class="fa fa-star" aria-hidden="true"></i>
@@ -96,58 +97,16 @@
 					</div>
 				</div>
 			</div>
-		<div class="row">
-			<div class="col-12">
-				<div class="you_make_like_slider owl-carousel">
-					<div class="single_gallery_item">
-						<div class="product-img">
-							<img src="img/product-img/product-1.jpg" alt="">
-						</div>
-						<div class="product-description">
-							<h4 class="product-price">$39.90</h4>
-							<p>Jeans midi cocktail dress</p>
-						</div>
-					</div>
-					<div class="single_gallery_item">
-						<div class="product-img">
-							<img src="img/product-img/product-2.jpg" alt="">
-						</div>
-						<div class="product-description">
-							<h4 class="product-price">$39.90</h4>
-							<p>Jeans midi cocktail dress</p>
-						</div>
+		<div class="container">
+            <div class="row tailored-new-arrivals">
 
-					</div>
-					<div class="single_gallery_item">
-						<div class="product-img">
-							<img src="img/product-img/product-3.jpg" alt="">
-						</div>
-						<div class="product-description">
-							<h4 class="product-price">$39.90</h4>
-							<p>Jeans midi cocktail dress</p>
-						</div>
-					</div>
-						<div class="single_gallery_item">
-							<div class="product-img">
-								<img src="img/product-img/product-4.jpg" alt="">
-							</div>
-							<div class="product-description">
-								<h4 class="product-price">$39.90</h4>
-								<p>Jeans midi cocktail dress</p>
-							</div>
-						</div>
-						<div class="single_gallery_item">
-							<div class="product-img">
-								<img src="img/product-img/product-5.jpg" alt="">
-							</div>
-							<div class="product-description">
-								<h4 class="product-price">$39.90</h4>
-								<p>Jeans midi cocktail dress</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+               {% for item in trendingItems %}
+                  {% include 'tailored/item_preview.html' %}
+               {% endfor %}
+
+               
+            </div>
+         </div>
 		</div>
 
 	</section>

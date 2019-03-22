@@ -18,7 +18,6 @@
 	});
 	
 	$("#S").click(function(){
-		
 		filterBySize("S");
 		
 	});
@@ -150,33 +149,41 @@
 							}
 						}
 	function filterByPrice(min, max){
-		 var  items, i, priceValue, price, num, size, category, temp;
+		 var  items, i, priceValue, price, num, size, category, temp, section, ignore;
 
                 items = document.getElementsByClassName("item");
-             	  
+             	ignore=[] 
                 for (var i=0; i<items.length; i++) {
-                    if(search.cat&&search.sect &&(!search.size)){
+                    if(search.cat!=null && search.sect!=null && search.size==null){
                         category=items[i].getElementsByClassName("category")[0].innerText;
-                        category=items[i].getElementsByClassName("section")[0].innerText;
+                        section=items[i].getElementsByClassName("section")[0].innerText;
                         if(category.localeCompare(search.cat)!=0 || section.localeCompare(search.sect)!=0){
-                            delete items[i];
+
+                            items[i].style.display = "none";
+                            ignore.push(i)
                     
                     }   
                 }else
-                if(search.size && !search.cat){
+                if(search.size!=null && search.cat==null){
+                	//alert(search.size)
                         size = items[i].getElementsByClassName("size")[0].innerText;
                         if(size.localeCompare(search.size)!=0){
-                            delete items[i];
+
+                            items[i].style.display = "none";
+                            ignore.push(i)
+                            //alert(items[i].innerText);
                     }
                     }else
                 
-                if(search.cat&&search.sect &&search.size){
+                if(search.cat!=null && search.sect!=null && search.size!=null){
                         size = items[i].getElementsByClassName("size")[0].innerText;
                         category=items[i].getElementsByClassName("category")[0].innerText;
-                        category=items[i].getElementsByClassName("section")[0].innerText;
+                        section=items[i].getElementsByClassName("section")[0].innerText;
                         if(category.localeCompare(search.cat)!=0 
                             || section.localeCompare(search.sect)!=0 || size.localeCompare(search.size!=0)) {
-                            delete items[i];
+
+                            items[i].style.display = "none";
+                            ignore.push(i)
                     
                     }   
                 }
@@ -184,11 +191,11 @@
         
           // Loop through all table rows, and hide those who don't match the price bracket
                 for (i = 0; i < items.length; i++) {
-                	if(items[i]){
+                	if(!ignore.includes(i)){
                     price = items[i].getElementsByClassName("product-price")[0];
                     if (price ) {
                         num=parseInt(price.innerText, 10);          
-                                if (num>min && num<max  ){
+                                if (num>=min && num<=max  ){
                                     items[i].style.display = "";
                                  } else {
 
@@ -199,7 +206,7 @@
           }
           // Loop through all table rows, and hide those who don't match the search query
           
-            
+
 	}
 	
     $('.slider-range-price').each(function() {
