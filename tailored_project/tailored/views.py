@@ -34,10 +34,12 @@ def show_item(request, itemID):
 
 	context_dict = {}
 	form = Search_bar()
-	context_dict['search_bar']=form
+	context_dict['search_bar'] = form
 	isSeller = request.user == item.seller.user
 	context_dict['isSeller'] = isSeller
 	context_dict['item'] = item
+	context_dict['seller_rating'] = range(int(round(item.seller.rating, 1)))
+
 
 	related = Item.objects.filter(category = item.category)
 
@@ -116,7 +118,7 @@ def show_seller_profile(request, seller_username):
 	context_dict['seller_user'] = seller_user
 	seller_user_profile=get_object_or_404(UserProfile, user=seller_user)
 	selling=Item.objects.filter(seller=seller_user_profile)
-	context_dict['selling']=selling[0:3]
+	context_dict['selling'] = selling[0:3]
 	seller_user_profile = get_object_or_404(UserProfile, user = seller_user)
 	context_dict['seller_user_profile'] = seller_user_profile
 	context_dict['seller_rating'] = range(int(round(seller_user_profile.rating, 1)))
