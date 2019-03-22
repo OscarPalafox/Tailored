@@ -56,5 +56,6 @@ Finally you run the population script:
 
 
 ### Testing
-
-Running Unit Tests
+-	python manage.py test tailored
+## PythonAnywhere
+Url :  tailored.pythonanywhere.com
