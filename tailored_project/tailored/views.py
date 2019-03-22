@@ -15,17 +15,49 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 
+def delete(request, itemID):
+	item=Item.objects.filter(itemID=itemID)
+	if item:
+		get_object_or_404(Item, itemID = itemID).delete()
+		return render(request,"tailored/deleted.html")
+	else:
+		return home_page(request)
 
 def show_item(request, itemID):
+		
 	item = get_object_or_404(Item, itemID = itemID)
 	context_dict = {}
+	isSeller=request.user==item.seller.user
+	context_dict['isSeller']=isSeller
 	context_dict['item'] = item
-	response=render(request, 'tailored/product.html', context_dict)
+	related=Item.objects.filter(category = item.category)
+	context_dict['trendingItems'] = related[0:3]
+	response = render(request, 'tailored/product.html', context_dict)
+	
+
 	if first_visit(request, response, str(item.itemID)):
 		item.dailyVisits += 1
 		item.save()
 
 	return response
+
+
+def get_trending_items():
+	items = Item.objects.all()
+	trending = []
+
+	for item in Item.objects.order_by('-dailyVisits'):
+		if ( ((date.today() - item.datePosted).days <= 0) and (item.sold_to == None)):
+			if (len(trending) <= 5):
+				trending.append(item)
+		else:
+			item.dailyVisits = 0
+			item.save()
+	for item in Item.objects.order_by('-dailyVisits'):
+		if ((len(trending)) <= 5 and (item.sold_to == None) and (item not in trending)):
+			trending.append(item)
+	
+	return trending
 
 
 def trending(request):
@@ -46,7 +78,7 @@ def trending(request):
 				trending.append(item)
 	
 
-	context_dict = {"trendingItems": trending}
+	context_dict = {"trendingItems": trending[0:3]}
 	return render(request, 'tailored/index.html', context_dict)
 
 
@@ -278,7 +310,8 @@ def search_bar(request, search = None, page=1):
 		check = request.POST.get('search')
 		if check != None:
 			if check != "":
-				return HttpResponseRedirect(check + "/")
+				check="-".join(check.split(" "))
+				return HttpResponseRedirect(reverse('tailored:search', kwargs = {'search': check}))
 			else:
 				return HttpResponseRedirect(reverse('tailored:search', kwargs = {'search': 'all'}))
 		else:
@@ -292,7 +325,7 @@ def search_bar(request, search = None, page=1):
 		items = Item.objects.all()
 	else:
 		if search != None:
-			search = search.split(" ")
+			search = search.split("-")
 			for word in search:
 				items += Item.objects.filter(Q(description__contains = word ) | Q(title__contains = word)
 					| Q(category = word) | Q(section = word))

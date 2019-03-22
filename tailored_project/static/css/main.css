@@ -276,46 +276,9 @@ iframe{
     position:relative;
     margin-bottom: 16px
 }
-.alert-validate::before{
-    content:attr(data-validate);
-    position:absolute;
-    max-width:70%;
-    background-color:#fff;
-    border:1px solid #c80000;
-    border-radius:3px;
-    padding:4px 25px 4px 10px;
-    top:50%;
-    right:8px;
-    pointer-events:none;
-    font-family:Raleway-SemiBold;
-    color:#c80000;
-    font-size:13px;
-    line-height:1.4;
-    text-align:left;
-    visibility:hidden;
-    opacity:0;
-    transition:opacity .4s
-}
-.alert-validate::after{
-    content:"\f12a";
-    font-family:FontAwesome;
-    display:block;
-    position:absolute;
-    color:#c80000;
-    font-size:15px;
-    top:50%;
-    transform:translateY(-50%);
-    right:13px
-}
-.alert-validate:hover:before{
-    visibility:visible;
-    opacity:1
-}
-@media(max-width:992px){
-    .alert-validate::before{
-        visibility:visible;
-        opacity:1
-    }
+.errors{
+	font-size: 16px;
+	color: #e81010
 }
 @media(max-width:480px){
     .wrap-login{
