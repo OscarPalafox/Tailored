@@ -5,11 +5,8 @@ from django.contrib.auth.views import password_change
 app_name = 'tailored'
 urlpatterns = [
 	url(r'^$', views.trending, name = 'index'),
-	url(r'^items/$', views.items, name = 'items'),
-	url(r'^section/(?P<title>[-\w]+)/$', views.show_section, name = 'show_section'),
 	url(r'^user_profile/$', views.user_profile, name = "user_profile"),
 	url(r'^trending/$', views.trending, name = "trending"),
-	url(r'^category/(?P<title>[-\w]+)/$', views.show_category, name = 'show_category'),
 	url(r'^index/$', views.trending, name = 'home_page'),
 	url(r'^search/new/(?P<search>[-\w]+)/$', views.new_in, name = 'new_in'),
 	url(r'^home/$', views.home_page, name = 'home_page'),
@@ -21,6 +18,5 @@ urlpatterns = [
 	url(r'^item/(?P<itemID>[-\w]+)/$', views.show_item, name = 'show_item'),
 	url(r'^edit/(?P<itemID>[-\w]+)/$', views.edit_item, name = 'sold_item'),
 	url(r'^delete/(?P<itemID>[-\w]+)/$', views.delete, name = 'delete'),
-	url(r'^add_item/$', views.add_item, name = 'add_item'),
-	url(r'^user_profile/edit/$', views.edit_profile, name = 'edit_profile')
+	url(r'^add_item/$', views.add_item, name = 'add_item')
 ]

@@ -16,7 +16,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 
 def delete(request, itemID):
-	item=Item.objects.filter(itemID=itemID)
+	item = Item.objects.filter(itemID = itemID)
 	if item:
 		get_object_or_404(Item, itemID = itemID).delete()
 		return render(request,"tailored/deleted.html")
@@ -24,17 +24,15 @@ def delete(request, itemID):
 		return home_page(request)
 
 def show_item(request, itemID):
-		
 	item = get_object_or_404(Item, itemID = itemID)
 	context_dict = {}
-	isSeller=request.user==item.seller.user
-	context_dict['isSeller']=isSeller
+	isSeller = request.user == item.seller.user
+	context_dict['isSeller'] = isSeller
 	context_dict['item'] = item
-	related=Item.objects.filter(category = item.category)
+	related = Item.objects.filter(category = item.category)
 	context_dict['trendingItems'] = related[0:3]
 	response = render(request, 'tailored/product.html', context_dict)
 	
-
 	if first_visit(request, response, str(item.itemID)):
 		item.dailyVisits += 1
 		item.save()
@@ -80,51 +78,6 @@ def trending(request):
 
 	context_dict = {"trendingItems": trending[0:3]}
 	return render(request, 'tailored/index.html', context_dict)
-
-
-def items(request):
-	item_list = Item.objects.order_by('-dailyVisits')[:5]
-	context_dict = {'items': item_list}
-
-	return render(request, 'tailored/itemsList.html', context_dict)
-
-
-def show_section(request, title):
-	context_dict = {}
-
-	try:
-		title = title.lower().capitalize()
-		
-		section = Section.objects.get(title = title)
-		items = Item.objects.filter(section = section)
-		context_dict['items'] = items
-		context_dict['section'] = section
-
-	except Section.DoesNotExist:
-
-		context_dict['section'] = None
-		context_dict['items'] = None
-
-	return render(request, 'tailored/section.html', context_dict)
-
-
-def show_category(request, title):
-	context_dict = {}
-
-	try:
-		title = title.lower()
-		
-		category = Category.objects.get(slug = title)
-		items = Item.objects.filter(category = category)
-		context_dict['items'] = items
-		context_dict['category'] = category
-
-	except Category.DoesNotExist:
-
-		context_dict['category'] = None
-		context_dict['items'] = None
-
-	return render(request, 'tailored/category.html', context_dict)
 
 
 @login_required
