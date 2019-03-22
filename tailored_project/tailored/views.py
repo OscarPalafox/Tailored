@@ -31,18 +31,22 @@ def show_item(request, itemID):
 
 	return response
 
-
+#Helper method used to find 'trending' items in a simple way
 def get_trending_items():
 	items = Item.objects.all()
 	trending = []
 
 	for item in Item.objects.order_by('-dailyVisits'):
+		#Include items that have been uploaded within the past day and havent been sold
 		if ( ((date.today() - item.datePosted).days <= 0) and (item.sold_to == None)):
 			if (len(trending) <= 5):
 				trending.append(item)
 		else:
+			#Reset the daily visits of the items
 			item.dailyVisits = 0
 			item.save()
+	
+	#If there arent enough items in the trending list, add older items to the list
 	for item in Item.objects.order_by('-dailyVisits'):
 		if ((len(trending)) <= 5 and (item.sold_to == None) and (item not in trending)):
 			trending.append(item)

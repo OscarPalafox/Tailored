@@ -41,7 +41,6 @@ def populate():
 	# List of sections
 	sections = ['Men',  'Women', 'Kids']
 
-	
 	# List of categories
 	categories = ['T-Shirts',  'Trousers', 'Jackets']
 
@@ -50,13 +49,12 @@ def populate():
 	for section in sections:
 		sections_instances.append(add_section(section))
 
-	
 	# List of instances of categories
 	categories_instances = []
 	for category in categories:
 		categories_instances.append(add_category(category))
 
-	# Items data
+	# Item data
 	T_Shirt_M = {'title': 'Maison Margiela T-Shirt', 'price': 60,
 					'description' : 'Slightly but still in good condition. Amazing quality',
 					'sold_to' : user_profiles_instances[0],
@@ -162,7 +160,6 @@ def populate():
 			T_Shirt_K, Trousers_M, Trousers_K, Jacket_M, Jacket2, Jacket_W]
 	
 	
-
 	# List of instances of items
 	item_instances = []
 	for item_data in items:
