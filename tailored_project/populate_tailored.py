@@ -75,7 +75,7 @@ def populate():
 
 	T_Shirt_W = {'title': 'Red shirt', 'price': 20,
 					'description' : "Brand new red shirt, only selling because it's the wrong size. Good quality",
-					'sold_to' : user_profiles_instances[1],
+					'sold_to' : None,
 					'seller': user_profiles_instances[2],
 					'dailyVisits': 17, 'size': 'M', 'picture':  'item_images/RedShirt.jpg',
 					'datePosted': date(2019, 2, 28),
@@ -125,7 +125,7 @@ def populate():
 
 	Jacket_M = {'title': 'Nike Jacket', 'price': 9,
 				'description' : 'Has been slightly used. Selling because closet is full',
-				'sold_to' : user_profiles_instances[2],
+				'sold_to' : None,
 				'seller': user_profiles_instances[1],
 				'dailyVisits': 10, 'size': 'S', 'picture': 'item_images/NikeJacket.jpg',
 				'category': categories_instances[2],
@@ -148,7 +148,7 @@ def populate():
 
 	Jacket_K = {'title': 'Red Coat', 'price': 10,
 				'description' : 'Basic red coat for kids. Very warm and cozy. Has been used slighly.',
-				'sold_to' : user_profiles_instances[3],
+				'sold_to' : None,
 				'seller': user_profiles_instances[0],
 				'dailyVisits': 6, 'size': 'XXL', 'picture': 'item_images/RedCoat.jpg',
 				'datePosted': date(2018, 12, 23),
