@@ -350,3 +350,9 @@ def first_visit(request, response, item):
 		else:
 			response.set_cookie('last_visit' + item , last_visit_cookie)
 			return False
+
+def terms_and_conditions(request):
+	return render(request, 'tailored/terms_and_conditions.html', {})
+
+def contact_us(request):
+	return render(request, 'tailored/contacus.html', {})
