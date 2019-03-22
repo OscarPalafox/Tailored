@@ -40,6 +40,7 @@ def show_item(request, itemID):
 	context_dict['item'] = item
 	context_dict['seller_rating'] = range(int(round(item.seller.rating, 1)))
 
+	related = Item.objects.filter(category = item.category).exclude(itemID = item.itemID)
 
 	related = Item.objects.filter(Q(category = item.category) & ~Q(itemID=itemID) )
 	
@@ -47,6 +48,7 @@ def show_item(request, itemID):
 		context_dict['trendingItems'] = related[0:3]
 	else:
 		context_dict['trendingItems']=related
+
 	response = render(request, 'tailored/product.html', context_dict)
 	
 	if first_visit(request, response, str(item.itemID)):
