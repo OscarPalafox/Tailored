@@ -160,7 +160,8 @@ def populate():
 	# List of items
 	items = [T_Shirt_M, T_Shirt2, Trousers_W, Trousers2, Jacket_K, T_Shirt_W, 
 			T_Shirt_K, Trousers_M, Trousers_K, Jacket_M, Jacket2, Jacket_W]
-
+	
+	
 
 	# List of instances of items
 	item_instances = []

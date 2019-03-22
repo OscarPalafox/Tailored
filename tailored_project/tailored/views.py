@@ -31,6 +31,7 @@ def show_item(request, itemID):
 
 	return response
 
+
 def get_trending_items():
 	items = Item.objects.all()
 	trending = []
@@ -70,12 +71,6 @@ def trending(request):
 	context_dict = {"trendingItems": trending}
 	return render(request, 'tailored/index.html', context_dict)
 
-
-
-"""
-def index(request):
-	return render(request, 'tailored/index.html')
-"""
 
 def items(request):
 	item_list = Item.objects.order_by('-dailyVisits')[:5]
@@ -151,7 +146,6 @@ def user_profile(request):
 	return render(request, "tailored/user_profile.html", context_dict)
 
 
-
 def show_seller_profile(request, seller_username):
 	context_dict = {}
 	
@@ -218,34 +212,58 @@ def show_seller_profile(request, seller_username):
 
 
 @login_required
-def edit_profile(request):
+def user_profile(request):
 	user = User.objects.get(username = request.user)
-	profile_user = get_object_or_404(UserProfile, user = request.user)
-	form = EditUserProfileForm()
+	user_profile = get_object_or_404(UserProfile, user = user)
 
-	if request.method == 'POST':
-		form = EditUserProfileForm(request.POST, request.FILES)
-		if form.is_valid():
-			if form.has_changed():
-				form_keys = list(form.cleaned_data.keys())
+	context_dict = {}
+	context_dict["user_profile"] = user_profile
+	context_dict['user_rating'] = range(int(round(user_profile.rating, 0)))
+	
+	reviews_user = Review.objects.filter(Q(item__in = Item.objects.filter(seller = user_profile)))
+	context_dict['reviews_user'] = reviews_user.order_by('-datePosted')
+
+	item_form = ItemForm()
+	user_form = EditUserProfileForm()
+
+	if (request.method == "POST"):
+		item_form = ItemForm(request.POST, request.FILES)
+		user_form = EditUserProfileForm(request.POST, request.FILES)
+		
+		if item_form.is_valid():
+			item = item_form.save(commit = False)
+			item.seller = user_profile
+			item.save()
+
+			context_dict['user_form'] = user_form
+			return HttpResponseRedirect(reverse('tailored:index'))
+
+		elif user_form.is_valid():
+			if user_form.has_changed():
+				user_form_keys = list(user_form.cleaned_data.keys())
 				
-				for key in form_keys[:2]:
-					if form.cleaned_data[key] and user.__dict__[key] != form.cleaned_data[key]:
-						user.__dict__[key] = form.cleaned_data[key]
+				for key in user_form_keys[:2]:
+					if user_form.cleaned_data[key] and user.__dict__[key] != user_form.cleaned_data[key]:
+						user.__dict__[key] = user_form.cleaned_data[key]
 				user.save()
 
-				for key in form_keys[2:]:
-					if form.cleaned_data[key] and profile_user.__dict__[key] != form.cleaned_data[key]:
-						profile_user.__dict__[key] = form.cleaned_data[key]
-				profile_user.save()
+				for key in user_form_keys[2:]:
+					if user_form.cleaned_data[key] and profile_user.__dict__[key] != user_form.cleaned_data[key]:
+						profile_user.__dict__[key] = user_form.cleaned_data[key]
+				user_profile.save()
+				context_dict["item_form"] = item_form
 				return HttpResponseRedirect(reverse('tailored:index'))
 			else:
-				keys = list(form.cleaned_data.keys())
+				keys = list(user_form.cleaned_data.keys())
 				for key in keys:
-					form.add_error(key, forms.ValidationError("You need to fill at least one field."))
-				return render(request, 'tailored/user_profile.html', {'form': form})
+					user_form.add_error(key, forms.ValidationError("You need to fill at least one field."))
+				context_dict["item_form"] = item_form
+				context_dict['user_form'] = user_form
+				return render(request, 'tailored/user_profile.html', context_dict)
 
-	return render(request, 'tailored/user_profile.html', {'form': form})
+	context_dict["item_form"] = item_form
+	context_dict['user_form'] = user_form
+	return render(request, "tailored/user_profile.html", context_dict)
 
 
 @login_required
