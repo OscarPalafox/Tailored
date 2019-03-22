@@ -330,15 +330,6 @@ def new_in(request, search = None, page = 1):
 		return home_page(request)
 
 
-def home_page(request):
-	context_dict = {}
-	categories = Category.objects.all()
-	
-	context_dict['categories'] = categories
-
-	#placeholder for homepage, feel free to change it.
-	return render(request, 'tailored/index.html', context_dict)
-
 def first_visit(request, response, item):
 	
 	last_visit_cookie = request.COOKIES.get('last_visit' + item, "first")

@@ -1,21 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-<meta charset="UTF-8" />
-
-
-<body>
-	<div>
-<form action="/search/{{search}}{% if search != None and search != '' %}/{%endif%}" class="search" method="POST">
-	{% csrf_token %}
-	{% if search == None %}
-<input type="text" name="search">
-{% else %}
-<input type="text" name="search" placeholder="{{search}}">
-{% endif %}
-<input type="submit" name="request" value="submit" ><br>
+<div >
+	<form action="/search/{{search}}{% if search != None and search != '' %}/{% endif %}" class="search" method="POST">
+		{% csrf_token %}
+		{% if search == None %}
+			<input type="text" name="search">
+		{% else %}
+			<input type="text" name="search" placeholder="{{search}}">
+		{% endif %}
+		<input class = "btn btn-primary" type="submit" name="request" value="Submit"><br>
 	</form>
 </div>
-
-</body>
-</html>

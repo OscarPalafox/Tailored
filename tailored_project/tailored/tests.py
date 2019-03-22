@@ -492,7 +492,6 @@ class ShowItemViewTests(TestCase):
 
 
 class ShowSellerProfileViewTests(TestCase):
-
 	def test_show_seller_inexistent_profile_gives_404(self):
 		'''Test that if the item does not exist, the view raises a 404.'''
 		response = self.client.get(reverse('tailored:show_seller_profile', kwargs = {'seller_username': 'test'}))
@@ -505,3 +504,5 @@ class ShowSellerProfileViewTests(TestCase):
 		response = self.client.get(reverse('tailored:show_seller_profile', kwargs = {'seller_username': user_profile.user.username}))
 		self.assertEqual(200, response.status_code)
 		self.assertEqual(response.context['seller_user'], user_profile.user)
+
+class SearchbarViewTests(TestCase):
