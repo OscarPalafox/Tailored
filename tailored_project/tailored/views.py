@@ -33,6 +33,8 @@ def show_item(request, itemID):
 
 
 	context_dict = {}
+	form = Search_bar()
+	context_dict['search_bar']=form
 	isSeller = request.user == item.seller.user
 	context_dict['isSeller'] = isSeller
 	context_dict['item'] = item
@@ -108,7 +110,8 @@ def trending(request):
 
 def show_seller_profile(request, seller_username):
 	context_dict = {}
-	
+	form = Search_bar()
+	context_dict['search_bar']=form
 	seller_user = get_object_or_404(User, username = seller_username)
 	context_dict['seller_user'] = seller_user
 	seller_user_profile=get_object_or_404(UserProfile, user=seller_user)
@@ -179,6 +182,8 @@ def user_profile(request):
 	user_profile = get_object_or_404(UserProfile, user = user)
 
 	context_dict = {}
+	form = Search_bar()
+	context_dict['search_bar']=form
 	context_dict["user_profile"] = user_profile
 	context_dict['user_rating'] = range(int(round(user_profile.rating, 0)))
 	
@@ -241,7 +246,7 @@ def search_bar(request, search = None, page=1):
 
 	categories = Category.objects.all()
 	
-	form = Search_bar()
+	
 
 	if(request.method == 'POST'):
 		check = request.POST.get('search')
@@ -255,6 +260,7 @@ def search_bar(request, search = None, page=1):
 			return HttpResponseRedirect('all/')
 
 	context_dict = {}
+	form = Search_bar()
 	context_dict['search_bar']=form
 	context_dict['categories'] = categories
 	items = []	
@@ -303,6 +309,8 @@ def new_in(request, search = None, page = 1):
 		for item in items:
 			if item.price > maxi:
 				maxi = item.price
+		form = Search_bar()
+		context_dict['search_bar']=form
 		context_dict['maxi'] = maxi + 5
 		context_dict['search'] = searchS
 		context_dict['page']  = page
