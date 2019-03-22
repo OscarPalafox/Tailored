@@ -149,7 +149,7 @@ def populate():
 	Jacket_K = {'title': 'Red Coat', 'price': 10,
 				'description' : 'Basic red coat for kids. Very warm and cozy. Has been used slighly.',
 				'sold_to' : user_profiles_instances[3],
-				'seller': user_profiles_instances[0],
+				'seller': user_profiles_instances[2],
 				'dailyVisits': 6, 'size': 'XXL', 'picture': 'item_images/RedCoat.jpg',
 				'datePosted': date(2018, 12, 23),
 				'category': categories_instances[2],

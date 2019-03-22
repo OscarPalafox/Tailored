@@ -14,7 +14,6 @@ urlpatterns = [
 	url(r'^search/(?P<search>[-\w]+)/$', views.search_bar, name = 'search'),
 	url(r'^profile/(?P<seller_username>[-\w]+)/$', views.show_seller_profile, name = 'show_seller_profile'),
 	url(r'^item/(?P<itemID>[-\w]+)/$', views.show_item, name = 'show_item'),
-
 	url(r'^delete/(?P<itemID>[-\w]+)/$', views.delete, name = 'delete')
 ]
 

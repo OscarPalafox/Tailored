@@ -224,8 +224,8 @@ def user_profile(request):
 				user.save()
 
 				for key in user_form_keys[2:]:
-					if user_form.cleaned_data[key] and profile_user.__dict__[key] != user_form.cleaned_data[key]:
-						profile_user.__dict__[key] = user_form.cleaned_data[key]
+					if user_form.cleaned_data[key] and user_profile.__dict__[key] != user_form.cleaned_data[key]:
+						user_profile.__dict__[key] = user_form.cleaned_data[key]
 				user_profile.save()
 				context_dict['item_form'] = item_form
 				return HttpResponseRedirect(reverse('tailored:index'))
