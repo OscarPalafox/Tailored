@@ -42,9 +42,8 @@ class UserProfileForm(RegistrationFormTermsOfService, RegistrationFormUniqueEmai
 	postcode = forms.CharField(max_length = 8, validators = [RegexValidator(r'^(([gG][iI][rR] {0,}0[aA]{2})|((([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y]?[0-9][0-9]?)|(([a-pr-uwyzA-PR-UWYZ][0-9][a-hjkstuwA-HJKSTUW])|([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y][0-9][abehmnprv-yABEHMNPRV-Y]))) {0,}[0-9][abd-hjlnp-uw-zABD-HJLNP-UW-Z]{2}))$')])
 	phone = forms.CharField(max_length = 8, required = False, validators = [RegexValidator(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.0-9]*$')])
 
-	# Inline class to provide additional information on the form
-	class Meta:
-		field_order = ["first_name", "last_name", "phone", "postcode", "picture"]
+	# Specify the order of the fields
+	field_order = ["first_name", "last_name", "phone", "postcode", "picture"]
 
 
 class ReviewForm(forms.ModelForm):

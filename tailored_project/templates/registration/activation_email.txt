@@ -2,7 +2,7 @@ Hello there!
 
 Click the link below to activate your account.
 
-http://tailored.pythonanywhere.com/{% url 'registration_activate' activation_key %}
+http://tailored.pythonanywhere.com{% url 'registration_activate' activation_key %}
 
 The above link is valid for {{ expiration_days }} days.
 
