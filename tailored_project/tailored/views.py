@@ -135,6 +135,7 @@ def add_item(request):
 
 	user_profile = get_object_or_404(UserProfile, user = User.objects.get(username = request.user))
 	context_dict = {}
+	u_items=Item.objects.filter(seller)
 	context_dict["user_profile"] = user_profile
 	context_dict['user_rating'] = range(round(user_profile.rating, 1))
 	
@@ -161,7 +162,9 @@ def show_seller_profile(request, seller_username):
 	
 	seller_user = get_object_or_404(User, username = seller_username)
 	context_dict['seller_user'] = seller_user
-	
+	seller_user_profile=get_object_or_404(UserProfile, user=seller_user)
+	selling=Item.objects.filter(seller=seller_user_profile)
+	context_dict['selling']=selling[0:3]
 	seller_user_profile = get_object_or_404(UserProfile, user = seller_user)
 	context_dict['seller_user_profile'] = seller_user_profile
 

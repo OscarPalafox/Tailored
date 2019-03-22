@@ -21,8 +21,8 @@ urlpatterns = [
 
 	url(r'^delete/(?P<itemID>[-\w]+)/$', views.delete, name = 'delete'),
 	url(r'^add_item/$', views.add_item, name = 'add_item'),
-	url(r'^user_profile/edit/$', views.edit_profile, name = 'edit_profile'),
+	
 
-	url(r'^edit/(?P<itemID>[-\w]+)/$', views.edit_item, name = 'edit_item')
+
 ]
 
