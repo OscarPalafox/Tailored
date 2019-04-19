@@ -9,6 +9,12 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime, date
 from django.contrib.auth.models import User
 from django import forms
+from django.contrib.staticfiles.templatetags.staticfiles import static
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+from io import BytesIO
+from PIL import Image
+from os import path
 
 
 @login_required
@@ -217,7 +223,17 @@ def user_profile(request):
 			item = item_form.save(commit = False)
 
 			if not item_form.cleaned_data['picture']:
-				item.picture = 'item_images/placeholder.png'
+				# Handle when the user does not upload an image for the item
+				image = Image.open(path.dirname(path.dirname(path.abspath(__file__))) + static('images/item.png'))
+				output = BytesIO()
+				image.save(output, 'PNG', quality = 100)
+				output.seek(0)
+				
+				file_system = FileSystemStorage(settings.MEDIA_ROOT + '/item_images/')
+				filename = file_system.save('item.png', output)
+				file_url = file_system.url(filename)
+
+				item.picture = file_url.replace('/media', 'item_images', 1)
 			else:
 				item.picture = item_form.cleaned_data['picture']
 
@@ -274,7 +290,7 @@ def search_bar(request, search = None):
 
 	context_dict = {}
 	form = Search_bar()
-	context_dict['search_bar']=form
+	context_dict['search_bar'] = form
 	context_dict['categories'] = categories
 	items = []	
 	if search == "all" or search == None or search == "":

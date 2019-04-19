@@ -4,6 +4,10 @@ from datetime import date
 from registration.forms import RegistrationFormTermsOfService, RegistrationFormUniqueEmail
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from io import BytesIO
+from PIL import Image
+from sys import getsizeof
 
 class Search_bar(forms.ModelForm):
 	search = forms.CharField(label="", required=False )
@@ -34,6 +38,23 @@ class ItemForm(forms.ModelForm):
 		model = Item
 		exclude = ('itemID', 'sold_to', 'seller', 'datePosted', 'dailyVisits')
 
+	def clean(self):
+		picture = self.cleaned_data.get('picture')
+		if picture:
+			# Resize image given
+			image_file = BytesIO(picture.read())
+			image = Image.open(image_file)
+			image_resized = image.resize((270, 270), Image.ANTIALIAS)
+
+			output = BytesIO()
+			image_resized.save(output, 'JPEG', quality = 100)
+			output.seek(0)
+			output_formatted = InMemoryUploadedFile(output, 'ImageField', picture.name, 
+													'image/jpeg', getsizeof(output), None)
+			self.cleaned_data['picture'] = output_formatted
+
+		return self.cleaned_data
+
 
 class UserProfileForm(RegistrationFormTermsOfService, RegistrationFormUniqueEmail):
 	first_name = forms.CharField(max_length = 128, validators = [RegexValidator(r'^([^0-9]*)$')])
@@ -44,6 +65,23 @@ class UserProfileForm(RegistrationFormTermsOfService, RegistrationFormUniqueEmai
 
 	# Specify the order of the fields
 	field_order = ["first_name", "last_name", "phone", "postcode", "picture"]
+
+	def clean(self):
+		picture = self.cleaned_data.get('picture')
+		if picture:
+			# Resize image given
+			image_file = BytesIO(picture.read())
+			image = Image.open(image_file)
+			image_resized = image.resize((150, 150), Image.ANTIALIAS)
+
+			output = BytesIO()
+			image_resized.save(output, 'JPEG', quality = 100)
+			output.seek(0)
+			output_formatted = InMemoryUploadedFile(output, 'ImageField', picture.name, 
+													'image/jpeg', getsizeof(output), None)
+			self.cleaned_data['picture'] = output_formatted
+
+		return self.cleaned_data
 
 
 class ReviewForm(forms.ModelForm):
@@ -72,6 +110,23 @@ class EditUserProfileForm(forms.ModelForm):
 								validators = [RegexValidator(r'^(([gG][iI][rR] {0,}0[aA]{2})|((([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y]?[0-9][0-9]?)|(([a-pr-uwyzA-PR-UWYZ][0-9][a-hjkstuwA-HJKSTUW])|([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y][0-9][abehmnprv-yABEHMNPRV-Y]))) {0,}[0-9][abd-hjlnp-uw-zABD-HJLNP-UW-Z]{2}))$')])
 	phone = forms.CharField(help_text = 'Phone: ', required = False, max_length = 8,
 						validators = [RegexValidator(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.0-9]*$')])
+
+	def clean(self):
+		picture = self.cleaned_data.get('picture')
+		if picture:
+			# Resize image given
+			image_file = BytesIO(picture.read())
+			image = Image.open(image_file)
+			image_resized = image.resize((150, 150), Image.ANTIALIAS)
+
+			output = BytesIO()
+			image_resized.save(output, 'JPEG', quality = 100)
+			output.seek(0)
+			output_formatted = InMemoryUploadedFile(output, 'ImageField', picture.name, 
+													'image/jpeg', getsizeof(output), None)
+			self.cleaned_data['picture'] = output_formatted
+
+		return self.cleaned_data
 
 	# Inline class to provide additional information on the form
 	class Meta:

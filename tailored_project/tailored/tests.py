@@ -504,5 +504,3 @@ class ShowSellerProfileViewTests(TestCase):
 		response = self.client.get(reverse('tailored:show_seller_profile', kwargs = {'seller_username': user_profile.user.username}))
 		self.assertEqual(200, response.status_code)
 		self.assertEqual(response.context['seller_user'], user_profile.user)
-
-class SearchbarViewTests(TestCase):

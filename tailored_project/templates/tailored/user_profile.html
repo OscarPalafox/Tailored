@@ -1,6 +1,6 @@
 {% extends 'tailored/base.html' %}
    {% load staticfiles %}
-   {% load form_class%}
+   {% load form_class %}
    {% block title_block %}
       Home
    {% endblock %}
@@ -166,7 +166,12 @@
 								                
                          
 							{% endfor %}
-                        <button class="btn btn-primary" type="submit">Save changes</button>
+                        <div class = "col-lg-9">
+                           <button class="btn btn-primary" type="submit">Save changes</button>
+                           <form>
+                              <button class = "btn btn-primary" formaction = "{% url 'auth_password_change' %}">Change password</button>
+                           </form>
+                        </div>
 						</div>
                      </form>
                </div>

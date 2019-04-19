@@ -2,6 +2,12 @@ from registration.backends.simple.views import RegistrationView
 from registration.models import RegistrationProfile
 from tailored.models import UserProfile
 from tailored.forms import UserProfileForm
+from django.contrib.staticfiles.templatetags.staticfiles import static
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+from io import BytesIO
+from PIL import Image
+from os import path
 
 class MyRegistrationView(RegistrationView):
 	"""This class modifies the forms from the registration-django-redux app to implement the fields
@@ -19,7 +25,21 @@ class MyRegistrationView(RegistrationView):
 		user_profile.user = user
 		
 		if not form_class.cleaned_data['picture']:
-			user_profile.picture = 'profile_images/placeholder.jpg'
+			# Handle when the user does not upload a profile picture
+			image = Image.open(path.dirname(path.dirname(path.abspath(__file__))) + static('images/profile.jpg'))
+			
+			if image.mode != "RGB":
+				image = image.convert("RGB")
+
+			output = BytesIO()
+			image.save(output, 'JPEG', quality = 100)
+			output.seek(0)
+
+			file_system = FileSystemStorage(settings.MEDIA_ROOT + '/profile_images/')
+			filename = file_system.save('profile.jpg', output)
+			file_url = file_system.url(filename)
+
+			user_profile.picture = file_url.replace('/media', 'profile_images', 1)
 		else:
 			user_profile.picture = form_class.cleaned_data['picture']
 		

@@ -1,7 +1,5 @@
 # Tailored
 
-WAD2 project
-
 The master branch represents all changes up to and including the day of the deadline, Wednesday 22 March 2019.
 
 ### Environment Requiments
@@ -57,5 +55,6 @@ Finally you run the population script:
 
 ### Testing
 -	python manage.py test tailored
+
 ## PythonAnywhere
-Url :  tailored.pythonanywhere.com
+Url :  [tailored.pythonanywhere.com](https://tailored.pythonanywhere.com)
