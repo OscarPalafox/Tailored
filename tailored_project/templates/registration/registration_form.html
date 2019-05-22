@@ -1,39 +1,43 @@
 {% extends 'registration/registration_base.html' %}
 {% load form_class%}
 {% load staticfiles %}
+
 {% block title_block %}
 	Sign up
 {% endblock %}
+
 {% block body_block %}		
 	<h2 class = "title">Register</h2>
 	<form  method="POST" action = "." enctype = "multipart/form-data" novalidate>
 		{% csrf_token %}
 		{% for field in form %}
-		{% if field.field.widget.input_type == "checkbox" %}
-		<div class="form-row row-space">
-			<div class="col-3">
-				<div class="input-group form-control  p-t-15 ">
-
-					<a class ="label" href="{% url 'tailored:terms_and_conditions' %}"> {{ field.label }} {{ field }}</a>	
+			{% if field.field.widget.input_type == "checkbox" %}
+				<div class="form-row row-space">
+					<div class="col-3">
+						<div class="input-group form-control  p-t-15 ">
+							<a class ="label" href="{% url 'tailored:terms_and_conditions' %}">
+								{{ field.label }} {{ field }}
+							</a>
+						</div>
+					</div>
 				</div>
-			</div>
-		</div>
-		{%else%}
-		<div class="form-row row-space">
-			<div class="col-2">
-				<div class="input-group form-control  p-t-5 ">
-					<label class="label">{{ field.label }}</label>
-					{{field|addcss:"input--style-4"}} 
-				</div>
-			</div>
-			{%if field.errors%}
-					<p class ="errors">Please make sure you fulfill the requirements for each field.</p>
+			{%else%}
+				<div class="form-row row-space">
+					<div class="col-2">
+						<div class="input-group form-control  p-t-5 ">
+							<label class="label">{{ field.label }}</label>
+							{{field|addcss:"input--style-4"}} 
+						</div>
+					</div>
+					{%if field.errors%}
+						<p class ="errors">Please make sure you fulfill the requirements for each field.</p>
 					{%endif%}
-			{%if field.help_text%}
-			<p class = "label"> {{field.help_text|safe}}</p>
+					
+					{%if field.help_text%}
+						<p class = "label"> {{field.help_text|safe}}</p>
+					{%endif%}
+				</div>
 			{%endif%}
-		</div>
-		{%endif%}
 		{% endfor %}
 		<div>
 			<button class="btn btn--radius-2 btn--blue" type="submit">Submit</button>
