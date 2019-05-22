@@ -1,7 +1,4 @@
 # Tailored
-
-The master branch represents all changes up to and including the day of the deadline, Wednesday 22 March 2019.
-
 ### Environment Requiments
 
 Python 3.6 or later is required for the web application to run. Earlier 3.x versions will not work and will result in syntax errors.

@@ -52,8 +52,6 @@ def show_item(request, itemID):
 	context_dict['seller_rating'] = range(int(round(item.seller.rating, 1)))
 
 	related = Item.objects.filter(category = item.category).exclude(itemID = item.itemID)
-
-	related = Item.objects.filter(Q(category = item.category) & ~Q(itemID=itemID) )
 	
 	if len(related)>3:
 		context_dict['trendingItems'] = related[0:3]
@@ -110,7 +108,7 @@ def trending(request):
 
 	for item in Item.objects.order_by('-dailyVisits'):
 		#Include items that have been uploaded within the past day and havent been sold
-		if ( ((date.today() - item.datePosted).days <= 0) and (item.sold_to == None)):
+		if ((date.today() - item.datePosted).days <= 0) and (item.sold_to == None):
 			if (len(trending) <= 5):
 				trending.append(item)
 		else:
@@ -130,11 +128,11 @@ def trending(request):
 def show_seller_profile(request, seller_username):
 	context_dict = {}
 	form = Search_bar()
-	context_dict['search_bar']=form
+	context_dict['search_bar'] = form
 	seller_user = get_object_or_404(User, username = seller_username)
 	context_dict['seller_user'] = seller_user
 	seller_user_profile=get_object_or_404(UserProfile, user=seller_user)
-	selling=Item.objects.filter(seller=seller_user_profile)
+	selling = Item.objects.filter(seller = seller_user_profile)
 	context_dict['selling'] = selling[0:3]
 	seller_user_profile = get_object_or_404(UserProfile, user = seller_user)
 	context_dict['seller_user_profile'] = seller_user_profile
@@ -367,8 +365,10 @@ def first_visit(request, response, item):
 			response.set_cookie('last_visit' + item , last_visit_cookie)
 			return False
 
+
 def terms_and_conditions(request):
 	return render(request, 'tailored/terms_and_conditions.html', {})
+
 
 def contact_us(request):
 	return render(request, 'tailored/contacus.html', {})

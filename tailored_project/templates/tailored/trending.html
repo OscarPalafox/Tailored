@@ -6,22 +6,22 @@
 	</head>
 	<body>
 		<h1>Today's Trending Products</h1>
-
 		<div>
 			{% if trendingItems %}
-			<ul>
-				{% for item in trendingItems %}
-					
-					<li> {{ item.title }} has gotten <strong>{{ item.dailyVisits }}</strong> views in the past <strong>24</strong> hours</li>
-					<img src="{{ MEDIA_URL }}{{ item.picture }}"><br />	
-				{% endfor %}
-			{% else %}
-				No trending Items today!
-			{% endif %}				
-			</ul>
+				<ul>
+					{% for item in trendingItems %}
+						<li>
+							{{ item.title }} has gotten <strong>{{ item.dailyVisits }}</strong> views in the past <strong>24</strong>hours
+						</li>
+						<img src="{{ MEDIA_URL }}{{ item.picture }}"><br />
+					{% endfor %}
+				{% else %}
+					No trending items today!
+				</ul>
+			{% endif %}
 		</div>
 		<div>
 			<a href="{% url 'tailored:index' %}">Home</a>
 		</div>
-</body>
+	</body>
 </html>

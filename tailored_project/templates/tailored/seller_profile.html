@@ -1,126 +1,120 @@
 {% extends 'tailored/base.html' %}
 {% load staticfiles %}
 {% block body_block %}
-<link href="{% static 'css/profile.css'%}" rel="stylesheet">
-<div class="container">
-   <div class="row m-y-2">
-      <div class="col-lg-8 push-lg-4">
-         <ul class="nav nav-tabs">
-            <li class="nav-item">
-               <a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
-            </li>
-  
-         </ul>
-         <div class="tab-content p-b-3">
-		
-            <div class="tab-pane active" id="profile">
-               <h4 class="m-y-2">About Seller</h4>
-               <div class="row">
-                  <div class="col-md-6">
-                     <h6>About</h6>
-                     <p>
-                        <strong>Name: </strong>{{ seller_user.first_name }} {{ seller_user.last_name }}
-                     </p>
-                     <p>
-                        <strong>Email: </strong>{{ seller_user.email }}
-                     </p>
-                     <p>
-                        <strong>Phone Number: </strong>{{ seller_user.userprofile.phone }}
-                     </p>
-                     <p>
-                        <strong>Post Code: </strong>{{ seller_user.userprofile.postcode }}
-                     </p>
-                  </div>
-                  <div class="col-md-6">
-                     <h6>Rating</h6>
-                     <div class="top_seller_product_rating mb-15">
-
-                        {% csrf_token %}
-                       
-                        {% if seller_user.userprofile.rating == 0 %}
-                           This user does not have any ratings
-
-                        {% else %}
-                           {% for rate in seller_rating %}
-                              <i class="fa fa-star" aria-hidden="true"></i>
-                           {% endfor %}
-                        {% endif %}
-
-                     </div>
-                  </div>
-                  <div class="col-md-12">
-                     <h4 class="m-t-2"><span class="fa fa-clock-o ion-clock pull-xs-right"></span> Reviews</h4>
-                     <table class="table table-hover table-striped">
-                        <tbody>
-                           {% if reviews_seller %}
-                           {% for review in reviews_seller %}
-                           <tr>
-                              <th>
-                                 Item bought: "{{ review.item }}"<br />
-                                 {{ review.review_text }} <br />
-				                     Rating: {{ review.rating }}/5 <br />
-                                 <font size="-1"> Date posted: {{ review.datePosted}} </font> 
-                              </th>
-                           </tr>
-                           {% endfor %}
-                           {% else %}
-                           <strong>This user has no reviews</strong>
-                           {% endif %}
-
-                           <tr>
-                              <td>
-                                 <div class="form-group row">
-                                    <label class="col-lg-3 col-form-label form-control-label"></label>
-                                    <div class="col-lg-9">
-                                       {% if items_to_review %}
-                                       <div class="row">
-                                          <form id = "review_form" method = "post" action = "{% url 'tailored:show_seller_profile' seller_user.username %}">
-                                             {% csrf_token %}
-                                             <div class="col-md-12">
-                                                {% for field in form.visible_fields %}
-                                                <div class="col-md-12">
-                                                   {{field.help_text}}
-                                                   <p>{{ field }}</p>
-                                                </div>
-                                                {% endfor %}
-                                                <button type="submit" class="btn btn-primary">
-                                                <span class="glyphicon glyphicon-search"></span> Submit
-                                                </button>
-                                             </div>
-                                          </form>
-                                       </div>
-                                       {% else %}
-                                          You have no items to review from this user
-                                       {% endif %}
-                                    </div>
-                                 </div>
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                  </div>
-               </div>
-			    <h4 class="m-t-2"> {{ seller_user.first_name }}'s Products <span class="fa fa-tag pull-xs-right">  </span></h4>
-			   <div class="container">
-
-
-                    {% for item in selling%}
-                           {% include 'tailored/item_preview.html' %}
-                           {%endfor%}
-
-               </div>
-            </div>
-
-         </div>
-      </div>
-      <div class="col-lg-4 pull-lg-8 text-xs-center">
-
-         <img src="{{ MEDIA_URL }}{{ seller_user.userprofile.picture }}" class="m-x-auto img-fluid img-circle" alt="avatar">
-         <br />
-         <h5><strong>{{ seller_user }}</strong></h5>
-
-      </div>
-   </div>
-</div>
-
+	<link href="{% static 'css/profile.css'%}" rel="stylesheet" />
+	<div class="container">
+		<div class="row m-y-2">
+			<div class="col-lg-8 push-lg-4">
+				<ul class="nav nav-tabs">
+					<li class="nav-item">
+						<a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
+					</li>
+				</ul>
+				<div class="tab-content p-b-3">
+					<div class="tab-pane active" id="profile">
+						<h4 class="m-y-2">About Seller</h4>
+						<div class="row">
+							<div class="col-md-6">
+								<h6>About</h6>
+								<p>
+									<strong>Name: </strong>{{ seller_user.first_name }} {{ seller_user.last_name }}
+								</p>
+								<p>
+									<strong>Email: </strong>{{ seller_user.email }}
+								</p>
+								<p>
+									<strong>Phone Number: </strong>{{ seller_user.userprofile.phone }}
+								</p>
+								<p>
+									<strong>Post Code: </strong>{{ seller_user.userprofile.postcode }}
+								</p>
+							</div>
+							<div class="col-md-6">
+								<h6>Rating</h6>
+								<div class="top_seller_product_rating mb-15">
+							{% csrf_token %}
+								{% if seller_user.userprofile.rating == 0 %}
+									This user does not have any ratings
+								{% else %}
+									{% for rate in seller_rating %}
+										<i class="fa fa-star" aria-hidden="true"></i>
+									{% endfor %}
+								{% endif %}
+								</div>
+							</div>
+							<div class="col-md-12">
+								<h4 class="m-t-2">
+									<span class="fa fa-clock-o ion-clock pull-xs-right" />Reviews
+								</h4>
+								<table class="table table-hover table-striped">
+									<tbody>
+										{% if reviews_seller %}
+											{% for review in reviews_seller %}
+												<tr>
+													<th>
+														Item bought: "{{ review.item }}"<br />
+														{{ review.review_text }} <br />
+														Rating: {{ review.rating }}/5 <br />
+														<font size="-1"> Date posted: {{ review.datePosted}} </font> 
+													</th>
+												</tr>
+											{% endfor %}
+										{% else %}
+											<strong>This user has no reviews</strong>
+										{% endif %}
+										<tr>
+											<td>
+												<div class="form-group row">
+													<label class="col-lg-3 col-form-label form-control-label" />
+													<div class="col-lg-9">
+														{% if items_to_review %}
+															<div class="row">
+																<form id = "review_form" method = "post" action = "{% url 'tailored:show_seller_profile' seller_user.username %}">
+																	{% csrf_token %}
+																	<div class="col-md-12">
+																		{% for field in form.visible_fields %}
+																			<div class="col-md-12">
+																				{{field.help_text}}
+																				<p>{{ field }}</p>
+																			</div>
+																		{% endfor %}
+																		<button type="submit" class="btn btn-primary">
+																			<span class="glyphicon glyphicon-search"/>submit
+																		</button>
+																	</div>
+																</form>
+															</div>
+														{% else %}
+															You have no items to review from this user
+														{% endif %}
+													</div>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<h4 class="m-t-2">
+							{{ seller_user.first_name }}'s Products <span class="fa fa-tag pull-xs-right" />
+						</h4>
+						<div class="container">
+							{% for item in selling%}
+								{% include 'tailored/item_preview.html' %}
+							{%endfor%}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 pull-lg-8 text-xs-center">
+				<img src="{{ MEDIA_URL }}{{ seller_user.userprofile.picture }}" class="m-x-auto img-fluid img-circle" alt="avatar">
+				<br />
+				<h5>
+					<strong>
+						{{ seller_user }}
+					</strong>
+				</h5>
+			</div>
+		</div>
+	</div>
 {%endblock%}
