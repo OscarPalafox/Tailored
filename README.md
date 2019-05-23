@@ -1,4 +1,10 @@
 # Tailored
+
+## Objective
+The objective of our application is to establish a safe and reliable trading environment that allows people to put their used clothes up for sale as well as offer them the chance of buying used clothes at a cheaper price.
+
+
+
 ### Environment Requiments
 Python 3.6 or later is required for the web application to run. Earlier 3.x versions will not work and will result in syntax errors.
 
@@ -52,5 +58,5 @@ Finally you run the population script:
 -	python manage.py test tailored
 
 
-## PythonAnywhere
+### PythonAnywhere
 Url :  [tailored.pythonanywhere.com](https://tailored.pythonanywhere.com)
