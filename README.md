@@ -1,5 +1,6 @@
 Tailored
 ===
+---
 
 ## Objective
 The objective of our application is to establish a safe and reliable trading environment that allows people to put their used clothes up for sale as well as offer them the chance of buying used clothes at a cheaper price.
