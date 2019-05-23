@@ -1,31 +1,31 @@
 {% extends 'tailored/base.html' %}
-	{% load staticfiles %}
-	{% block title_block %}
-		Home
-	{% endblock %}
+{% load staticfiles %}
+{% block title_block %}
+	Home
+{% endblock %}
 
-	{% block body_block %}
+{% block body_block %}
 
-		<section class="featured_items_area section_padding_100_0 clearfix">
-			<div class="container">
-				<div class="row">
-					<div class="col-12">
-						<div class="section_heading text-center">
-							<h2>Featured Items</h2>
-						</div>
+	<section class="featured_items_area section_padding_100_0 clearfix">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="section_heading text-center">
+						<h2>Featured Items</h2>
 					</div>
 				</div>
 			</div>
-			<div class="container">
-				<div class="row tailored-new-arrivals">
+		</div>
+		<div class="container">
+			<div class="row tailored-new-arrivals">
 
-					{% for item in trendingItems %}
-						{% include 'tailored/item_preview.html' %}
-					{% endfor %}
-						
-
+				{% for item in trendingItems %}
+					{% include 'tailored/item_preview.html' %}
+				{% endfor %}
 					
-				</div>
+
+				
 			</div>
-		</section>
-	{%endblock%}
+		</div>
+	</section>
+{%endblock%}

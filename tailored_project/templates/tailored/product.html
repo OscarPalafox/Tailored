@@ -1,5 +1,10 @@
 {% extends 'tailored/base.html' %}
 {% load staticfiles %}
+
+{% block title_block %}
+	{{ item.title }}
+{% endblock %}
+
 {% block body_block %}
 	<div class="breadcumb_area">
 		<div class="container">
@@ -78,20 +83,34 @@
 											</a>
 										</h6>
 									</div>
-									<div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+									<div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
 										<div class="card-body">
 											<p>{{ item.description }}</p>
 										</div>
 									</div>
-									{% if isSeller %} 
-										<div id="collapseTwo" class="collapse show" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+									{% if request.user == item.seller.user %} 
+										<div class="card-header" role="tab" id="headingTwo">
+											<h6 class="mb-0">
+											<a data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"> Delete item</a>
+											</h6>
+										</div>
+										<div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
 											<div class="card-body">
 												<a href="{% url 'tailored:delete' item.itemID %}">
 													Delete this item
 												</a>
 											</div>
 										</div>
-										{% include 'tailored/edit_item.html'%}
+										<div class="card-header" role="tab" id="headingThree">
+											<h6 class="mb-0">
+											<a data-toggle="collapse" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree"> Item sold</a>
+											</h6>
+										</div>
+										<div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
+											<div class="card-body">
+												{% include 'tailored/sell_item.html'%}
+											</div>
+										</div>
 									{% endif %}
 								</div>
 							</div>

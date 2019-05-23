@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tailored</title>
+</head>
+<body>
+	<div>
+		<form id = "item_form" method = "post" action = "{% url 'tailored:show_item' item.itemID %}">
+
+			{% csrf_token %}
+			{% for hidden in form.hidden_fields %}
+				{{ hidden }}
+			{% endfor %}
+			{% for field in form.visible_fields %}
+			<li>
+				{{ field.errors }}
+				{{ field.help_text }}
+				{{ field }}
+			</li>
+			{% endfor %}
+			<input type = "submit" name = "submit" value = "Find User" />
+		</form>
+	</div>
+</body>
+</html>
