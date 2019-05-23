@@ -15,11 +15,12 @@ class MyRegistrationView(RegistrationView):
 	form_class = UserProfileForm
 
 	def register(self, form_class):
-		# Override the register function from RegistrationView
+		"""This function overrides the register function from RegistrationView."""
 		user = super(MyRegistrationView, self).register(form_class)
 		user.first_name = form_class.cleaned_data['first_name']
 		user.last_name = form_class.cleaned_data['last_name']
 		user = RegistrationProfile.objects.create_inactive_user(site = None, new_user = user)
+
 		# Create our user profile and fill the details.
 		user_profile = UserProfile()
 		user_profile.user = user
@@ -43,6 +44,7 @@ class MyRegistrationView(RegistrationView):
 		else:
 			user_profile.picture = form_class.cleaned_data['picture']
 		
+		# Clean up the postcode
 		input_postcode = form_class.cleaned_data['postcode'].replace(' ', '').upper()
 		user_profile.postcode = input_postcode[:-3] + ' ' + input_postcode[-3:]
 		user_profile.phone = form_class.cleaned_data['phone']

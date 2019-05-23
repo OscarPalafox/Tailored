@@ -4,6 +4,7 @@ from tailored.models import UserProfile, Category, Section, Item, Review
 from tailored.forms import Search_bar, ItemForm, EditUserProfileForm, UserProfileForm, ReviewForm, SoldItemForm
 from django.db.models import Q
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime, date
@@ -19,11 +20,12 @@ from os import path
 
 @login_required
 def delete(request, itemID):
-	'''This view deletes the given item if the logged in user is the seller.'''
+	"""This view deletes the given item if the logged in user is the seller."""
 	try:
 		item = get_object_or_404(Item, itemID = itemID)
-	# Handle when the given itemID is not UUID
-	except:
+
+	# Handle when the given itemID is not a UUID
+	except ValidationError:
 		raise Http404
 
 	if (item.seller.user != request.user):
@@ -34,13 +36,13 @@ def delete(request, itemID):
 
 
 def show_item(request, itemID):
-	'''This view displays the given item and if the logged in user is the seller, it allows him to specify the
-		buyer or delete the item.'''
-	
+	"""This view displays the given item and if the logged in user is the seller, it allows him to specify the
+		buyer or delete the item."""
 	try:
 		item = get_object_or_404(Item, itemID = itemID)
+
 	# Handle when the given itemID is not UUID
-	except:
+	except ValidationError:
 		raise Http404
 
 	context_dict = {}
@@ -92,7 +94,7 @@ def show_item(request, itemID):
 			else:
 				sold_form.add_error('sold_to', forms.ValidationError("You can't sell an item to yourself."))
 				context_dict['form'] = sold_form
-				return render(request, 'tailored/edit_item.html', context_dict)
+				return render(request, 'tailored/product.html', context_dict)
 			item.save()
 			return HttpResponseRedirect(reverse('tailored:index'))
 
@@ -102,7 +104,7 @@ def show_item(request, itemID):
 
 
 def trending(request):
-	'''This view gives the five trending objects.'''
+	"""This view gives the five trending objects."""
 	items = Item.objects.all()
 	trending = []
 
@@ -368,7 +370,3 @@ def first_visit(request, response, item):
 
 def terms_and_conditions(request):
 	return render(request, 'tailored/terms_and_conditions.html', {})
-
-
-def contact_us(request):
-	return render(request, 'tailored/contacus.html', {})

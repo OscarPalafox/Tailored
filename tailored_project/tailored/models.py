@@ -7,17 +7,16 @@ from uuid import uuid4
 
 
 class UserProfile(models.Model):
-	'''Class representing a user profile.'''
+	"""Class representing a user profile."""
 	# This line links UserProfile to a User model instance
 	user = models.OneToOneField(User, on_delete = models.CASCADE, primary_key = True)
 
-	# Additional attributes we wish to include
+	# Additional attributes to include in the model
 	picture = models.ImageField(upload_to = 'profile_images', blank = True)
 	postcode = models.CharField(max_length = 8, validators = [RegexValidator(r'^(([gG][iI][rR] {0,}0[aA]{2})|((([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y]?[0-9][0-9]?)|(([a-pr-uwyzA-PR-UWYZ][0-9][a-hjkstuwA-HJKSTUW])|([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y][0-9][abehmnprv-yABEHMNPRV-Y]))) {0,}[0-9][abd-hjlnp-uw-zABD-HJLNP-UW-Z]{2}))$')])
 	rating = models.DecimalField(default = 0, validators = [MinValueValidator(0), MaxValueValidator(5)],
 									decimal_places = 2, max_digits = 100)
 	phone = models.CharField(max_length = 128, blank = True, validators = [RegexValidator(r'^\d*$')])
-
 
 	def save(self, *args, **kwargs):
 		if not self.clean_fields() and not self.validate_unique():
@@ -28,8 +27,7 @@ class UserProfile(models.Model):
 
 
 class Category(models.Model):
-	'''Class representing a category.'''
-
+	"""Class representing a category."""
 	title = models.CharField(max_length = 128, primary_key = True)
 	slug = models.SlugField()
 
@@ -41,13 +39,13 @@ class Category(models.Model):
 	def __str__(self):
 		return self.title
 
+	# Inline class to provide additional information on the model
 	class Meta:
 		verbose_name_plural = 'categories'
 
 
 class Section(models.Model):
-	'''Class representing a section.'''
-
+	"""Class representing a section."""
 	title = models.CharField(max_length = 128, primary_key = True)
 
 	def save(self, *args, **kwargs):
@@ -59,7 +57,7 @@ class Section(models.Model):
 
 
 class Size(models.Model):
-	'''Class representing a size for an item.'''
+	"""Class representing a size for an item."""
 	title = models.CharField(max_length = 128, primary_key = True)
 
 	def save(self, *args, **kwargs):
@@ -70,23 +68,17 @@ class Size(models.Model):
 		return self.title
 
 class Item(models.Model):
-	'''Class representing an item.'''
+	"""Class representing an item."""
 	itemID = models.UUIDField(max_length = 128, primary_key = True, default = uuid4, editable = False)
-
 	title = models.CharField(max_length = 128)
 	price = models.DecimalField(validators = [MinValueValidator(0)], decimal_places = 2, default = 0,
 								max_digits = 100)
-
 	seller = models.ForeignKey(UserProfile, related_name = 'seller')
-
 	category = models.ForeignKey(Category)
 	section = models.ForeignKey(Section)
-
 	picture = models.ImageField(upload_to = 'item_images', blank = True)
-	
 	description = models.TextField(blank = True)
 	datePosted = models.DateField(default = date.today)
-	
 	sold_to = models.ForeignKey(UserProfile, related_name = 'buyer', blank = True, null = True)
 	dailyVisits = models.IntegerField(default = 0, validators = [MinValueValidator(0)])
 	size = models.ForeignKey(Size)
@@ -99,7 +91,7 @@ class Item(models.Model):
 		return self.title
 
 class Review(models.Model):
-	'''Class representing a review.'''
+	"""Class representing a review."""
 	item = models.ForeignKey(Item)
 	rating = models.IntegerField(validators = [MinValueValidator(0), MaxValueValidator(5)])
 	review_text = models.TextField(blank = True)
