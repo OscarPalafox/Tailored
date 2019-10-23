@@ -11,7 +11,7 @@ Python 3.6 or later is required for the web application to run. Earlier 3.x vers
 ### Additional Packages
 These packages can all be installed in a single command: pip install -r requirements.txt
 
-- Django v1.11.20
+- Django v1.11.23
 
 Installation: pip install django
 
