@@ -11,11 +11,11 @@ Python 3.6 or later is required for the web application to run. Earlier 3.x vers
 ### Additional Packages
 These packages can all be installed in a single command: pip install -r requirements.txt
 
-- Django v1.11.23
+- Django v1.11.27
 
 Installation: pip install django
 
-- django-registration-redux v2.5
+- django-registration-redux v2.6
 
 Installation: pip install django-registration-redux
 
@@ -23,11 +23,11 @@ Installation: pip install django-registration-redux
 
 Installation: pip install django-cleanup
 
-- Pillow v5.4.1
+- Pillow v6.2.1
 
 Installation: pip install pillow
 
-- pytz v2018.9
+- pytz v2019.1
 
 Installation: pip install pytz
 
